@@ -3,14 +3,10 @@ package com.ogppractica;
 import java.util.Date;
 
 public class File implements FileInterface{
-    // TODO: Implement inspector canHaveAsName(String)
-    // TODO: Implement inspector canHaveAsSize(int)
-    // TODO: Implement inspector canHaveAsLastModificationTime(java.util.Date)
-    // TODO: Implement inspector isValidMaxSize(int)
 
     private String name;
     private int size;
-    private final static int maxSize = Integer.MAX_VALUE;  // should this be public?
+    public static final int MAX_SIZE = Integer.MAX_VALUE;
     private Date creationTime;
     private Date lastModificationTime;
     private boolean isWritable = true;  // file is writable by default
@@ -36,6 +32,26 @@ public class File implements FileInterface{
     }
 
     // TODO: Implement steady-state setters for: name, lastModificationTime, isWritable
+
+    // TODO: Implement inspector canHaveAsName(String)
+    public boolean canHaveAsName(String name) {
+        return false;
+    }
+
+    // TODO: Implement inspector canHaveAsSize(int)
+    public boolean canHaveAsSize(int size) {
+        return false;
+    }
+
+    // TODO: Implement inspector canHaveAsLastModificationTime(java.util.Date)
+    public boolean canHaveAsLastModificationTime(Date lastModificationTime) {
+        return false;
+    }
+
+    // TODO: Implement inspector isValidMaxSize(int)
+    public static boolean isValidMaxSize(int size){
+        return false;
+    }
 
     @Override
     public void enlarge(int size) {
