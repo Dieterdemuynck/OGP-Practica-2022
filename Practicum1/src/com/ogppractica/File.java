@@ -2,33 +2,42 @@ package com.ogppractica;
 
 import java.util.Date;
 
-public class File implements FileInterface{
+public class File implements FileInterface {
 
     //Properties
     private String name;
     private int size;
     public static final int MAX_SIZE = Integer.MAX_VALUE;
-    private Date creationTime;
+    private final Date creationTime;
     private Date lastModificationTime;
     private boolean isWritable;  // file is writable by default
 
     // Constructors
-    public File(String name, int size, boolean writable){
-        this.name = name;
-        this.size = size;
+    public File(String name, int size, boolean writable) {
+        setName(name);
+        if (canHaveAsSize(size)) {
+            this.size = size;
+        }
         this.isWritable = writable;
         this.creationTime = new Date();
-        this.lastModificationTime = new Date();
     }
 
-    public File(String name){
-        this(name,0,true);
+    public File(String name) {
+        this(name, 0, true);
     }
 
 
     // Methods
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        if (canHaveAsName(name)) {
+            this.name = name;
+        } else {
+            this.name = "default";
+        }
     }
 
     public int getSize() {
@@ -64,16 +73,22 @@ public class File implements FileInterface{
         return false;
     }
 
+    public boolean hasLastModificationTime() {
+        return lastModificationTime != null;
+    }
+
     // TODO: Implement inspector isValidMaxSize(int)
-    public static boolean isValidMaxSize(int size){
+    public static boolean isValidMaxSize(int size) {
         return false;
     }
 
+    //vergeet ook niet dat lastModificationTime moet aangepast worden :)
     @Override
     public void enlarge(int size) {
 
     }
 
+    //vergeet ook niet dat lastModificationTime moet aangepast worden :)
     @Override
     public void shorten(int size) {
 
@@ -81,15 +96,13 @@ public class File implements FileInterface{
 
     @Override
     public boolean hasOverlappingUsePeriod(File other) {
-        if (this.creationTime.before(this.lastModificationTime) && other.creationTime.before(other.lastModificationTime)){
-            if (this.creationTime.before(other.creationTime)) {
-                return this.lastModificationTime.after(other.creationTime);
+        if (this.hasLastModificationTime() && other.hasLastModificationTime()) {
+            if (this.getCreationTime().before(other.getCreationTime())) {
+                return this.getLastModificationTime().after(other.getCreationTime());
+            } else {
+                return other.getLastModificationTime().after(this.getCreationTime());
             }
-            else {
-                return other.lastModificationTime.after(this.creationTime);
-            }
-        }
-        else{
+        } else {
             return false;
         }
     }

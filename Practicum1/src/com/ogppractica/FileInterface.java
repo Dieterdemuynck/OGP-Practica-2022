@@ -50,10 +50,10 @@ public interface FileInterface {
      * @param  other  the other file
      * @return True if the use period overlaps; False if it doesn't overlap or one of the files was never modified.
      *       | result ==
-     *       |    ( ( creationTime != lastModificationTime)
-     *       |   && (other.creationTime != other.lastModificationTime)
-     *       |   && (creationTime <= other.creationTime <= lastModificationTime
-     *       |   || other.creationTime <= creationTime <= other.lastModificationTime) )
+     *       |    ( (hasLastModificationTime)
+     *       |   && (other.hasLastModificationTime)
+     *       |   && ( (creationTime <= other.creationTime <= lastModificationTime
+     *       |        || other.creationTime <= creationTime <= other.lastModificationTime) ) )
      */
     public boolean hasOverlappingUsePeriod(File other);
 
