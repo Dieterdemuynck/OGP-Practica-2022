@@ -65,6 +65,16 @@ public class File implements FileInterface{
 
     @Override
     public boolean hasOverlappingUsePeriod(File other) {
-        return false;
+        if (this.creationTime.before(this.lastModificationTime) && other.creationTime.before(other.lastModificationTime)){
+            if (this.creationTime.before(other.creationTime)) {
+                return this.lastModificationTime.after(other.creationTime);
+            }
+            else {
+                return other.lastModificationTime.after(this.creationTime);
+            }
+        }
+        else{
+            return false;
+        }
     }
 }
