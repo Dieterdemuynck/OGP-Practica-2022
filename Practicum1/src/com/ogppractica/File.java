@@ -4,13 +4,29 @@ import java.util.Date;
 
 public class File implements FileInterface{
 
+    //Properties
     private String name;
     private int size;
     public static final int MAX_SIZE = Integer.MAX_VALUE;
     private Date creationTime;
     private Date lastModificationTime;
-    private boolean isWritable = true;  // file is writable by default
+    private boolean isWritable;  // file is writable by default
 
+    // Constructors
+    public File(String name, int size, boolean writable){
+        this.name = name;
+        this.size = size;
+        this.isWritable = writable;
+        this.creationTime = new Date();
+        this.lastModificationTime = new Date();
+    }
+
+    public File(String name){
+        this(name,0,true);
+    }
+
+
+    // Methods
     public String getName() {
         return name;
     }
