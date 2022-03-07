@@ -65,7 +65,20 @@ public class File implements FileInterface {
         this.size = size;
     }
 
-    // TODO: Implement steady-state setters for: name, lastModificationTime, isWritable
+    // TODO: Implement steady-state setters for: name, isWritable
+
+
+    /**
+     * Updates lastModificationTime to the current date.
+     *
+     */
+    private void updateLastModificationTime() {
+        Date currentDate = new Date();  // automatically equals the current date
+        if (getCreationTime().before(currentDate)) {
+            // Only if the creation time is indeed before the current date, the lastModificationDate must be updated.
+            lastModificationTime = currentDate;
+        }
+    }
 
     // TODO: Implement inspector canHaveAsName(String)
     public boolean canHaveAsName(String name) {
@@ -91,7 +104,7 @@ public class File implements FileInterface {
         return false;
     }
 
-    // vergeet ook niet dat lastModificationTime moet aangepast worden :)
+    // vergeet ook niet dat lastModificationTime moet aangepast worden :) -Ine
     @Override
     public void enlarge(int size) throws WritabilityViolationException{
 
@@ -104,6 +117,7 @@ public class File implements FileInterface {
             throw new WritabilityViolationException();
         }
         setSize(getSize() - size);
+        updateLastModificationTime();  // uses total programming: no check needed in case exceptions happen.
     }
 
     @Override
