@@ -28,7 +28,7 @@ public interface FileInterface {
      *       | TODO: add formal specification
      * @param  size  the amount of bytes by which we enlarge the size of the file.
      */
-    public void enlarge(int size);
+    public void enlarge(int size) throws WritabilityViolationException;
 
     /**
      * Shortens the size of the file by the given amount of bytes.
@@ -44,7 +44,7 @@ public interface FileInterface {
      *       | ! this.isWritable()
      * @param  size  the amount of bytes by which we shorten the size of the file
      */
-    public void shorten(int size);
+    public void shorten(int size) throws WritabilityViolationException;
 
     /**
      * Indicates whether the use period of the file overlaps with that of the given file. An unmodified file does

@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class File implements FileInterface {
 
-    //Properties
+    // Properties
     private String name;
     private int size;
     public static final int MAX_SIZE = Integer.MAX_VALUE;
@@ -56,6 +56,15 @@ public class File implements FileInterface {
         return isWritable;
     }
 
+    private void setSize(int size) {
+        // Assertions added to check for invalid inputs. (Optional)
+        // Perhaps too many? Simply unnecessary? I do not know...
+        assert size <= getSize();
+        assert size <= MAX_SIZE - getSize();
+        assert size >= 0;
+        this.size = size;
+    }
+
     // TODO: Implement steady-state setters for: name, lastModificationTime, isWritable
 
     // TODO: Implement inspector canHaveAsName(String)
@@ -82,16 +91,19 @@ public class File implements FileInterface {
         return false;
     }
 
-    //vergeet ook niet dat lastModificationTime moet aangepast worden :)
+    // vergeet ook niet dat lastModificationTime moet aangepast worden :)
     @Override
-    public void enlarge(int size) {
+    public void enlarge(int size) throws WritabilityViolationException{
 
     }
 
-    //vergeet ook niet dat lastModificationTime moet aangepast worden :)
     @Override
-    public void shorten(int size) {
-
+    public void shorten(int size) throws WritabilityViolationException {
+        if (!isWritable()) {
+            // An attempt is made at writing to a non-writable file: throw an exception immediately.
+            throw new WritabilityViolationException();
+        }
+        setSize(getSize() - size);
     }
 
     @Override
