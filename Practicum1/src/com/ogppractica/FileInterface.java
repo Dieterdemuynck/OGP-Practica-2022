@@ -39,6 +39,9 @@ public interface FileInterface {
      *       | size <= this.getSize()
      * @post   the file size is shortened by the given amount of data.
      *       | new.getSize() == this.getSize() - size
+     * @throws WritabilityViolationException
+     *         The destination file is not writable
+     *       | ! this.isWritable()
      * @param  size  the amount of bytes by which we shorten the size of the file
      */
     public void shorten(int size);
