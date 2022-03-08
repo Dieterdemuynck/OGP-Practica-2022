@@ -87,7 +87,7 @@ public class File implements FileInterface {
 
     // TODO: Implement inspector canHaveAsSize(int)
     public boolean canHaveAsSize(int size) {
-        return false;
+        return size >= 0 & size <= MAX_SIZE;
     }
 
     // TODO: Implement inspector canHaveAsLastModificationTime(java.util.Date)
