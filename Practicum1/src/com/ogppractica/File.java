@@ -136,10 +136,10 @@ public class File implements FileInterface {
     @Override
     public boolean hasOverlappingUsePeriod(File other) {
         if (this.hasLastModificationTime() && other.hasLastModificationTime()) {
-            if (this.getCreationTime().before(other.getCreationTime())) {
-                return this.getLastModificationTime().after(other.getCreationTime());
+            if (this.getCreationTime().before(other.getCreationTime()) | this.getCreationTime().equals(other.getCreationTime())) {
+                return this.getLastModificationTime().after(other.getCreationTime()) | this.getLastModificationTime().equals(other.getCreationTime());
             } else {
-                return other.getLastModificationTime().after(this.getCreationTime());
+                return other.getLastModificationTime().after(this.getCreationTime())| this.getLastModificationTime().equals(other.getCreationTime());
             }
         } else {
             return false;

@@ -3,6 +3,7 @@ import java.util.Date;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import java.util.concurrent.*;
 
 import org.junit.Test;
 
@@ -95,24 +96,33 @@ public class FileTest {
     }
 
     @Test
-    public void testHasOverlappingUsePeriod(){
+    public void testHasOverlappingUsePeriod() throws WritabilityViolationException, InterruptedException {
         // Case 1: Overlapping time period
+        TimeUnit time = TimeUnit.SECONDS;
         File myFile1 = new File("my_file1",500,true);
+        time.sleep(1);
         File myFile2 = new File("my_file2",40,true);
+        time.sleep(1);
         myFile1.shorten(10);
-        myFile2.shorten(15);
+        time.sleep(1);
+        myFile2.shorten(10);
         assertTrue(myFile1.hasOverlappingUsePeriod(myFile2));
 
         // Case 2: No overlapping time period
         File myFile3 = new File("my_file3",500,true);
+        time.sleep(1);
         myFile1.shorten(10);
+        time.sleep(1);
         File myFile4 = new File("my_file4",40,true);
+        time.sleep(1);
         myFile2.shorten(15);
         assertFalse(myFile3.hasOverlappingUsePeriod(myFile4));
 
         // Case 3: 1 file is never modified
         File myFile5 = new File("my_file5",500,true);
+        time.sleep(1);
         myFile1.shorten(10);
+        time.sleep(1);
         File myFile6 = new File("my_file6",40,true);
         assertFalse(myFile5.hasOverlappingUsePeriod(myFile6));
     }
