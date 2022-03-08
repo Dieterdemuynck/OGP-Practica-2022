@@ -74,7 +74,7 @@ public class File implements FileInterface {
      */
     private void updateLastModificationTime() {
         Date currentDate = new Date();  // automatically equals the current date
-        if (getCreationTime().before(currentDate)) {
+        if (canHaveAsLastModificationTime(currentDate)) {
             // Only if the creation time is indeed before the current date, the lastModificationDate must be updated.
             lastModificationTime = currentDate;
         }
@@ -85,26 +85,26 @@ public class File implements FileInterface {
         return false;
     }
 
-    // TODO: Implement inspector canHaveAsSize(int)
     public boolean canHaveAsSize(int size) {
         return size >= 0 & size <= MAX_SIZE;
     }
 
     // TODO: Implement inspector canHaveAsLastModificationTime(java.util.Date)
     public boolean canHaveAsLastModificationTime(Date lastModificationTime) {
-        return false;
+        return getCreationTime().before(lastModificationTime);
     }
 
     public boolean hasLastModificationTime() {
         return lastModificationTime != null;
     }
 
+    //LIJKT MIJ NUTTELOOS - Ine
     // TODO: Implement inspector isValidMaxSize(int)
     public static boolean isValidMaxSize(int size) {
         return false;
     }
 
-    // vergeet ook niet dat lastModificationTime moet aangepast worden :) -Ine
+    // vergeet ook niet dat lastModificationTime moet aangepast worden :) - Ine
     @Override
     public void enlarge(int size) throws WritabilityViolationException{
 
