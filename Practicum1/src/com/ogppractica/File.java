@@ -1,6 +1,9 @@
 package com.ogppractica;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class File implements FileInterface {
 
@@ -80,9 +83,19 @@ public class File implements FileInterface {
         }
     }
 
-    // TODO: Implement inspector canHaveAsName(String)
     public boolean canHaveAsName(String name) {
-        return false;
+        boolean possibleName = true;
+        ArrayList<Character> possibleCharacters = new ArrayList<>();
+        possibleCharacters.add('.');
+        possibleCharacters.add('-');
+        possibleCharacters.add('_');
+        for (int i = 0; i< name.length(); i++){
+            char character = name.charAt(i);
+            if (! (Character.isLetter(character) | Character.isDigit(character) |  possibleCharacters.contains(character))){
+                possibleName = false;
+            }
+        }
+        return possibleName;
     }
 
     public boolean canHaveAsSize(int size) {
