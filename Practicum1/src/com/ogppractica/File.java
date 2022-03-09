@@ -95,14 +95,6 @@ public class File implements FileInterface {
         return name;
     }
 
-    public void setName(String name) {
-        if (canHaveAsName(name)) {
-            this.name = name;
-        } else {
-            this.name = "default";
-        }
-    }
-
     public int getSize() {
         return size;
     }
@@ -119,13 +111,22 @@ public class File implements FileInterface {
         return isWritable;
     }
 
+    public void setName(String name) {
+        if (canHaveAsName(name)) {
+            this.name = name;
+        } else {
+            this.name = "default";
+        }
+    }
+
     private void setSize(int size) {
         assert canHaveAsSize(size);
         this.size = size;
     }
 
-    // TODO: Implement steady-state setters for: name, isWritable
-
+    public void setWritable(boolean writable){
+        this.isWritable = writable;
+    }
 
     /**
      * Updates lastModificationTime to the current date. If the creation time is somehow after the modification time,
@@ -199,6 +200,20 @@ public class File implements FileInterface {
         return size >= 0;
     }
 
+    /**
+     * Enlarges the size of the given file by the given amount of bytes.
+     *
+     * @pre    the size is larger than or equal to 0.
+     *       | size >= 0
+     * @pre    The size cannot be larger than what would exceed the maximum file size, after enlargement.
+     *       | size <= this.getMaxSize() - this.getSize()
+     * @post   the file size is enlarged by the correct amount of data.
+     *       | new.getSize() == this.getSize() + size;
+     * @throws WritabilityViolationException
+     *         The destination file is not writable
+     *       | ! this.isWritable()
+     * @param  size  the amount of bytes by which we enlarge the size of the file.
+     */
     @Override
     public void enlarge(int size) throws WritabilityViolationException {
         if (!isWritable()) {
@@ -209,6 +224,20 @@ public class File implements FileInterface {
         updateLastModificationTime();  // uses total programming: no check needed since exceptions cannot happen.
     }
 
+    /**
+     * Shortens the size of the file by the given amount of bytes.
+     *
+     * @pre    the size is larger than or equal to 0.
+     *       | size >= 0
+     * @pre    the size is less than or equal to the current size of the file.
+     *       | size <= this.getSize()
+     * @post   the file size is shortened by the given amount of data.
+     *       | new.getSize() == this.getSize() - size;
+     * @throws WritabilityViolationException
+     *         The destination file is not writable
+     *       | ! this.isWritable()
+     * @param  size  the amount of bytes by which we shorten the size of the file
+     */
     @Override
     public void shorten(int size) throws WritabilityViolationException {
         if (!isWritable()) {
@@ -219,6 +248,18 @@ public class File implements FileInterface {
         updateLastModificationTime();  // uses total programming: no check needed since exceptions cannot happen.
     }
 
+    /**
+     * Indicates whether the use period of the file overlaps with that of the given file. An unmodified file does
+     * not overlap with any file.
+     *
+     * @param  other  the other file
+     * @return True if the use period overlaps; False if it doesn't overlap or one of the files was never modified.
+     *       | result ==
+     *       |    ( (hasLastModificationTime)
+     *       |   && (other.hasLastModificationTime)
+     *       |   && ( (creationTime <= other.creationTime <= lastModificationTime
+     *       |        || other.creationTime <= creationTime <= other.lastModificationTime) ) )
+     */
     @Override
     public boolean hasOverlappingUsePeriod(File other) {
         if (this.hasLastModificationTime() && other.hasLastModificationTime()) {
