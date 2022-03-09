@@ -91,26 +91,51 @@ public class File implements FileInterface {
 
 
     // Methods
+
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getSize() {
         return size;
     }
 
+    /**
+     *
+     * @return
+     */
     public Date getCreationTime() {
         return creationTime;
     }
 
+    /**
+     *
+     * @return
+     */
     public Date getLastModificationTime() {
         return lastModificationTime;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isWritable() {
         return isWritable;
     }
 
+    /**
+     *
+     * @param name
+     */
     public void setName(String name) {
         if (canHaveAsName(name)) {
             this.name = name;
@@ -119,11 +144,19 @@ public class File implements FileInterface {
         }
     }
 
+    /**
+     *
+     * @param size
+     */
     private void setSize(int size) {
         assert canHaveAsSize(size);
         this.size = size;
     }
 
+    /**
+     *
+     * @param writable
+     */
     public void setWritable(boolean writable){
         this.isWritable = writable;
     }
