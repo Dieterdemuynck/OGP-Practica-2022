@@ -49,6 +49,25 @@ public class File implements FileInterface {
     private boolean isWritable;
 
     // Constructors
+
+    /**
+     * Initialize this new file with given name, size and writablily.
+     *
+     * @param   name
+     *          The name of this file.
+     * @param   size
+     *          The size of this file
+     * @param   writable
+     *          The writablity of this file. If true then the file can be changed, else the file cannot be changed.
+     * @post    If the name has characters different from upper and lower case letters, numbers, periods (.), hyphens (-) and underscores (_), the name is set as "default"
+     * @pre     The given size must be a valid size for a file.
+     *          |(canHaveAsSize(size))
+     * @post    The size of this new file is equal to the given size.
+     *          | new.getSize() == size
+     * @effect  The size of this new file is set to the given size
+     * @post    The new writable state of this new file is equal to the given flag.
+     *          | new.isWritable() == writable
+     */
     public File(String name, int size, boolean writable) {
         setName(name);
         if (canHaveAsSize(size)) {
@@ -58,6 +77,14 @@ public class File implements FileInterface {
         this.creationTime = new Date();
     }
 
+    /**
+     *
+     * @param   name
+     *          The name of this file
+     * @post    If the name has characters different from upper and lower case letters, numbers, periods (.), hyphens (-) and underscores (_), the name is set as "default"
+     * @effect  This new file is initialized with the given name as its name, zero as its size and true as its initial writable state.
+     *          | this(name,0,true)
+     */
     public File(String name) {
         this(name, 0, true);
     }
@@ -123,7 +150,7 @@ public class File implements FileInterface {
         possibleCharacters.add('_');
         for (int i = 0; i < name.length(); i++) {
             char character = name.charAt(i);
-            if (!(Character.isLetter(character) | Character.isDigit(character) | possibleCharacters.contains(character))) {
+            if (!(Character.isLowerCase(character) |Character.isUpperCase(character)| Character.isDigit(character) | possibleCharacters.contains(character))) {
                 possibleName = false;
             }
         }
