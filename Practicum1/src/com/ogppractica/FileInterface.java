@@ -25,7 +25,10 @@ public interface FileInterface {
      * @pre    The size cannot be larger than what would exceed the maximum file size, after enlargement.
      *       | size <= this.getMaxSize() - this.getSize()
      * @post   the file size is enlarged by the correct amount of data.
-     *       | TODO: add formal specification
+     *       | new.getSize() == this.getSize() + size;
+     * @throws WritabilityViolationException
+     *         The destination file is not writable
+     *       | ! this.isWritable()
      * @param  size  the amount of bytes by which we enlarge the size of the file.
      */
     public void enlarge(int size) throws WritabilityViolationException;
@@ -38,7 +41,7 @@ public interface FileInterface {
      * @pre    the size is less than or equal to the current size of the file.
      *       | size <= this.getSize()
      * @post   the file size is shortened by the given amount of data.
-     *       | new.getSize() == this.getSize() - size
+     *       | new.getSize() == this.getSize() - size;
      * @throws WritabilityViolationException
      *         The destination file is not writable
      *       | ! this.isWritable()

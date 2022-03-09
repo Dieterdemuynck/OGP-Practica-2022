@@ -120,10 +120,7 @@ public class File implements FileInterface {
     }
 
     private void setSize(int size) {
-        // Assertions added to check for invalid inputs. (Optional)
-        // Perhaps too many? Simply unnecessary? I do not know...
-        assert size <= getSize();
-        assert size <= MAX_SIZE - getSize();
+        assert size <= MAX_SIZE;  // When MAX_SIZE == Integer.MAX_VALUE, this condition is always true
         assert size >= 0;
         this.size = size;
     }
@@ -132,7 +129,8 @@ public class File implements FileInterface {
 
 
     /**
-     * Updates lastModificationTime to the current date.
+     * Updates lastModificationTime to the current date. If the creation time is somehow after the modification time,
+     * no update is done.
      */
     private void updateLastModificationTime() {
         Date currentDate = new Date();  // automatically equals the current date
@@ -142,6 +140,13 @@ public class File implements FileInterface {
         }
     }
 
+    /**
+     * Inspector which checks whether a given name is a valid name for a file.
+     *
+     * @param  name  A string representing a possible file name, whether valid or not
+     * @return true if name contains at least one character and all characters are letters, digits, periods, dashes or
+     *         underscores. Returns false otherwise.
+     */
     public boolean canHaveAsName(String name) {
         boolean possibleName = true;
         ArrayList<Character> possibleCharacters = new ArrayList<>();
@@ -157,29 +162,52 @@ public class File implements FileInterface {
         return possibleName;
     }
 
+    /**
+     * Inspector which checks whether a given file size is a valid file size.
+     *
+     * @param  size  A possible file size, whether valid or not
+     * @return true if size is greater than or equal to zero, and smaller than or equal to the maximum file size.
+     *         false otherwise.
+     */
     public boolean canHaveAsSize(int size) {
-        return size >= 0 & size <= MAX_SIZE;
+        return size >= 0 & size <= MAX_SIZE;  // When MAX_SIZE == Integer.MAX_VALUE, the 2nd condition is always true
     }
 
-    // TODO: Implement inspector canHaveAsLastModificationTime(java.util.Date)
+    /**
+     * Inspector which checks whether a given possible last modification time is valid.
+     *
+     * @param  lastModificationTime A date which represents a potential last time a file was modified.
+     * @return true if lastModificationTime is strictly after the file's creation time. false otherwise.
+     */
     public boolean canHaveAsLastModificationTime(Date lastModificationTime) {
         return getCreationTime().before(lastModificationTime);
     }
 
+    /**
+     * Inspector which checks whether the current file has been modified.
+     * @return true if the file has a date saved of the last time it was modified.
+     */
     public boolean hasLastModificationTime() {
         return lastModificationTime != null;
     }
 
-    //LIJKT MIJ NUTTELOOS - Ine
-    // TODO: Implement inspector isValidMaxSize(int)
+    /**
+     * Inspector which checks whether the file size limit, or maximum file size, is a valid or sensible limit.
+     * @param  size  A potential limit for the file size.
+     * @return true if size is greater than or equal to zero.
+     */
     public static boolean isValidMaxSize(int size) {
-        return false;
+        return size >= 0;
     }
 
-    // vergeet ook niet dat lastModificationTime moet aangepast worden :) - Ine
     @Override
     public void enlarge(int size) throws WritabilityViolationException {
-
+        if (!isWritable()) {
+            // An attempt is made at writing to a non-writable file: throw an exception immediately.
+            throw new WritabilityViolationException();
+        }
+        setSize(getSize() + size);     // uses nominal programming: no check needed, though assertions are used.
+        updateLastModificationTime();  // uses total programming: no check needed since exceptions cannot happen.
     }
 
     @Override
@@ -188,8 +216,8 @@ public class File implements FileInterface {
             // An attempt is made at writing to a non-writable file: throw an exception immediately.
             throw new WritabilityViolationException();
         }
-        setSize(getSize() - size);
-        updateLastModificationTime();  // uses total programming: no check needed in case exceptions happen.
+        setSize(getSize() - size);     // uses nominal programming: no check needed, though assertions are used.
+        updateLastModificationTime();  // uses total programming: no check needed since exceptions cannot happen.
     }
 
     @Override
