@@ -93,40 +93,40 @@ public class File implements FileInterface {
     // Methods
 
     /**
-     *
-     * @return
+     * Returns the name of this file.
+     * @return the name of this file.
      */
     public String getName() {
         return name;
     }
 
     /**
-     *
-     * @return
+     * Returns the size of this file.
+     * @return the size of this file.
      */
     public int getSize() {
         return size;
     }
 
     /**
-     *
-     * @return
+     * Returns the creation time of this file.
+     * @return the creation time of this file.
      */
     public Date getCreationTime() {
         return creationTime;
     }
 
     /**
-     *
-     * @return
+     * Returns the last time this file was modified, if it was ever modified, otherwise returns null.
+     * @return the last time this file was modified, if it was ever modified, otherwise null.
      */
     public Date getLastModificationTime() {
         return lastModificationTime;
     }
 
     /**
-     *
-     * @return
+     * Returns the writability of this file.
+     * @return true is the file is writable, false otherwise.
      */
     public boolean isWritable() {
         return isWritable;
