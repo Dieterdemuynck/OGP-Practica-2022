@@ -126,5 +126,35 @@ public class FileTest {
         File myFile6 = new File("my_file6",40,true);
         assertFalse(myFile5.hasOverlappingUsePeriod(myFile6));
     }
+
+    @Test
+    public void testEnlargeValid() throws WritabilityViolationException {
+        File myFile = new File("TheChungusinator", 9001, true);
+        myFile.enlarge(69420);
+        assertEquals(78421, myFile.getSize());
+        // NOTE: testing for invalid values for size is not done, as this method is programmed assuming nominal
+        // conditions.
+    }
+
+    @Test(expected = WritabilityViolationException.class)
+    public void testEnlargeWritableViolation() throws WritabilityViolationException {
+        File myFile = new File("generic_file_name", 1302, false);
+        myFile.enlarge(520);
+    }
+
+    @Test
+    public void testShortenValid() throws WritabilityViolationException {
+        File myFile = new File("generic_file_name", 1302, true);
+        myFile.shorten(520);
+        assertEquals(782, myFile.getSize());
+        // NOTE: testing for invalid values for size is not done, as this method is programmed assuming nominal
+        // conditions.
+    }
+
+    @Test(expected = WritabilityViolationException.class)
+    public void testShortenWritableViolation() throws WritabilityViolationException {
+        File myFile = new File("generic_file_name", 1302, false);
+        myFile.shorten(520);
+    }
 }
 
