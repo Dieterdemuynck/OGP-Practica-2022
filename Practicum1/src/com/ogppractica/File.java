@@ -160,8 +160,11 @@ public class File implements FileInterface {
     }
 
     /**
+     * Sets the file to a writable (true) or non-writable state (false).
      *
-     * @param writable
+     * @post   The file's writability will be set to the new, given writability
+     *       | new.isWritable == writable
+     * @param  writable  the boolean which indicates whether the file should be writable or not
      */
     public void setWritable(boolean writable){
         this.isWritable = writable;
@@ -248,6 +251,8 @@ public class File implements FileInterface {
      *       | size <= this.getMaxSize() - this.getSize()
      * @post   the file size is enlarged by the correct amount of data.
      *       | new.getSize() == this.getSize() + size;
+     * @effect The file's size will be set to its current amount plus the given size
+     *       | this.setSize(this.getSize() + size)
      * @throws WritabilityViolationException
      *         The destination file is not writable
      *       | ! this.isWritable()
@@ -259,6 +264,7 @@ public class File implements FileInterface {
             // An attempt is made at writing to a non-writable file: throw an exception immediately.
             throw new WritabilityViolationException();
         }
+        assert size >= 0;
         setSize(getSize() + size);     // uses nominal programming: no check needed, though assertions are used.
         updateLastModificationTime();  // uses total programming: no check needed since exceptions cannot happen.
     }
@@ -272,6 +278,8 @@ public class File implements FileInterface {
      *       | size <= this.getSize()
      * @post   the file size is shortened by the given amount of data.
      *       | new.getSize() == this.getSize() - size;
+     * @effect The file's size will be set to its current amount minus the given size
+     *       | this.setSize(this.getSize() - size)
      * @throws WritabilityViolationException
      *         The destination file is not writable
      *       | ! this.isWritable()
@@ -283,6 +291,7 @@ public class File implements FileInterface {
             // An attempt is made at writing to a non-writable file: throw an exception immediately.
             throw new WritabilityViolationException();
         }
+        assert size >= 0;
         setSize(getSize() - size);     // uses nominal programming: no check needed, though assertions are used.
         updateLastModificationTime();  // uses total programming: no check needed since exceptions cannot happen.
     }
