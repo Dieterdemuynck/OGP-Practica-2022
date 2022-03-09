@@ -145,8 +145,14 @@ public class File implements FileInterface {
     }
 
     /**
+     * Sets the size of the file to the given size.
      *
-     * @param size
+     * @param   size
+     *          The new size of this file.
+     * @pre     The given size must be a valid size for this file.
+     *          | canHaveAsSize(size)
+     * @post    The size of this file is equal to the given size.
+     *          | new.getSize() == size
      */
     private void setSize(int size) {
         assert canHaveAsSize(size);
