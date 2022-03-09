@@ -120,8 +120,7 @@ public class File implements FileInterface {
     }
 
     private void setSize(int size) {
-        assert size <= MAX_SIZE;  // When MAX_SIZE == Integer.MAX_VALUE, this condition is always true
-        assert size >= 0;
+        assert canHaveAsSize(size);
         this.size = size;
     }
 
