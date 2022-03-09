@@ -5,15 +5,48 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * A class of files involving file name, size, date of creation, date of the latest change or modification, and whether
+ * the file is writable or not. A file is always readable to anyone.
+ *
+ * @invar   file name has at least one character, and all characters must be letters (upper- or lowercase), numbers,
+ *          periods, dashes or underscores.
+ *        | canHaveAsName(getName())
+ * @invar   file size must be smaller than or equal to the maximum size any file is allowed to have.
+ *        | canHaveAsSize(getSize())
+ * @invar   time of last modification must be later than time of creation.
+ *        | canHaveAsLastModificationTime(java.util.Date)
+ * @invar   maximum file size must be positive
+ *        | isValidMaxSize(int)
+ * @author  Team 2: Ine Malfait, Hannes Ingelaere, Dieter Demuynck
+ */
 public class File implements FileInterface {
 
     // Properties
+    /**
+     * Variable registering the current name of this file.
+     */
     private String name;
+    /**
+     * Variable registering the current size of this file.
+     */
     private int size;
+    /**
+     * Variable registering the maximum size of all files. The size of a file can never be greater than this.
+     */
     public static final int MAX_SIZE = Integer.MAX_VALUE;
+    /**
+     * Variable registering the creation time of this file. This time can not be changed for this file.
+     */
     private final Date creationTime;
+    /**
+     * Variable registering the last time the file was modified.
+     */
     private Date lastModificationTime;
-    private boolean isWritable;  // file is writable by default
+    /**
+     * Variable registering if the file is writable or not.
+     */
+    private boolean isWritable;
 
     // Constructors
     public File(String name, int size, boolean writable) {
@@ -73,7 +106,6 @@ public class File implements FileInterface {
 
     /**
      * Updates lastModificationTime to the current date.
-     *
      */
     private void updateLastModificationTime() {
         Date currentDate = new Date();  // automatically equals the current date
@@ -89,9 +121,9 @@ public class File implements FileInterface {
         possibleCharacters.add('.');
         possibleCharacters.add('-');
         possibleCharacters.add('_');
-        for (int i = 0; i< name.length(); i++){
+        for (int i = 0; i < name.length(); i++) {
             char character = name.charAt(i);
-            if (! (Character.isLetter(character) | Character.isDigit(character) |  possibleCharacters.contains(character))){
+            if (!(Character.isLetter(character) | Character.isDigit(character) | possibleCharacters.contains(character))) {
                 possibleName = false;
             }
         }
@@ -119,7 +151,7 @@ public class File implements FileInterface {
 
     // vergeet ook niet dat lastModificationTime moet aangepast worden :) - Ine
     @Override
-    public void enlarge(int size) throws WritabilityViolationException{
+    public void enlarge(int size) throws WritabilityViolationException {
 
     }
 
@@ -139,7 +171,7 @@ public class File implements FileInterface {
             if (this.getCreationTime().before(other.getCreationTime()) | this.getCreationTime().equals(other.getCreationTime())) {
                 return this.getLastModificationTime().after(other.getCreationTime()) | this.getLastModificationTime().equals(other.getCreationTime());
             } else {
-                return other.getLastModificationTime().after(this.getCreationTime())| this.getLastModificationTime().equals(other.getCreationTime());
+                return other.getLastModificationTime().after(this.getCreationTime()) | this.getLastModificationTime().equals(other.getCreationTime());
             }
         } else {
             return false;
