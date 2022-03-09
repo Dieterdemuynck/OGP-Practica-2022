@@ -10,7 +10,7 @@ package com.ogppractica;
  * @invar   file size must be smaller than or equal to the maximum size any file is allowed to have.
  *        | canHaveAsSize(getSize())
  * @invar   time of last modification must be later than time of creation.
- *        | canHaveAsLastModificationTime(java.util.Date)
+ *        | canHaveAsLastModificationTime(getLastModificationTime())
  * @invar   maximum file size must be positive
  *        | isValidMaxSize(int)
  * @author  Team 2: Ine Malfait, Hannes Ingelaere, Dieter Demuynck
@@ -56,10 +56,10 @@ public interface FileInterface {
      * @param  other  the other file
      * @return True if the use period overlaps; False if it doesn't overlap or one of the files was never modified.
      *       | result ==
-     *       |    ( (hasLastModificationTime)
-     *       |   && (other.hasLastModificationTime)
-     *       |   && ( (creationTime <= other.creationTime <= lastModificationTime
-     *       |        || other.creationTime <= creationTime <= other.lastModificationTime) ) )
+     *       |    ( (hasLastModificationTime())
+     *       |   && (other.hasLastModificationTime())
+     *       |   && ( (this.creationTime <= other.creationTime <= lastModificationTime
+     *       |        || other.creationTime <= this.creationTime <= other.lastModificationTime) ) )
      */
     public boolean hasOverlappingUsePeriod(File other);
 

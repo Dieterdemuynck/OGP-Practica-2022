@@ -1,9 +1,7 @@
 package com.ogppractica;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * A class of files involving file name, size, date of creation, date of the latest change or modification, and whether
@@ -15,7 +13,7 @@ import java.util.List;
  * @invar   file size must be smaller than or equal to the maximum size any file is allowed to have.
  *        | canHaveAsSize(getSize())
  * @invar   time of last modification must be later than time of creation.
- *        | canHaveAsLastModificationTime(java.util.Date)
+ *        | canHaveAsLastModificationTime(getLastModificationTime())
  * @invar   maximum file size must be positive
  *        | isValidMaxSize(int)
  * @author  Team 2: Ine Malfait, Hannes Ingelaere, Dieter Demuynck
@@ -23,6 +21,7 @@ import java.util.List;
 public class File implements FileInterface {
 
     // Properties
+
     /**
      * Variable registering the current name of this file.
      */
@@ -59,14 +58,15 @@ public class File implements FileInterface {
      *          The size of this file
      * @param   writable
      *          The writablity of this file. If true then the file can be changed, else the file cannot be changed.
-     * @post    If the name has characters different from upper and lower case letters, numbers, periods (.), hyphens (-) and underscores (_), the name is set as "default"
+     * @post    If the name has characters different from upper and lower case letters, numbers, periods (.),
+     *          hyphens (-) and underscores (_), the name is set as "default"
      * @pre     The given size must be a valid size for a file.
-     *          |(canHaveAsSize(size))
+     *        | (canHaveAsSize(size))
      * @post    The size of this new file is equal to the given size.
-     *          | new.getSize() == size
+     *        | new.getSize() == size
      * @effect  The size of this new file is set to the given size
      * @post    The new writable state of this new file is equal to the given flag.
-     *          | new.isWritable() == writable
+     *        | new.isWritable() == writable
      */
     public File(String name, int size, boolean writable) {
         setName(name);
@@ -78,12 +78,14 @@ public class File implements FileInterface {
     }
 
     /**
+     * Initialize this new file with given name. Size and writability are by default 0 and true respectively.
      *
      * @param   name
      *          The name of this file
-     * @post    If the name has characters different from upper and lower case letters, numbers, periods (.), hyphens (-) and underscores (_), the name is set as "default"
+     * @post    If the name has characters different from upper and lower case letters, numbers, periods (.),
+     *          hyphens (-) and underscores (_), the name is set as "default"
      * @effect  This new file is initialized with the given name as its name, zero as its size and true as its initial writable state.
-     *          | this(name,0,true)
+     *        | this(name,0,true)
      */
     public File(String name) {
         this(name, 0, true);
@@ -133,8 +135,11 @@ public class File implements FileInterface {
     }
 
     /**
+     * Sets the name of the file to the given name if it is valid, or "default" otherwise.
      *
-     * @param name
+     * @post   the file's name will become the given name if it is valid, or "default" otherwise
+     *       | new.getName() == (isValidName(name) ? "default" : name)
+     * @param  name  The string representing the name of the file
      */
     public void setName(String name) {
         if (canHaveAsName(name)) {
@@ -147,12 +152,12 @@ public class File implements FileInterface {
     /**
      * Sets the size of the file to the given size.
      *
-     * @param   size
-     *          The new size of this file.
-     * @pre     The given size must be a valid size for this file.
-     *          | canHaveAsSize(size)
-     * @post    The size of this file is equal to the given size.
-     *          | new.getSize() == size
+     * @param  size
+     *         The new size of this file.
+     * @pre    The given size must be a valid size for this file.
+     *       | canHaveAsSize(size)
+     * @post   The size of this file is equal to the given size.
+     *       | new.getSize() == size
      */
     private void setSize(int size) {
         assert canHaveAsSize(size);
