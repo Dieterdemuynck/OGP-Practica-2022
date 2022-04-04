@@ -1,7 +1,10 @@
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Date;
 
-import org.junit.*;
+import static org.junit.Assert.*;
+//import org.junit.jupiter.api.Test;
 
 /**
  * A JUnit test class for testing the public methods of the File Class  
@@ -31,7 +34,7 @@ public class FileTest {
 
 	@Test
 	public void testFileStringIntBoolean_LegalCase() {
-		assertEquals("bestand.txt",fileStringIntBoolean.getName());
+		assertEquals("bestand.txt", fileStringIntBoolean.getName());
 		assertEquals(fileStringIntBoolean.getSize(),100);
 		assertTrue(fileStringIntBoolean.isWritable());
 		assertNull(fileStringIntBoolean.getModificationTime());
@@ -42,10 +45,10 @@ public class FileTest {
 	@Test
 	public void testFileStringIntBoolean_IllegalCase() {
 		timeBeforeConstruction = new Date();
-		fileStringIntBoolean = new File("$IllegalName$",File.getMaximumSize(),false);
+		fileStringIntBoolean = new File("$IllegalName$", File.getMaximumSize(),false);
 		timeAfterConstruction = new Date();
 		assertTrue(File.isValidName(fileStringIntBoolean.getName()));
-		assertEquals(File.getMaximumSize(),fileStringIntBoolean.getSize());
+		assertEquals(File.getMaximumSize(), fileStringIntBoolean.getSize());
 		assertFalse(fileStringIntBoolean.isWritable());
 		assertNull(fileStringIntBoolean.getModificationTime());
 		assertFalse(timeBeforeConstruction.after(fileStringIntBoolean.getCreationTime()));
@@ -54,8 +57,8 @@ public class FileTest {
 
 	@Test
 	public void testFileString_LegalCase() {
-		assertEquals("bestand.txt",fileString.getName());
-		assertEquals(0,fileString.getSize());
+		assertEquals("bestand.txt", fileString.getName());
+		assertEquals(0, fileString.getSize());
 		assertTrue(fileString.isWritable());
 		assertNull(fileString.getModificationTime());
 		assertFalse(timeBeforeConstruction.after(fileString.getCreationTime()));
@@ -68,7 +71,7 @@ public class FileTest {
 		fileString = new File("$IllegalName$");
 		timeAfterConstruction = new Date();
 		assertTrue(File.isValidName(fileString.getName()));
-		assertEquals(0,fileString.getSize());
+		assertEquals(0, fileString.getSize());
 		assertTrue(fileString.isWritable());
 		assertNull(fileString.getModificationTime());
 		assertFalse(timeBeforeConstruction.after(fileString.getCreationTime()));
@@ -94,7 +97,7 @@ public class FileTest {
 		fileString.changeName("NewLegalName");
 		Date timeAfterSetName = new Date();
 		
-		assertEquals("NewLegalName",fileString.getName());
+		assertEquals("NewLegalName", fileString.getName());
 		assertNotNull(fileString.getModificationTime());
 		assertFalse(fileString.getModificationTime().before(timeBeforeSetName));
 		assertFalse(timeAfterSetName.before(fileString.getModificationTime()));
@@ -108,7 +111,7 @@ public class FileTest {
 	@Test
 	public void testChangeName_IllegalName() {
 		fileString.changeName("$IllegalName$");
-		assertEquals("bestand.txt",fileString.getName());
+		assertEquals("bestand.txt", fileString.getName());
 		assertNull(fileString.getModificationTime());
 	}
 
@@ -129,14 +132,14 @@ public class FileTest {
 
 	@Test
 	public void testEnlarge_LegalCase() {
-		File file = new File("bestand.txt",File.getMaximumSize()-1,true);
+		File file = new File("bestand.txt", File.getMaximumSize()-1,true);
 		Date timeBeforeEnlarge = new Date();
 		file.enlarge(1);
 		Date timeAfterEnlarge = new Date();		
-		assertEquals(file.getSize(),File.getMaximumSize());
+		assertEquals(file.getSize(), File.getMaximumSize());
 		assertNotNull(file.getModificationTime());
 		assertFalse(file.getModificationTime().before(timeBeforeEnlarge));
-		assertFalse(timeAfterEnlarge.before(file.getModificationTime()));  
+		assertFalse(timeAfterEnlarge.before(file.getModificationTime()));
 	}
 	
 	@Test (expected = FileNotWritableException.class)
@@ -169,7 +172,7 @@ public class FileTest {
 	public void testIsValidCreationTime_IllegalCase() {
 		assertFalse(File.isValidCreationTime(null));
 		Date inFuture = new Date(System.currentTimeMillis() + 1000*60*60);
-		assertFalse(File.isValidCreationTime(inFuture));		
+		assertFalse(File.isValidCreationTime(inFuture));
 	}
 	
 	@Test

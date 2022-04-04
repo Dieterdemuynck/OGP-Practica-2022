@@ -1,4 +1,4 @@
-package com.ogppractica;
+
 
 public class Main {
 

@@ -1,9 +1,11 @@
 <component name="libraryTable">
   <library name="AnnotationsDoclets_v17">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../Libraries/AnnotationsDoclets_v17.jar!/" />
+      <root url="jar://$USER_HOME$/IdeaProjects/AnnotationsDoclets_v17.jar!/" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="https://www.cs.kuleuven.be/books/OOPWithJava/doc/" />
+    </JAVADOC>
     <SOURCES />
   </library>
 </component>
