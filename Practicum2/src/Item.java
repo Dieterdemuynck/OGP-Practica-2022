@@ -55,7 +55,7 @@ public class Item {
      * Variable referencing the name of this file.
      * @note		See Coding Rule 32, for information on the initialization of fields.
      */
-    private String name = null;
+    protected String name = null;
 
     /**
      * Return the name of this file.
@@ -95,7 +95,7 @@ public class Item {
      *          |      else new.getName().equals(getDefaultName())
      */
     @Raw @Model
-    private void setName(String name) {
+    protected void setName(String name) {
         if (isValidName(name)) {
             this.name = name;
         } else {
@@ -111,7 +111,7 @@ public class Item {
      *         | isValidName(result)
      */
     @Model
-    private static String getDefaultName() {
+    protected static String getDefaultName() {
         return "new_file";
     }
 
@@ -130,7 +130,7 @@ public class Item {
     /**
      * Variable referencing the time of creation.
      */
-    private final Date creationTime = new Date();
+    protected final Date creationTime = new Date();
 
     /**
      * Return the time at which this file was created.
@@ -166,7 +166,7 @@ public class Item {
      * Variable referencing the time of the last modification,
      * possibly null.
      */
-    private Date modificationTime = null;
+    protected Date modificationTime = null;
 
     /**
      * Return the time at which this file was last modified, that is
@@ -211,7 +211,7 @@ public class Item {
      *         |                    (new System).currentTimeMillis())
      */
     @Model
-    private void setModificationTime() {
+    protected void setModificationTime() {
         modificationTime = new Date();
     }
 
