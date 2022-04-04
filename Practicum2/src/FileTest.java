@@ -23,12 +23,12 @@ public class FileTest {
 	@Before
 	public void setUpFixture(){
 		timeBeforeConstruction = new Date();
-		fileStringIntBoolean = new File("bestand.txt",100, true);
-		fileString = new File("bestand.txt");
+		fileStringIntBoolean = new File("bestand.txt",100, true,Type.PDF_FILE);
+		fileString = new File("bestand.txt"	,Type.PDF_FILE);
 		timeAfterConstruction = new Date();
 
 		timeBeforeConstructionNotWritable = new Date();
-		fileNotWritable = new File("bestand.txt",100,false);
+		fileNotWritable = new File("bestand.txt",100,false,Type.PDF_FILE);
 		timeAfterConstructionNotWritable = new Date();
 	}
 
@@ -45,7 +45,7 @@ public class FileTest {
 	@Test
 	public void testFileStringIntBoolean_IllegalCase() {
 		timeBeforeConstruction = new Date();
-		fileStringIntBoolean = new File("$IllegalName$", File.getMaximumSize(),false);
+		fileStringIntBoolean = new File("$IllegalName$", File.getMaximumSize(),false,Type.PDF_FILE);
 		timeAfterConstruction = new Date();
 		assertTrue(File.isValidName(fileStringIntBoolean.getName()));
 		assertEquals(File.getMaximumSize(), fileStringIntBoolean.getSize());
@@ -68,7 +68,7 @@ public class FileTest {
 	@Test
 	public void testFileString_IllegalCase() {
 		timeBeforeConstruction = new Date();
-		fileString = new File("$IllegalName$");
+		fileString = new File("$IllegalName$",Type.PDF_FILE);
 		timeAfterConstruction = new Date();
 		assertTrue(File.isValidName(fileString.getName()));
 		assertEquals(0, fileString.getSize());
@@ -132,7 +132,7 @@ public class FileTest {
 
 	@Test
 	public void testEnlarge_LegalCase() {
-		File file = new File("bestand.txt", File.getMaximumSize()-1,true);
+		File file = new File("bestand.txt", File.getMaximumSize()-1,true,Type.PDF_FILE);
 		Date timeBeforeEnlarge = new Date();
 		file.enlarge(1);
 		Date timeAfterEnlarge = new Date();		
@@ -190,9 +190,9 @@ public class FileTest {
 	@Test
 	public void testHasOverlappingUsePeriod_UnmodifiedFiles() {
 		// one = implicit argument ; other = explicit argument
-		File one = new File("one");
+		File one = new File("one",Type.PDF_FILE);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
-		File other = new File("other");
+		File other = new File("other",Type.PDF_FILE);
 		
 		//1 Test unmodified case
 		assertFalse(one.hasOverlappingUsePeriod(other));
@@ -203,7 +203,7 @@ public class FileTest {
 		
 		//3 Test other unmodified case
 		//so re-initialise the other file
-		other = new File("other");
+		other = new File("other",Type.PDF_FILE);
 		one.enlarge(File.getMaximumSize());
 		assertFalse(one.hasOverlappingUsePeriod(other));
 		
@@ -213,22 +213,22 @@ public class FileTest {
 	public void testHasOverlappingUsePeriod_ModifiedNoOverlap() {
 		// one = implicit argument ; other = explicit argument
 		File one, other;
-		one = new File("one");
+		one = new File("one",Type.PDF_FILE);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
-		other = new File("other");
+		other = new File("other",Type.PDF_FILE);
 		
 		//1 Test one created and modified before other created and modified case
 		one.enlarge(File.getMaximumSize());
         sleep();
         //re-initialise the other
-        other = new File("other");
+        other = new File("other",Type.PDF_FILE);
         other.enlarge(File.getMaximumSize());
 	    assertFalse(one.hasOverlappingUsePeriod(other));
 	    
 	    //2 Test other created and modified before one created and modified
 		other.enlarge(File.getMaximumSize());
         sleep();
-        one = new File("one");
+        one = new File("one",Type.PDF_FILE);
         one.enlarge(File.getMaximumSize());
         assertFalse(one.hasOverlappingUsePeriod(other));
 	
@@ -239,9 +239,9 @@ public class FileTest {
 		// one = implicit argument ; other = explicit argument
 		//A Test one created before other created before one modified before other modified
 	    File one, other;
-		one = new File("one");
+		one = new File("one",Type.PDF_FILE);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
-		other = new File("other");
+		other = new File("other",Type.PDF_FILE);
 	
 		one.enlarge(File.getMaximumSize());
         sleep();
@@ -254,9 +254,9 @@ public class FileTest {
 		// one = implicit argument ; other = explicit argument
 		//B Test one created before other created before other modified before one modified
        	File one, other;
-		one = new File("one");
+		one = new File("one",Type.PDF_FILE);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
-		other = new File("other");
+		other = new File("other",Type.PDF_FILE);
 	
 		other.enlarge(File.getMaximumSize());
         sleep();
@@ -269,9 +269,9 @@ public class FileTest {
 		// one = implicit argument ; other = explicit argument
 		//C Test other created before one created before other modified before one modified
         File one, other;
-		other = new File("other");
+		other = new File("other",Type.PDF_FILE);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
-		one = new File("one");
+		one = new File("one",Type.PDF_FILE);
 		
 		other.enlarge(File.getMaximumSize());
         sleep();
@@ -284,9 +284,9 @@ public class FileTest {
 		// one = implicit argument ; other = explicit argument
 		//D Test other created before one created before one modified before other modified
 		File one, other;
-		other = new File("one");
+		other = new File("one",Type.PDF_FILE);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
-		one = new File("other");
+		one = new File("other",Type.PDF_FILE);
 	
 		one.enlarge(File.getMaximumSize());
         sleep();
