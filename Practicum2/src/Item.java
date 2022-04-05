@@ -15,7 +15,7 @@ import java.util.Date;
  * @author  Team 2: Dieter Demuynck, Hannes Ingelaere en Ine Malfait
  * @version 4
  */
-public class Item {
+public abstract class Item {
 
     /**********************************************************
      * Constructors
@@ -245,6 +245,13 @@ public class Item {
                 ! (other.getCreationTime().before(getCreationTime()) &&
                         other.getModificationTime().before(getCreationTime()) );
     }
+
+    /**********************************************************
+     * directory
+     **********************************************************/
+    //foutmelding omdat klasse Directory nog niet bestaat, laat dus nog efkes in commentaar tot die klasse bestaat...
+    //protected Directory directory;
+
 
     /*
     Moet er nog bij komen:
