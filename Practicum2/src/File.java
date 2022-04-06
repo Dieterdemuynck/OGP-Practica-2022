@@ -6,7 +6,7 @@ import be.kuleuven.cs.som.annotate.*;
  * @invar	Each file must have a properly spelled name.
  * 			| isValidName(getName())
  * @invar	Each file must have a valid size.
- * 			| isValidSize(getSize())
+ * 			| isValidSize(tSize())
  * @invar   Each file must have a valid creation time.
  *          | isValidCreationTime(getCreationTime())
  * @invar   Each file must have a valid modification time.
