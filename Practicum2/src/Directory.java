@@ -30,6 +30,10 @@ public class Directory extends Item {
         setWritable(writable);
     }
 
+    public Directory(Directory dir, String name){
+        this(dir,name,true);
+    }
+
     public Directory(String name, boolean writable) {
         this(null, name, writable);
     }
