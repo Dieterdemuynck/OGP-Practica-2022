@@ -21,23 +21,26 @@ import java.util.List;
 
 public class Directory extends Item {
 
-    /**********************************************************
+    /* *********************************************************
      * Constructors
-     **********************************************************/
+     * *********************************************************/
 
     /**
      * Initialize a new directory with given name, parent directory and writability
      *
      * @param name The name of the new directory.
+     *
      * @effect The name of the directory is set to the given name.
      * If the given name is not valid, a default name is set.
      * | setName(name)
+     *
      * @post The new creation time of this directory is initialized to some time during
      * constructor execution.
      * | (new.getCreationTime().getTime() >= System.currentTimeMillis()) &&
      * | (new.getCreationTime().getTime() <= (new System).currentTimeMillis())
-     * @post The new file has no time of last modification.
+     * @post The new directory has no time of last modification.
      * | new.getModificationTime() == null
+     *
      * @note The constructor is annotated raw because at the start of the execution, not all fields are
      * defaulted to a value that is accepted by the invariants.
      * E.g. the name is defaulted to null, which is not allowed,
@@ -61,9 +64,9 @@ public class Directory extends Item {
         this(null, name, true);
     }
 
-    /**********************************************************
+    /* *********************************************************
      * name - total programming
-     *********************************************************/
+     * ********************************************************/
 
     /**
      * Check whether the given name is a legal name for a directory.
@@ -87,7 +90,7 @@ public class Directory extends Item {
      * 			The new name for this directory.
      * @post    If the given name is valid, the name of
      *          this directory is set to the given name,
-     *          otherwise the name of the file is set to the default, a valid name.
+     *          otherwise the name of the directory is set to the default, a valid name.
      *          | if (isValidName(name))
      *          |      then new.getName().equals(name)
      *          |      else new.getName().equals(getDefaultName())
@@ -130,24 +133,41 @@ public class Directory extends Item {
         }
     }
 
-    /**********************************************************
+    /* *********************************************************
      * writability - defensive programming
-     **********************************************************/
+     * *********************************************************/
     // TODO: properly implement (check if methods obey requests, such as changing lastModificationTime)
+
+    /**
+     * Variable registering whether this directory is writable.
+     */
     private boolean isWritable = true;
 
+    /**
+     * Check whether this directory is writable.
+     */
+    @Raw
+    @Basic
     public boolean isWritable() {
         return isWritable;
     }
 
-    public void setWritable(boolean writable) {
-        isWritable = writable;
+    /**
+     * Set the writability of this directory to the given writability.
+     *
+     * @param isWritable The new writability
+     * @post The given writability is registered as the new writability
+     * for this directory.
+     * | new.isWritable() == isWritable
+     */
+    @Raw
+    public void setWritable(boolean isWritable) {
+        this.isWritable = isWritable;
     }
 
-
-    /**********************************************************
+    /* *********************************************************
      * contents - defensive programming
-     **********************************************************/
+     * *********************************************************/
     private List<Item> contents = new ArrayList();
 
     // TODO: alles implementeren, ieder element in map moet in deze lijst te komen staan...

@@ -31,11 +31,16 @@ public class File extends Item {
      * *********************************************************/
 
     /**
-     * Initialize a new file with given name, size and writability.
+     * Initialize a new file with given directory (dir), name, size, writability and type.
      *
+     * @param dir      The directory of the new file.
      * @param name     The name of the new file.
      * @param size     The size of the new file.
      * @param writable The writability of the new file.
+     * @param type     The type of the new file
+     *
+     * @effect The directory of the file is set to the given directory dir.
+     * | setParentDirectory(dir) TODO: controleren
      * @effect The name of the file is set to the given name.
      * If the given name is not valid, a default name is set.
      * | setName(name)
@@ -43,12 +48,16 @@ public class File extends Item {
      * | setSize(size)
      * @effect The writability is set to the given flag
      * | setWritable(writable)
+     * @effect The type of the file is set to the given type.
+     * | this.type = type TODO: controleren
+     *
      * @post The new creation time of this file is initialized to some time during
      * constructor execution.
      * | (new.getCreationTime().getTime() >= System.currentTimeMillis()) &&
      * | (new.getCreationTime().getTime() <= (new System).currentTimeMillis())
      * @post The new file has no time of last modification.
      * | new.getModificationTime() == null
+     *
      * @note The constructor is annotated raw because at the start of the execution, not all fields are
      * defaulted to a value that is accepted by the invariants.
      * E.g. the name is defaulted to null, which is not allowed,
@@ -64,12 +73,14 @@ public class File extends Item {
     }
 
     /**
-     * Initialize a new file with given name.
+     * Initialize a new file with given directory (dir), name and type.
+     * @param dir   The directory of the new file.
+     * @param name  The name of the new file.
+     * @param type  The type of the new file.
      *
-     * @param name The name of the new file.
-     * @effect This new file is initialized with the given name, a zero size
-     * and true writability
-     * | this(name,0,true)
+     * @effect This new file is initialized with the given directory (dir), name, a zero size, true writability
+     * and type
+     * | this(dir,name,0,true,type)
      */
     @Raw
     public File(Directory dir,String name, Type type) {

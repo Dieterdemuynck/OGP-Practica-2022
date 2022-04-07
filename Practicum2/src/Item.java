@@ -26,18 +26,18 @@ public abstract class Item {
 
 
     /**
-     * Initialize a new file with given name, size and writability.
+     * Initialize a new item with given name.
      *
      * @param  	name
-     *         	The name of the new file.
-     * @effect  The name of the file is set to the given name.
+     *         	The name of the new item.
+     * @effect  The name of the item is set to the given name.
      * 			If the given name is not valid, a default name is set.
      *          | setName(name)
-     * @post    The new creation time of this file is initialized to some time during
+     * @post    The new creation time of this item is initialized to some time during
      *          constructor execution.
      *          | (new.getCreationTime().getTime() >= System.currentTimeMillis()) &&
      *          | (new.getCreationTime().getTime() <= (new System).currentTimeMillis())
-     * @post    The new file has no time of last modification.
+     * @post    The new item has no time of last modification.
      *          | new.getModificationTime() == null
      *
      * @note	The constructor is annotated raw because at the start of the execution, not all fields are
@@ -55,13 +55,13 @@ public abstract class Item {
      * *********************************************************/
 
     /**
-     * Variable referencing the name of this file.
+     * Variable referencing the name of this item.
      * @note		See Coding Rule 32, for information on the initialization of fields.
      */
     protected String name = null;
 
     /**
-     * Return the name of this file.
+     * Return the name of this item.
      * @note		See Coding Rule 19 for the Basic annotation.
      */
     @Raw
@@ -71,7 +71,7 @@ public abstract class Item {
     }
 
     /**
-     * Check whether the given name is a legal name for a file.
+     * Check whether the given name is a legal name for a item.
      *
      * @param  	name
      *			The name to be checked
@@ -86,13 +86,13 @@ public abstract class Item {
     } // Moet overschreven worden voor map "[a-zA-Z_0-9-]+"
 
     /**
-     * Set the name of this file to the given name.
+     * Set the name of this item to the given name.
      *
      * @param   name
-     * 			The new name for this file.
+     * 			The new name for this item.
      * @post    If the given name is valid, the name of
-     *          this file is set to the given name,
-     *          otherwise the name of the file is set to a valid name (the default).
+     *          this item is set to the given name,
+     *          otherwise the name of the item is set to a valid name (the default).
      *          | if (isValidName(name))
      *          |      then new.getName().equals(name)
      *          |      else new.getName().equals(getDefaultName())
@@ -107,15 +107,15 @@ public abstract class Item {
     }
 
     /**
-     * Return the name for a new file which is to be used when the
+     * Return the name for a new item which is to be used when the
      * given name is not valid.
      *
-     * @return   A valid file name.
+     * @return   A valid item name.
      *         | isValidName(result)
      */
     @Model
     protected static String getDefaultName() {
-        return "new_file";
+        return "new_item";
     }
 
     public void changeName(String name) throws ItemNotWritableException {
@@ -136,7 +136,7 @@ public abstract class Item {
     protected final Date creationTime = new Date();
 
     /**
-     * Return the time at which this file was created.
+     * Return the time at which this item was created.
      */
     @Raw @Basic @Immutable
     public Date getCreationTime() {
@@ -172,8 +172,8 @@ public abstract class Item {
     protected Date modificationTime = null;
 
     /**
-     * Return the time at which this file was last modified, that is
-     * at which the name or size was last changed. If this file has
+     * Return the time at which this item was last modified, that is
+     * at which the name or size was last changed. If this item has
      * not yet been modified after construction, null is returned.
      */
     @Raw @Basic
@@ -182,7 +182,7 @@ public abstract class Item {
     }
 
     /**
-     * Check whether this file can have the given date as modification time.
+     * Check whether this item can have the given date as modification time.
      *
      * @param	date
      * 			The date to check.
@@ -201,7 +201,7 @@ public abstract class Item {
     }
 
     /**
-     * Set the modification time of this file to the current time.
+     * Set the modification time of this item to the current time.
      *
      * @post   The new modification time is effective.
      *         | new.getModificationTime() != null
@@ -219,16 +219,16 @@ public abstract class Item {
     }
 
     /**
-     * Return whether this file and the given other file have an
+     * Return whether this item and the given other item have an
      * overlapping use period.
      *
      * @param 	other
-     *        	The other file to compare with.
-     * @return 	False if the other file is not effective
+     *        	The other item to compare with.
+     * @return 	False if the other item is not effective
      * 			False if the prime object does not have a modification time
-     * 			False if the other file is effective, but does not have a modification time
-     * 			otherwise, true if and only if the open time intervals of this file and
-     * 			the other file overlap
+     * 			False if the other item is effective, but does not have a modification time
+     * 			otherwise, true if and only if the open time intervals of this item and
+     * 			the other item overlap
      *        	| if (other == null) then result == false else
      *        	| if ((getModificationTime() == null)||
      *        	|       other.getModificationTime() == null)
@@ -240,7 +240,7 @@ public abstract class Item {
      *        	| ! (other.getCreationTime().before(getCreationTime()) &&
      *        	|	 other.getModificationTime().before(getCreationTime()) )
      */
-    public boolean hasOverlappingUsePeriod(File other) {
+    public boolean hasOverlappingUsePeriod(Item other) {
         if (other == null) return false;
         if(getModificationTime() == null || other.getModificationTime() == null) return false;
         return ! (getCreationTime().before(other.getCreationTime()) &&
@@ -264,7 +264,7 @@ public abstract class Item {
     }
 
     /**
-     * Sets the parent directory of the link to the given directory, if the given directory is not null.
+     * Sets the parent directory of the item to the given directory, if the given directory is not null.
      *
      * @throws IllegalArgumentException if the
      * @param  parentDirectory  The directory in to which the link will be moved or in which it will be created.

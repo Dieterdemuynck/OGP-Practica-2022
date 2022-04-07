@@ -22,18 +22,21 @@ public class Link extends Item {
      * *********************************************************/
 
     /**
-     * Initialize a new file with given name, size and writability.
+     * Initialize a new link with given name, size and writability.
      *
      * @param name The name of the new link.
+     *
      * @effect The name of the link is set to the given name.
      * If the given name is not valid, a default name is set.
      * | setName(name)
-     * @post The new creation time of this file is initialized to some time during
+     *
+     * @post The new creation time of this link is initialized to some time during
      * constructor execution.
      * | (new.getCreationTime().getTime() >= System.currentTimeMillis()) &&
      * | (new.getCreationTime().getTime() <= (new System).currentTimeMillis())
-     * @post The new file has no time of last modification.
+     * @post The new link has no time of last modification.
      * | new.getModificationTime() == null
+     *
      * @note The constructor is annotated raw because at the start of the execution, not all fields are
      * defaulted to a value that is accepted by the invariants.
      * E.g. the name is defaulted to null, which is not allowed,
@@ -68,10 +71,16 @@ public class Link extends Item {
         return linkedItem;
     }
 
+    /**
+     * Sets the parent directory of the item to the given directory, if the given directory is not null.
+     *
+     * @throws IllegalArgumentException if the parentDirectory == null
+     * @param  parentDirectory  The directory in to which the link will be moved or in which it will be created.
+     */
     @Override
     public void setParentDirectory(Directory parentDirectory) {
         if (parentDirectory == null) {
-            throw new IllegalArgumentException("Parent directory of Link may not be null.");
+            throw new IllegalArgumentException("Parent directory of link may not be null.");
         }
         super.setParentDirectory(parentDirectory);
     }
