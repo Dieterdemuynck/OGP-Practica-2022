@@ -332,5 +332,15 @@ public abstract class Item {
         return 0;
     }
 
+    public String getAbsolutePath(){
+        if (this.getParentDirectory() ==  null){
+            return "/" + this.getName();
+        }
+        else {
+            Directory dir = this.getParentDirectory();
+            return dir.getAbsolutePath() + "/" + this.getName();
+        }
+    }
+
 
 }

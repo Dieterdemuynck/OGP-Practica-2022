@@ -300,6 +300,16 @@ public class File extends Item {
         return getSize();
     }
 
+    @Override
+    public String getAbsolutePath(){
+        if (this.getParentDirectory() ==  null){
+            return "/" + this.getName() + this.getExtension();
+        }
+        else {
+            Directory dir = this.getParentDirectory();
+            return dir.getAbsolutePath() + "/" + this.getName() + this.getExtension();
+        }
+    }
 
 }
 

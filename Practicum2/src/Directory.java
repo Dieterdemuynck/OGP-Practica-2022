@@ -323,10 +323,18 @@ public class Directory extends Item {
 
 
     /* *********************************************************
-     * contents - defensive programming
+     * bijkomende methodes
      * *********************************************************/
     public void makeRoot(){
         setParentDirectory(null);
     }
 
+    @Override
+    public int getTotalDiskUsage(){
+        int diskUsage = 0;
+        for (Item item: contents){
+            diskUsage += item.getTotalDiskUsage();
+        }
+        return diskUsage;
+    }
 }
