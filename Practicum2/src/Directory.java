@@ -390,6 +390,9 @@ public class Directory extends Item {
 
     @Override
     public void terminate() {
-
+        if (!isTerminated()&& isWritable() && contents.isEmpty()) {
+            setTerminated(true);
+            this.getParentDirectory().removeFromContents(this);
+        }
     }
 }
