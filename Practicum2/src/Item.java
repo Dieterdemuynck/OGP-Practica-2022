@@ -277,6 +277,9 @@ public abstract class Item {
     }
 
 
+    /* *********************************************************
+     * bijkomende methodes
+     * *********************************************************/
     /*
     TODO
     Moet er nog bij komen:
@@ -288,4 +291,12 @@ public abstract class Item {
     - public void delete()
     - public void deleteRecursive()
      */
+
+    public void move(Directory dir){
+        Directory oldDirectory = parentDirectory;
+
+        oldDirectory.removeFromContents(this);
+        dir.addToContents(this);
+        this.parentDirectory = dir;
+    }
 }

@@ -234,6 +234,17 @@ public class Directory extends Item {
         getContents().add(place, item); //Moet gesorteerd worden op naam, zou moeten juist zijn zo
     }
 
+    public void removeFromContents(Item item){
+        if (!isWritable()) {
+            throw new ItemNotWritableException(this);
+        }
+        if (item == null){
+            throw new IllegalItemExeption(this, null);
+        }
+        int place = getIndexOf(item);
+        contents.remove(place);
+    }
+
     public int getNbItems(){
         return getContents().size();
     }
