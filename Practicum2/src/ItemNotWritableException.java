@@ -4,9 +4,10 @@ import be.kuleuven.cs.som.annotate.*;
  * A class for signaling illegal attempts to change a file.
  *
  * @author Tommy Messelis
+ * @author Team 2: Dieter Demuynck, Hannes Ingelaere en Ine Malfait
  * @version 2.2
  */
-public class FileNotWritableException extends RuntimeException {
+public class ItemNotWritableException extends RuntimeException {
 
     /**
      * Required because this class inherits from Exception
@@ -16,19 +17,19 @@ public class FileNotWritableException extends RuntimeException {
     /**
      * Variable referencing the file to which change was denied.
      */
-    private final File file;
+    private final Item item;
 
     /**
      * Initialize this new file not writable exception involving the
      * given file.
      *
-     * @param    file The file for the new file not writable exception.
+     * @param    item The file for the new file not writable exception.
      * @post The file involved in the new file not writable exception
      * is set to the given file.
      * | new.getFile() == file
      */
-    public FileNotWritableException(File file) {
-        this.file = file;
+    public ItemNotWritableException(Item item) {  // TODO: adjust FileTest
+        this.item = item;
     }
 
     /**
@@ -36,8 +37,8 @@ public class FileNotWritableException extends RuntimeException {
      */
     @Basic
     @Immutable
-    public File getFile() {
-        return file;
+    public Item getItem() {
+        return item;
     }
 
 }

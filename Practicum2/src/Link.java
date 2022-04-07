@@ -31,27 +31,8 @@ public class Link extends Item {
             throw new IllegalArgumentException("linkedItem cannot be instance of Link");
         }
         this.linkedItem = linkedItem;
-        setDirectory(directory);
+        setParentDirectory(directory);
     }
-
-    /* *********************************************************
-     * name - total programming
-     * *********************************************************/
-
-    /**
-     * Check whether the given name is a legal name for a file.
-     *
-     * @param  	name
-     *			The name to be checked
-     * @return	True if the given string is effective, not
-     * 			empty and consisting only of letters, digits, dots,
-     * 			hyphens and underscores; false otherwise.
-     * 			| result ==
-     * 			|	(name != null) && name.matches("[a-zA-Z_0-9.-]+")
-     */
-    public static boolean isValidName(String name) {
-        return (name != null && name.matches("[a-zA-Z_0-9.-]+"));
-    } // Moet overschreven worden voor map "[a-zA-Z_0-9-]+"
 
     /* *********************************************************
      * linkedItem - defensive programming
@@ -61,7 +42,7 @@ public class Link extends Item {
      * Variable referencing the linked item.
      *
      */
-    private final Item linkedItem;
+    private final Item linkedItem;  // Assigned during creation.
 
     /**
      * Return the linked item.
@@ -72,5 +53,11 @@ public class Link extends Item {
         return linkedItem;
     }
 
-
+    @Override
+    public void setParentDirectory(Directory parentDirectory) {
+        if (parentDirectory == null) {
+            throw new IllegalArgumentException("Parent directory of Link may not be null.");
+        }
+        super.setParentDirectory(parentDirectory);
+    }
 }

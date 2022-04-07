@@ -17,9 +17,9 @@ import java.util.Date;
  */
 public abstract class Item {
 
-    /**********************************************************
+    /* *********************************************************
      * Constructors
-     **********************************************************/
+     * *********************************************************/
 
 
     /**
@@ -47,9 +47,9 @@ public abstract class Item {
         setName(name);
     }
 
-    /**********************************************************
+    /* *********************************************************
      * name - total programming
-     **********************************************************/
+     * *********************************************************/
 
     /**
      * Variable referencing the name of this file.
@@ -115,7 +115,7 @@ public abstract class Item {
         return "new_file";
     }
 
-    public void changeName(String name) throws FileNotWritableException {
+    public void changeName(String name) throws ItemNotWritableException {
         if (isValidName(name)){
             setName(name);
             setModificationTime();
@@ -123,9 +123,9 @@ public abstract class Item {
     }// Moet overscheven worden voor bestand en map -> writable moet erin zitten
 
 
-    /**********************************************************
+    /* *********************************************************
      * creationTime
-     **********************************************************/
+     * *********************************************************/
 
     /**
      * Variable referencing the time of creation.
@@ -158,9 +158,9 @@ public abstract class Item {
 
 
 
-    /**********************************************************
+    /* *********************************************************
      * modificationTime
-     **********************************************************/
+     * *********************************************************/
 
     /**
      * Variable referencing the time of the last modification,
@@ -246,11 +246,29 @@ public abstract class Item {
                         other.getModificationTime().before(getCreationTime()) );
     }
 
-    /**********************************************************
-     * directory
-     **********************************************************/
-    //foutmelding omdat klasse Directory nog niet bestaat, laat dus nog efkes in commentaar tot die klasse bestaat...
-    //protected Directory directory;
+    /* *********************************************************
+     * parentDirectory - defensive programming
+     * *********************************************************/
+
+    /**
+     * Variable referencing the parent directory of the item.
+     */
+    private Directory parentDirectory = null;
+
+    @Basic
+    public Directory getParentDirectory() {
+        return parentDirectory;
+    }
+
+    /**
+     * Sets the parent directory of the link to the given directory, if the given directory is not null.
+     *
+     * @throws IllegalArgumentException if the
+     * @param  parentDirectory  The directory in to which the link will be moved or in which it will be created.
+     */
+    public void setParentDirectory(Directory parentDirectory) {
+        this.parentDirectory = parentDirectory;
+    }
 
 
     /*

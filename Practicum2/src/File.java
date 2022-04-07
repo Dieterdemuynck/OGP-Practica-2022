@@ -20,9 +20,9 @@ import be.kuleuven.cs.som.annotate.*;
  */
 public class File extends Item {
 
-    /**********************************************************
+    /* *********************************************************
      * Constructors
-     **********************************************************/
+     * *********************************************************/
 
     /**
      * Initialize a new file with given name, size and writability.
@@ -73,7 +73,7 @@ public class File extends Item {
     /**
      * Change the name of this file to the given name.
      *
-     * @throws FileNotWritableException(this) This file is not writable
+     * @throws ItemNotWritableException(this) This file is not writable
      *                                        | ! isWritable()
      * @param    name The new name for this file.
      * @effect The name of this file is set to the given name,
@@ -87,21 +87,21 @@ public class File extends Item {
      * | then setModificationTime()
      */
     @Override
-    public void changeName(String name) throws FileNotWritableException {
+    public void changeName(String name) throws ItemNotWritableException {
         if (isWritable()) {
             if (isValidName(name)) {
                 super.setName(name);
                 setModificationTime();
             }
         } else {
-            throw new FileNotWritableException(this);
+            throw new ItemNotWritableException(this);
         }
     }
 
 
-    /**********************************************************
+    /* *********************************************************
      * size - nominal programming
-     **********************************************************/
+     * *********************************************************/
 
     /**
      * Variable registering the size of this file (in bytes).
@@ -169,7 +169,7 @@ public class File extends Item {
      * @effect The size of this file is increased with the given delta.
      * | changeSize(delta)
      */
-    public void enlarge(int delta) throws FileNotWritableException {
+    public void enlarge(int delta) throws ItemNotWritableException {
         changeSize(delta);
     }
 
@@ -183,7 +183,7 @@ public class File extends Item {
      * @effect The size of this file is decreased with the given delta.
      * | changeSize(-delta)
      */
-    public void shorten(int delta) throws FileNotWritableException {
+    public void shorten(int delta) throws ItemNotWritableException {
         changeSize(-delta);
     }
 
@@ -192,7 +192,7 @@ public class File extends Item {
      *
      * @param delta The amount of bytes by which the size of this file
      *              must be increased or decreased.
-     * @throws FileNotWritableException(this) This file is not writable.
+     * @throws ItemNotWritableException(this) This file is not writable.
      *                                        | ! isWritable()
      * @pre The given delta must not be 0
      * | delta != 0
@@ -202,21 +202,21 @@ public class File extends Item {
      * | setModificationTime()
      */
     @Model
-    private void changeSize(int delta) throws FileNotWritableException {
+    private void changeSize(int delta) throws ItemNotWritableException {
         if (isWritable()) {
             setSize(getSize() + delta);
             setModificationTime();
         } else {
-            throw new FileNotWritableException(this);
+            throw new ItemNotWritableException(this);
         }
     }
 
-    /**********************************************************
+    /* *********************************************************
      * writable
-     **********************************************************/
+     * *********************************************************/
 
     /**
-     * Variable registering whether or not this file is writable.
+     * Variable registering whether this file is writable.
      */
     private boolean isWritable = true;
 
@@ -242,9 +242,9 @@ public class File extends Item {
         this.isWritable = isWritable;
     }
 
-    /**********************************************************
+    /* *********************************************************
      * type
-     **********************************************************/
+     * *********************************************************/
     public final Type type;
 
     /**
@@ -259,6 +259,18 @@ public class File extends Item {
      */
     private String getExtension() {
         return type.getExtension();
+    }
+
+    /* *********************************************************
+     * parentDirectory - defensive programming
+     * *********************************************************/
+
+    @Override
+    public void setParentDirectory(Directory parentDirectory) {
+        if (parentDirectory == null) {
+            throw new IllegalArgumentException("Parent directory of File may not be null.");
+        }
+        super.setParentDirectory(parentDirectory);
     }
 }
 
