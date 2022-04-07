@@ -3,6 +3,7 @@ import org.junit.Test;
 
 import java.security.DigestException;
 import java.util.Date;
+import java.util.Dictionary;
 
 import static org.junit.Assert.*;
 //import org.junit.jupiter.api.Test;
@@ -52,6 +53,126 @@ public class ItemTest {
 	}
 
 	@Test
+	public void testEmptyRoot_LegalCase(){
+		timeBeforeConstruction = new Date();
+		root = new Directory("root");
+		timeAfterConstruction = new Date();
+		assertEquals("root", root.getName());
+		assertTrue(root.isWritable());
+		assertNull(root.getModificationTime());
+		assertFalse(timeBeforeConstruction.after(root.getCreationTime()));
+		assertFalse(root.getCreationTime().after(timeAfterConstruction));
+		assertNull(root.getParentDirectory());
+		assertEquals(0,root.getNbItems()); //TODO is dit een goede test voor contents te testen?
+	}
+
+	@Test
+	public void testEmptyRoot_IllegalCase(){
+		timeBeforeConstruction = new Date();
+		root = new Directory("r..t");
+		timeAfterConstruction = new Date();
+		assertFalse(Directory.isValidName("r..t"));
+		assertTrue(Directory.isValidName(root.getName()));
+		assertTrue(root.isWritable());
+		assertNull(root.getModificationTime());
+		assertFalse(timeBeforeConstruction.after(root.getCreationTime()));
+		assertFalse(root.getCreationTime().after(timeAfterConstruction));
+		assertNull(root.getParentDirectory());
+		assertEquals(0,root.getNbItems()); //TODO is dit een goede test voor contents te testen?
+	}
+
+	@Test
+	public void testNonEmptyRoot_LegalCase(){
+		assertEquals("root", root.getName());
+		assertTrue(root.isWritable());
+		assertNull(root.getModificationTime());
+		assertFalse(timeBeforeConstruction.after(root.getCreationTime()));
+		assertFalse(root.getCreationTime().after(timeAfterConstruction));
+		assertNull(root.getParentDirectory());
+		assertEquals(7,root.getNbItems()); // 3 mappen + 2 bestanden + 1 link
+	}
+
+	@Test
+	public void testDirectoryStringBoolean_LegalCase(){
+		assertEquals("map1", directoryStringBoolean.getName());
+		assertTrue(directoryStringBoolean.isWritable());
+		assertNull(directoryStringBoolean.getModificationTime());
+		assertFalse(timeBeforeConstruction.after(directoryStringBoolean.getCreationTime()));
+		assertFalse(directoryStringBoolean.getCreationTime().after(timeAfterConstruction));
+		assertNull(directoryStringBoolean.getParentDirectory());
+		assertEquals(0,directoryStringBoolean.getNbItems());
+	}
+
+	@Test
+	public void testDirectoryStringBoolean_IllegalCase(){
+		timeBeforeConstruction = new Date();
+		directoryStringBoolean = new Directory("m.p1",false);
+		timeAfterConstruction = new Date();
+		assertFalse(Directory.isValidName("m.p1"));
+		assertTrue(Directory.isValidName(directoryStringBoolean.getName()));
+		assertFalse(directoryStringBoolean.isWritable());
+		assertNull(directoryStringBoolean.getModificationTime());
+		assertFalse(timeBeforeConstruction.after(directoryStringBoolean.getCreationTime()));
+		assertFalse(directoryStringBoolean.getCreationTime().after(timeAfterConstruction));
+		assertNull(directoryStringBoolean.getParentDirectory());
+		assertEquals(0,directoryStringBoolean.getNbItems());
+	}
+
+	@Test
+	public void testDirectoryDirectoryStringBoolean_LegalCase(){
+		assertEquals("map2", directoryDirectoryStringBoolean.getName());
+		assertTrue(directoryDirectoryStringBoolean.isWritable());
+		assertNull(directoryDirectoryStringBoolean.getModificationTime());
+		assertFalse(timeBeforeConstruction.after(directoryDirectoryStringBoolean.getCreationTime()));
+		assertFalse(directoryDirectoryStringBoolean.getCreationTime().after(timeAfterConstruction));
+		assertEquals(root,directoryDirectoryStringBoolean.getParentDirectory());
+		assertEquals(0,directoryDirectoryStringBoolean.getNbItems());
+	}
+
+	@Test
+	public void testDirectoryDirectoryStringBoolean_IllegalCase(){
+		timeBeforeConstruction = new Date();
+		directoryDirectoryStringBoolean = new Directory(root,"m.p2",false);
+		timeAfterConstruction = new Date();
+		assertFalse(Directory.isValidName("m.p2"));
+		assertTrue(Directory.isValidName(directoryStringBoolean.getName()));
+		assertFalse(directoryDirectoryStringBoolean.isWritable());
+		assertNull(directoryDirectoryStringBoolean.getModificationTime());
+		assertFalse(timeBeforeConstruction.after(directoryDirectoryStringBoolean.getCreationTime()));
+		assertFalse(directoryDirectoryStringBoolean.getCreationTime().after(timeAfterConstruction));
+		assertEquals(root,directoryDirectoryStringBoolean.getParentDirectory());
+		assertEquals(0,directoryDirectoryStringBoolean.getNbItems());
+	}
+
+
+	@Test
+	public void testDirectoryDirectoryString_LegalCase(){
+		assertEquals("map3", directoryDirectoryString.getName());
+		assertTrue(directoryDirectoryString.isWritable());
+		assertNull(directoryDirectoryString.getModificationTime());
+		assertFalse(timeBeforeConstruction.after(directoryDirectoryString.getCreationTime()));
+		assertFalse(directoryDirectoryString.getCreationTime().after(timeAfterConstruction));
+		assertEquals(root,directoryDirectoryString.getParentDirectory());
+		assertEquals(0,directoryDirectoryString.getNbItems());
+	}
+
+	@Test
+	public void testDirectoryDirectoryString_IllegalCase(){
+		timeBeforeConstruction = new Date();
+		directoryDirectoryString = new Directory(root, "m.p3");
+		timeAfterConstruction = new Date();
+		assertFalse(Directory.isValidName("m.p3"));
+		assertTrue(Directory.isValidName(directoryStringBoolean.getName()));
+		assertTrue(directoryDirectoryString.isWritable());
+		assertNull(directoryDirectoryString.getModificationTime());
+		assertFalse(timeBeforeConstruction.after(directoryDirectoryString.getCreationTime()));
+		assertFalse(directoryDirectoryString.getCreationTime().after(timeAfterConstruction));
+		assertEquals(root,directoryDirectoryString.getParentDirectory());
+		assertEquals(0,directoryDirectoryString.getNbItems());
+	}
+
+
+	@Test
 	public void testFileDirectoryStringIntBooleanType_LegalCase() {
 		assertEquals("bestand1", fileDirectoryStringIntBooleanType.getName());
 		assertEquals(fileDirectoryStringIntBooleanType.getSize(),100);
@@ -59,6 +180,8 @@ public class ItemTest {
 		assertNull(fileDirectoryStringIntBooleanType.getModificationTime());
 		assertFalse(timeBeforeConstruction.after(fileDirectoryStringIntBooleanType.getCreationTime()));
 		assertFalse(fileDirectoryStringIntBooleanType.getCreationTime().after(timeAfterConstruction));
+		assertEquals(root, fileDirectoryStringIntBooleanType.getParentDirectory());
+		assertEquals(Type.PDF_FILE, fileDirectoryStringIntBooleanType.getType());
 	}
 
 
@@ -73,6 +196,8 @@ public class ItemTest {
 		assertNull(fileDirectoryStringIntBooleanType.getModificationTime());
 		assertFalse(timeBeforeConstruction.after(fileDirectoryStringIntBooleanType.getCreationTime()));
 		assertFalse(fileDirectoryStringIntBooleanType.getCreationTime().after(timeAfterConstruction));
+		assertEquals(root, fileDirectoryStringIntBooleanType.getParentDirectory());
+		assertEquals(Type.PDF_FILE, fileDirectoryStringIntBooleanType.getType());
 	}
 
 	@Test
@@ -83,6 +208,8 @@ public class ItemTest {
 		assertNull(fileDirectoryStringType.getModificationTime());
 		assertFalse(timeBeforeConstruction.after(fileDirectoryStringType.getCreationTime()));
 		assertFalse(fileDirectoryStringType.getCreationTime().after(timeAfterConstruction));
+		assertEquals(root, fileDirectoryStringIntBooleanType.getParentDirectory());
+		assertEquals(Type.PDF_FILE, fileDirectoryStringIntBooleanType.getType());
 	}
 
 	@Test
@@ -96,6 +223,8 @@ public class ItemTest {
 		assertNull(fileDirectoryStringType.getModificationTime());
 		assertFalse(timeBeforeConstruction.after(fileDirectoryStringType.getCreationTime()));
 		assertFalse(fileDirectoryStringType.getCreationTime().after(timeAfterConstruction));
+		assertEquals(root, fileDirectoryStringIntBooleanType.getParentDirectory());
+		assertEquals(Type.PDF_FILE, fileDirectoryStringIntBooleanType.getType());
 	}
 
 	/*

@@ -280,17 +280,6 @@ public abstract class Item {
     /* *********************************************************
      * bijkomende methodes
      * *********************************************************/
-    /*
-    TODO
-    Moet er nog bij komen:
-    - public void move(...)
-    - public String getRoot()
-    - public boolean isDirectOrIndirectChildOf(...)
-    - public int getTotalDiskUsage()
-    - public String getAbsolutePath()
-    - public void delete()
-    - public void deleteRecursive()
-     */
 
     public void move(Directory dir){
         Directory oldDirectory = parentDirectory;

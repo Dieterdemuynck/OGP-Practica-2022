@@ -38,7 +38,6 @@ public class File extends Item {
      * @param size     The size of the new file.
      * @param writable The writability of the new file.
      * @param type     The type of the new file
-     *
      * @effect The directory of the file is set to the given directory dir.
      * | setParentDirectory(dir) TODO: controleren
      * @effect The name of the file is set to the given name.
@@ -50,14 +49,12 @@ public class File extends Item {
      * | setWritable(writable)
      * @effect The type of the file is set to the given type.
      * | this.type = type TODO: controleren
-     *
      * @post The new creation time of this file is initialized to some time during
      * constructor execution.
      * | (new.getCreationTime().getTime() >= System.currentTimeMillis()) &&
      * | (new.getCreationTime().getTime() <= (new System).currentTimeMillis())
      * @post The new file has no time of last modification.
      * | new.getModificationTime() == null
-     *
      * @note The constructor is annotated raw because at the start of the execution, not all fields are
      * defaulted to a value that is accepted by the invariants.
      * E.g. the name is defaulted to null, which is not allowed,
@@ -74,16 +71,16 @@ public class File extends Item {
 
     /**
      * Initialize a new file with given directory (dir), name and type.
-     * @param dir   The directory of the new file.
-     * @param name  The name of the new file.
-     * @param type  The type of the new file.
      *
+     * @param dir  The directory of the new file.
+     * @param name The name of the new file.
+     * @param type The type of the new file.
      * @effect This new file is initialized with the given directory (dir), name, a zero size, true writability
      * and type
      * | this(dir,name,0,true,type)
      */
     @Raw
-    public File(Directory dir,String name, Type type) {
+    public File(Directory dir, String name, Type type) {
         this(dir, name, 0, true, type);
     }
 
@@ -91,9 +88,9 @@ public class File extends Item {
     /**
      * Change the name of this file to the given name.
      *
+     * @param name The new name for this file.
      * @throws ItemNotWritableException(this) This file is not writable
      *                                        | ! isWritable()
-     * @param    name The new name for this file.
      * @effect The name of this file is set to the given name,
      * if this is a valid name and the file is writable,
      * otherwise there is no change.
@@ -268,7 +265,7 @@ public class File extends Item {
     /**
      * Return the type of this file.
      */
-    private Type getType(){
+    public Type getType() {
         return type;
     }
 
@@ -296,16 +293,15 @@ public class File extends Item {
      * bijkomende methodes
      * *********************************************************/
     @Override
-    public int getTotalDiskUsage(){
+    public int getTotalDiskUsage() {
         return getSize();
     }
 
     @Override
-    public String getAbsolutePath(){
-        if (this.getParentDirectory() ==  null){
+    public String getAbsolutePath() {
+        if (this.getParentDirectory() == null) {
             return "/" + this.getName() + this.getExtension();
-        }
-        else {
+        } else {
             Directory dir = this.getParentDirectory();
             return dir.getAbsolutePath() + "/" + this.getName() + this.getExtension();
         }
@@ -316,6 +312,7 @@ public class File extends Item {
         if (!isTerminated()) {
             setTerminated(true);
             this.getParentDirectory().removeFromContents(this);
+        }
     }
 }
 
