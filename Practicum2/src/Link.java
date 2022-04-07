@@ -84,4 +84,13 @@ public class Link extends Item {
         }
         super.setParentDirectory(parentDirectory);
     }
+
+    /* *********************************************************
+     * Destructor - defensive programming
+     * *********************************************************/
+
+    @Override
+    public void terminate() {
+
+    }
 }

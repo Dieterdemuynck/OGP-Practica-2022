@@ -311,6 +311,15 @@ public class File extends Item {
         }
     }
 
+    /* *********************************************************
+            * Destructor - defensive programming
+     * *********************************************************/
+
+    @Override
+    public void terminate() {
+
+    }
+
 }
 
 

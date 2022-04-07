@@ -1,6 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import java.security.DigestException;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -11,73 +12,93 @@ import static org.junit.Assert.*;
  * @author Tommy Messelis
  *
  */
-public class FileTest {
+public class ItemTest {
 
-	File fileStringIntBoolean;
-	File fileString;
+	File fileDirectoryStringIntBooleanType;
+	File fileDirectoryStringType;
+	Link linkDirectoryStringItem;
+	Directory root;
+	Directory directoryDirectoryStringBoolean;
+	Directory directoryDirectoryString;
+	Directory directoryStringBoolean;
+
 	Date timeBeforeConstruction, timeAfterConstruction;
 	
 	File fileNotWritable;
+	Directory directoryNotWritable;
 	Date timeBeforeConstructionNotWritable, timeAfterConstructionNotWritable;
 	
 	@Before
 	public void setUpFixture(){
 		timeBeforeConstruction = new Date();
-		fileStringIntBoolean = new File("bestand.txt",100, true,Type.PDF_FILE);
-		fileString = new File("bestand.txt"	,Type.PDF_FILE);
+		root = new Directory("root");
+		directoryStringBoolean = new Directory("map1",true);
+		directoryDirectoryStringBoolean = new Directory(root,"map2",true);
+		directoryDirectoryString = new Directory(root, "map3");
+
+		fileDirectoryStringIntBooleanType = new File(root,"bestand1",100, true,Type.PDF_FILE);
+		fileDirectoryStringType = new File(root,"bestand2",Type.PDF_FILE);
+
+		linkDirectoryStringItem = new Link(root, "link", fileDirectoryStringIntBooleanType);
+
 		timeAfterConstruction = new Date();
 
 		timeBeforeConstructionNotWritable = new Date();
-		fileNotWritable = new File("bestand.txt",100,false,Type.PDF_FILE);
+
+		fileNotWritable = new File(root,"bestand3",100, false,Type.PDF_FILE);
+		directoryNotWritable = new Directory(root,"map4",false);
+
 		timeAfterConstructionNotWritable = new Date();
 	}
 
 	@Test
-	public void testFileStringIntBoolean_LegalCase() {
-		assertEquals("bestand.txt", fileStringIntBoolean.getName());
-		assertEquals(fileStringIntBoolean.getSize(),100);
-		assertTrue(fileStringIntBoolean.isWritable());
-		assertNull(fileStringIntBoolean.getModificationTime());
-		assertFalse(timeBeforeConstruction.after(fileStringIntBoolean.getCreationTime()));
-		assertFalse(fileStringIntBoolean.getCreationTime().after(timeAfterConstruction));
+	public void testFileDirectoryStringIntBooleanType_LegalCase() {
+		assertEquals("bestand1", fileDirectoryStringIntBooleanType.getName());
+		assertEquals(fileDirectoryStringIntBooleanType.getSize(),100);
+		assertTrue(fileDirectoryStringIntBooleanType.isWritable());
+		assertNull(fileDirectoryStringIntBooleanType.getModificationTime());
+		assertFalse(timeBeforeConstruction.after(fileDirectoryStringIntBooleanType.getCreationTime()));
+		assertFalse(fileDirectoryStringIntBooleanType.getCreationTime().after(timeAfterConstruction));
 	}
-	
+
+
 	@Test
 	public void testFileStringIntBoolean_IllegalCase() {
 		timeBeforeConstruction = new Date();
-		fileStringIntBoolean = new File("$IllegalName$", File.getMaximumSize(),false,Type.PDF_FILE);
+		fileDirectoryStringIntBooleanType = new File(root,"$IllegalName$", File.getMaximumSize(), false,Type.PDF_FILE);
 		timeAfterConstruction = new Date();
-		assertTrue(File.isValidName(fileStringIntBoolean.getName()));
-		assertEquals(File.getMaximumSize(), fileStringIntBoolean.getSize());
-		assertFalse(fileStringIntBoolean.isWritable());
-		assertNull(fileStringIntBoolean.getModificationTime());
-		assertFalse(timeBeforeConstruction.after(fileStringIntBoolean.getCreationTime()));
-		assertFalse(fileStringIntBoolean.getCreationTime().after(timeAfterConstruction));
+		assertTrue(File.isValidName(fileDirectoryStringIntBooleanType.getName()));
+		assertEquals(File.getMaximumSize(), fileDirectoryStringIntBooleanType.getSize());
+		assertFalse(fileDirectoryStringIntBooleanType.isWritable());
+		assertNull(fileDirectoryStringIntBooleanType.getModificationTime());
+		assertFalse(timeBeforeConstruction.after(fileDirectoryStringIntBooleanType.getCreationTime()));
+		assertFalse(fileDirectoryStringIntBooleanType.getCreationTime().after(timeAfterConstruction));
 	}
 
 	@Test
-	public void testFileString_LegalCase() {
-		assertEquals("bestand.txt", fileString.getName());
-		assertEquals(0, fileString.getSize());
-		assertTrue(fileString.isWritable());
-		assertNull(fileString.getModificationTime());
-		assertFalse(timeBeforeConstruction.after(fileString.getCreationTime()));
-		assertFalse(fileString.getCreationTime().after(timeAfterConstruction));
+	public void testFileDirectoryStringType_LegalCase() {
+		assertEquals("bestand2", fileDirectoryStringType.getName());
+		assertEquals(0, fileDirectoryStringType.getSize());
+		assertTrue(fileDirectoryStringType.isWritable());
+		assertNull(fileDirectoryStringType.getModificationTime());
+		assertFalse(timeBeforeConstruction.after(fileDirectoryStringType.getCreationTime()));
+		assertFalse(fileDirectoryStringType.getCreationTime().after(timeAfterConstruction));
 	}
-	
+
 	@Test
 	public void testFileString_IllegalCase() {
 		timeBeforeConstruction = new Date();
-		fileString = new File("$IllegalName$",Type.PDF_FILE);
+		fileDirectoryStringType = new File(root,"$IllegalName$",Type.PDF_FILE);
 		timeAfterConstruction = new Date();
-		assertTrue(File.isValidName(fileString.getName()));
-		assertEquals(0, fileString.getSize());
-		assertTrue(fileString.isWritable());
-		assertNull(fileString.getModificationTime());
-		assertFalse(timeBeforeConstruction.after(fileString.getCreationTime()));
-		assertFalse(fileString.getCreationTime().after(timeAfterConstruction));
+		assertTrue(File.isValidName(fileDirectoryStringType.getName()));
+		assertEquals(0, fileDirectoryStringType.getSize());
+		assertTrue(fileDirectoryStringType.isWritable());
+		assertNull(fileDirectoryStringType.getModificationTime());
+		assertFalse(timeBeforeConstruction.after(fileDirectoryStringType.getCreationTime()));
+		assertFalse(fileDirectoryStringType.getCreationTime().after(timeAfterConstruction));
 	}
 
+	/*
 	@Test
 	public void testIsValidName_LegalCase() {
 		assertTrue(File.isValidName("abcDEF123-_."));
@@ -309,5 +330,6 @@ public class FileTest {
             e.printStackTrace();
         }
     }
+    */
 
 }
