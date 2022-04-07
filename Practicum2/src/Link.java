@@ -52,6 +52,7 @@ public class Link extends Item {
         setParentDirectory(dir);
     }
 
+
     /* *********************************************************
      * linkedItem - defensive programming
      * *********************************************************/
@@ -83,5 +84,13 @@ public class Link extends Item {
             throw new IllegalArgumentException("Parent directory of link may not be null.");
         }
         super.setParentDirectory(parentDirectory);
+    }
+
+    public void terminate() {
+        if (!isTerminated()) {
+            setTerminated(true);
+            this.getParentDirectory().removeFromContents(this);
+            // Reference to parent directory does not need to be removed. (could be useful for restoring if possible.)
+        }
     }
 }

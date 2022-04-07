@@ -311,6 +311,12 @@ public class File extends Item {
         }
     }
 
+    @Override
+    public void terminate() {
+        if (!isTerminated()) {
+            setTerminated(true);
+            this.getParentDirectory().removeFromContents(this);
+    }
 }
 
 

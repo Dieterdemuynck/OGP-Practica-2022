@@ -356,5 +356,8 @@ public abstract class Item {
         isTerminated = terminated;
     }
 
+    /**
+     * Destructs the item.
+     */
     public abstract void terminate();
 }
