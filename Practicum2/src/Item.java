@@ -314,5 +314,19 @@ public abstract class Item {
         }
     }
 
+    public boolean isDirectOrIndirectChildOf(Directory directory){
+        //TODO heb ik deze methode juist verstaan?
+        if (directory.hasAsItem(this)){
+            return true;
+        }
+        else if (directory.getParentDirectory() != null){
+            directory = directory.getParentDirectory();
+            return isDirectOrIndirectChildOf(directory);
+        }
+        else {
+            return false;
+        }
+    }
+
 
 }
