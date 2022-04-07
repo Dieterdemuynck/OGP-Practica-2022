@@ -271,6 +271,7 @@ public class Directory extends Item {
         if (item == null){
             throw new IllegalDirectoryContentExeption(this, null);
         }
+        setModificationTime();
         if (contents.size()>0){
             int place = findIndexForInContents(item,0,getContents().size()-1);
             getContents().add(place, item); //Moet gesorteerd worden op naam, zou moeten juist zijn zo
@@ -390,18 +391,43 @@ public class Directory extends Item {
 
     @Override
     public void terminate() {
-        if (!isTerminated()&& isWritable() && contents.isEmpty()) {
+        if (!isTerminated() && isWritable() && contents.isEmpty()) {
             setTerminated(true);
             this.getParentDirectory().removeFromContents(this);
         }
     }
 
+    private boolean canBeDeletedRecursively(){
+        //TODO kan iemand dit???
+        // idee we schrijven in link een methode isWritable die altijd true geeft -> dan kan je dit laten werken hahaha
+        boolean canBeTerminated = true;
+        for (Item item: contents){
+            Link link = (Link) item; // da mag nie zeker :(
+            if(link.isTerminated()){
+                canBeTerminated = false;
+            }
+            File file = (File) item; // da gaat nie zeker :(
+            if (file.isTerminated() && !file.isWritable()){
+                canBeTerminated = false;
+            }
+            Directory directory = (Directory) item; // da gaat nie zeker :(
+            if (directory.isTerminated() && !directory.isWritable()){
+                canBeTerminated = directory.canBeDeletedRecursively();
+            }
+        }
+        return canBeTerminated;
+    }
+
     @Override
     public void deleteRecursive(){
-        for (Item item: contents){
-            item.setTerminated(true);
+        if (canBeDeletedRecursively()){
+            for (Item item: contents){
+                item.setTerminated(true);
+                Directory directory = (Directory) item;
+                directory.deleteRecursive();
+            }
+            contents.clear();
+            terminate();
         }
-        contents.clear();
-        terminate();
     }
 }
