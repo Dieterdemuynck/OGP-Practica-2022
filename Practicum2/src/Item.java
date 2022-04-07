@@ -342,5 +342,19 @@ public abstract class Item {
         }
     }
 
+    /* *********************************************************
+     * Destructor - defensive programming
+     * *********************************************************/
 
+    private boolean isTerminated = false;
+
+    public boolean isTerminated() {
+        return isTerminated;
+    }
+
+    public void setTerminated(boolean terminated) {
+        isTerminated = terminated;
+    }
+
+    public abstract void terminate();
 }
