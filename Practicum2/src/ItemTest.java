@@ -566,7 +566,6 @@ public class ItemTest {
 	}
 
 	@Test
-	//TODO ZOU MOETEN WERKEN ALS DELETERECURSIVE DEFTIG WERKT, denkik
 	public void testDirectoryHasOverlappingUsePeriod_ModifiedNoOverlap() {
 		// one = implicit argument ; other = explicit argument
 		Directory one, other;

@@ -12,7 +12,8 @@ import java.util.Date;
  *
  * -> directory  // TODO: does this even need any invariants? The parent directory is either a directory or null? That's always the case though...
  *
- * @invar	Each item must have a valid name, existing out of: letters (upper- or lowercase), hyphens, periods, underscores and/or digits.
+ * @invar	Each item must have a valid name, existing out of: letters (upper- or lowercase), hyphens, periods,
+ *          underscores and/or digits.
  * 	        | isValidName(getName())
  * @invar   Each item must have a valid creation time.
  *          | isValidCreationTime(getCreationTime())

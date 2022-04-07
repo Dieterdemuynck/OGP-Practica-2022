@@ -6,13 +6,13 @@ import java.util.List;
 /**
  * A class of directories.
  *
- * -> name
- * -> creationTime
- * -> modificationTime
- * -> directory
- * -> contents
- * -> writable
- *
+ * @invar	Each item must have a valid name, existing out of: letters (upper- or lowercase), hyphens, underscores
+ *          and/or digits.
+ * 	        | isValidName(getName())
+ * @invar   Contents may never contain a null element.
+ *          | for (Item item: getContent()): item != null
+ * @invar   Parent directory may not be child directory (direct or indirect)
+ *          |
  * @author  Team 2: Dieter Demuynck, Hannes Ingelaere en Ine Malfait
  * @version 4
  *
@@ -202,21 +202,26 @@ public class Directory extends Item implements Writability {
         }
     }
 
+    // TODO: specification
+    @Basic
     public List<Item> getContents() {
         return contents;
     }
 
+    // TODO: specification
     public void setContents(List<Item> contents) {
         this.contents = contents;
     }
 
+    // TODO: specification
     public void addToContents(Item item){
         if (!isWritable()) {
             throw new ItemNotWritableException(this);
         }
-        if (item == null){
+        if (item == null){  // TODO: why is this not an IllegalArgumentException?
             throw new IllegalDirectoryContentExeption(this, null);
         }
+        // TODO: check if added item is parent directory -> if yes: throw exception (newly defined?)
         setModificationTime();
         if (contents.size()>0){
             int place = findIndexForInContents(item,0,getContents().size()-1);
@@ -227,6 +232,7 @@ public class Directory extends Item implements Writability {
         }
     }
 
+    // TODO: specification
     public void removeFromContents(Item item){
         if (!isWritable()) {
             throw new ItemNotWritableException(this);
@@ -238,14 +244,17 @@ public class Directory extends Item implements Writability {
         getContents().remove(place);
     }
 
+    // TODO: specification
     public int getNbItems(){
         return getContents().size();
     }
 
+    // TODO: specification
     public Item getItemAt(int place){
         return getContents().get(place-1); //start vanaf 1
     }
 
+    // TODO: specification
     public int getItem(String itemName) {
         //Index ook +1 doen zoals in getItemAt(.) ? Nu niet het geval
         //Normaal complexiteit O(log n)
@@ -275,16 +284,16 @@ public class Directory extends Item implements Writability {
         }
     }
 
+    // TODO: specification
     public boolean containsDiskItemWithName(String itemName){
         itemName = itemName.toLowerCase();
-        boolean contains = false;
         for (Item item: getContents()){
             String name = item.getName().toLowerCase();
             if (name.equals(itemName)){
-                contains = true;
+                return true;
             }
         }
-        return contains;
+        return false;
     }
 
 
@@ -293,7 +302,7 @@ public class Directory extends Item implements Writability {
         return getIndexOf(item,  getContents().size());
     }
 
-    private int getIndexOf(Item item, int einde){
+    private int getIndexOf(Item item, int einde){  // TODO: Only used once, redundant separation? move code to public version
         //
         int place = getItem(item.getName(),0,einde);
         if (item == getContents().get(place)){
@@ -304,6 +313,7 @@ public class Directory extends Item implements Writability {
         }
     }
 
+    // TODO: specification
     public boolean hasAsItem(Item item){
         boolean contains = false;
         for (Item contentItem: getContents()){
@@ -319,10 +329,12 @@ public class Directory extends Item implements Writability {
      * Additional Methods
      * *********************************************************/
 
+    // TODO: specification
     public void makeRoot(){
         setParentDirectory(null);
     }
 
+    // TODO: specification
     @Override
     public int getTotalDiskUsage(){
         int diskUsage = 0;
@@ -336,6 +348,7 @@ public class Directory extends Item implements Writability {
      * Destructor - defensive programming
      * *********************************************************/
 
+    // TODO: specification
     @Override
     public void terminate() {
         if (!isTerminated() && isWritable() && contents.isEmpty()) {
@@ -344,6 +357,7 @@ public class Directory extends Item implements Writability {
         }
     }
 
+    // TODO: specification
     public boolean canBeDeleted() {
         // A directory cannot be deleted if it is not writable
         if (!isWritable()) {
@@ -357,8 +371,8 @@ public class Directory extends Item implements Writability {
             } else if (item instanceof  Writability && !((Writability) item).isWritable()) {
                 // There is content of the directory which is not writable
                 return false;
-                /* NOTE: While the only other object which has writability is File, this allows for further expansion
-                 * of the current implementation.
+                /* NOTE: While the only other object which has writability is File, current implementation allows for
+                 * further expansion of subclasses which implement writability.
                  */
             }
         }
@@ -366,11 +380,15 @@ public class Directory extends Item implements Writability {
         return true;
     }
 
+    // TODO: any pre or post conditions? Anything?
+    // Note: we do not use "@effect" doctag or "@Model" annotation as the precondition from deleteRecursivelyRaw() does not transfer.
     /**
      * Safely deletes the directory and all its contents, by first checking if all content, including content
      * within child directories, is writable.
      */
     public void deleteRecursively(){
+        // TODO: should this throw an error upon finding a non-writable file? FIX: rename "canBeDeleted()" to "checkDirectoryAndContentWritability()"
+        // The implementation of the renamed function should be relatively obvious.
         if (canBeDeleted()){
             deleteRecursiveRaw();
         }
@@ -384,7 +402,7 @@ public class Directory extends Item implements Writability {
      *       should also be able to be deleted.
      *     | this.canBeDeleted()
      */
-    @Override
+    @Override @Raw //@Model
     public void deleteRecursiveRaw() {
         while (getContents().size() > 0){
             // As long as the directory still has contents, delete the last item.
