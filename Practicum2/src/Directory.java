@@ -215,6 +215,13 @@ public class Directory extends Item {
         return 0;
     }
 
+    public List<Item> getContents() {
+        return contents;
+    }
+
+    public void setContents(List<Item> contents) {
+        this.contents = contents;
+    }
 
     public void addToContents(Item item){
         if (!isWritable()) {
@@ -223,31 +230,31 @@ public class Directory extends Item {
         if (item == null){
             throw new IllegalItemExeption(this, null);
         }
-        int place = findIndexForInContents(item,0,contents.size());
-        contents.add(place, item); //Moet gesorteerd worden op naam, zou moeten juist zijn zo
+        int place = findIndexForInContents(item,0,getContents().size());
+        getContents().add(place, item); //Moet gesorteerd worden op naam, zou moeten juist zijn zo
     }
 
     public int getNbItems(){
-        return contents.size();
+        return getContents().size();
     }
 
     public Item getItemAt(int place){
-        return contents.get(place-1); //start vanaf 1
+        return getContents().get(place-1); //start vanaf 1
     }
 
     public int getItem(String itemName) {
         //Index ook +1 doen zoals in getItemAt(.) ? Nu niet het geval
         //Normaal complexiteit O(log n)
-        return getItem(itemName,0, contents.size());
+        return getItem(itemName,0, getContents().size());
     }
 
     private int getItem(String itemName,int start, int einde){
         if (start != einde){
             int mid = (start + einde)/2;
-            if (compareStrings(itemName,contents.get(mid).getName()) == 1){
+            if (compareStrings(itemName,getContents().get(mid).getName()) == 1){
                 return getItem(itemName, start,mid-1);
             }
-            else if (compareStrings(itemName,contents.get(mid).getName()) == 2){
+            else if (compareStrings(itemName,getContents().get(mid).getName()) == 2){
                 return getItem(itemName,mid+1,einde);
             }
             else {
@@ -255,7 +262,7 @@ public class Directory extends Item {
             }
         }
         else {
-            if (compareStrings(itemName, contents.get(start).getName()) == 0){
+            if (compareStrings(itemName, getContents().get(start).getName()) == 0){
                 return start;
             }
             else { // Naam komt niet voor
@@ -267,7 +274,7 @@ public class Directory extends Item {
     public boolean containsDiskItemWithName(String itemName){
         itemName = itemName.toLowerCase();
         boolean contains = false;
-        for (Item item: contents){
+        for (Item item: getContents()){
             String name = item.getName().toLowerCase();
             if (name.equals(itemName)){
                 contains = true;
@@ -279,13 +286,13 @@ public class Directory extends Item {
 
     public int getIndexOf(Item item) {
         //Index ook +1 doen zoals in getItemAt(.) ? Nu niet het geval
-        return getIndexOf(item,  contents.size());
+        return getIndexOf(item,  getContents().size());
     }
 
     private int getIndexOf(Item item, int einde){
         //
         int place = getItem(item.getName(),0,einde);
-        if (item == contents.get(place)){
+        if (item == getContents().get(place)){
             return place;
         }
         else {
@@ -295,7 +302,7 @@ public class Directory extends Item {
 
     public boolean hasAsItem(Item item){
         boolean contains = false;
-        for (Item contentItem: contents){
+        for (Item contentItem: getContents()){
             if (item == contentItem){
                 contains = true;
             }
