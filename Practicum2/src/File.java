@@ -3,16 +3,10 @@ import be.kuleuven.cs.som.annotate.*;
 /**
  * A class of files.
  *
- * @invar	Each file must have a properly spelled name.
- * 			| isValidName(getName())
  * @invar	Each file must have a valid size.
- * 			| isValidSize(tSize())
- * @invar   Each file must have a valid creation time.
- *          | isValidCreationTime(getCreationTime())
- * @invar   Each file must have a valid modification time.
- *          | canHaveAsModificationTime(getModificationTime())
- *
- * -> directory
+ * 		    | isValidSize(getSize())
+ * @invar   Each file must belong to a directory (eg. parentDirectory may not be null)
+ *          | this.getParentDirectory() != null
  * -> writable
  * -> type
  *

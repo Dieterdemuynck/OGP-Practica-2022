@@ -10,10 +10,14 @@ import java.util.Date;
 /**
  * A class of Items.
  *
- * -> name
- * -> creationTime
- * -> modificationTime
- * -> directory
+ * -> directory  // TODO: does this even need any invariants? The parent directory is either a directory or null? That's always the case though...
+ *
+ * @invar	Each item must have a valid name, existing out of: letters (upper- or lowercase), hyphens, periods, underscores and/or digits.
+ * 	        | isValidName(getName())
+ * @invar   Each item must have a valid creation time.
+ *          | isValidCreationTime(getCreationTime())
+ * @invar   Each item must have a valid modification time.
+ *          | canHaveAsModificationTime(getModificationTime())
  *
  * @author  Team 2: Dieter Demuynck, Hannes Ingelaere en Ine Malfait
  * @version 4
@@ -39,6 +43,8 @@ public abstract class Item {
      *          | (new.getCreationTime().getTime() <= (new System).currentTimeMillis())
      * @post    The new item has no time of last modification.
      *          | new.getModificationTime() == null
+     * @post    The item will be given a valid name, which is the given name is it is valid, or a default valid name.
+     *          | isValidName(name) && new.getName() == name || !isValidName(name) && isValidName(new.getName())
      *
      * @note	The constructor is annotated raw because at the start of the execution, not all fields are
      * 			defaulted to a value that is accepted by the invariants.
@@ -71,7 +77,7 @@ public abstract class Item {
     }
 
     /**
-     * Check whether the given name is a legal name for a item.
+     * Check whether the given name is a legal name for an item.
      *
      * @param  	name
      *			The name to be checked
@@ -111,7 +117,7 @@ public abstract class Item {
      * given name is not valid.
      *
      * @return   A valid item name.
-     *         | isValidName(result)
+     *           | isValidName(result)
      */
     @Model
     protected static String getDefaultName() {
@@ -123,7 +129,7 @@ public abstract class Item {
             setName(name);
             setModificationTime();
         }
-    }// Moet overscheven worden voor bestand en map -> writable moet erin zitten
+    }
 
 
     /* *********************************************************
@@ -189,9 +195,9 @@ public abstract class Item {
      * @return 	True if and only if the given date is either not effective
      * 			or if the given date lies between the creation time and the
      * 			current time.
-     *         | result == (date == null) ||
-     *         | ( (date.getTime() >= getCreationTime().getTime()) &&
-     *         |   (date.getTime() <= System.currentTimeMillis())     )
+     *          | result == (date == null) ||
+     *          | ( (date.getTime() >= getCreationTime().getTime()) &&
+     *          |   (date.getTime() <= System.currentTimeMillis())     )
      */
     @Raw
     public boolean canHaveAsModificationTime(Date date) {
@@ -281,6 +287,7 @@ public abstract class Item {
      * bijkomende methodes
      * *********************************************************/
 
+    // TODO: specification
     public void move(Directory dir){
         Directory oldDirectory = parentDirectory;
 
@@ -289,11 +296,13 @@ public abstract class Item {
         this.parentDirectory = dir;
     }
 
+    // TODO: specification
     public Directory getRoot(){
         return getRoot(this.getParentDirectory());
 
     }
 
+    // TODO: specification
     private Directory getRoot(Item item){
         if (item.parentDirectory == null){
             return (Directory) item;
@@ -303,24 +312,32 @@ public abstract class Item {
         }
     }
 
+    // TODO: specification
     public boolean isDirectOrIndirectChildOf(Directory directory){
-        //TODO heb ik deze methode juist verstaan?
-        if (directory.hasAsItem(this)){
+        if (directory.getContents().size() == 0){
+            // Case 1: contents of given directory are empty ==> item is not a child of given directory.
+            return false;
+        } else if (directory.hasAsItem(this)) {
+            // Case 2: item is a direct child of given directory.
             return true;
-        }
-        else if (directory.getParentDirectory() != null){
-            directory = directory.getParentDirectory();
-            return isDirectOrIndirectChildOf(directory);
-        }
-        else {
+        } else {
+            // Case 3: item is not a direct, but possibly an indirect child of given directory. Go through each item in its contents to check.
+            for (Item item: directory.getContents()) {
+                if (item instanceof Directory && isDirectOrIndirectChildOf((Directory)item)) {
+                    return true;
+                }
+            }
             return false;
         }
     }
 
+    // TODO: specification
+    // Bit odd that an item, "by default", does not use disk space. Hm.
     public int getTotalDiskUsage(){
         return 0;
     }
 
+    // TODO: specification
     public String getAbsolutePath(){
         if (this.getParentDirectory() ==  null){
             return "/" + this.getName();
@@ -335,12 +352,15 @@ public abstract class Item {
      * Destructor - defensive programming
      * *********************************************************/
 
+    // TODO: specification
     private boolean isTerminated = false;
 
+    // TODO: specification
     public boolean isTerminated() {
         return isTerminated;
     }
 
+    // TODO: specification
     public void setTerminated(boolean terminated) {
         isTerminated = terminated;
     }
@@ -350,6 +370,7 @@ public abstract class Item {
      */
     public abstract void terminate();
 
+    // TODO: specification? Does it need documentation? Perhaps a simple explanation instead of full documentation with eg. doctags...
     public abstract void deleteRecursiveRaw();
 
     /* *********************************************************
@@ -384,6 +405,7 @@ public abstract class Item {
      *        | where k != l && a1 a2 a3 ... a(min(k, l)) == b1 b2 b3 ... b(min(k, l)).
      *        | result == k < l ? 1 : 2
      */
+    // Quite some formal specification, init? Is it even correct? It uses less Java and more math-language after all...
     public static int compareStrings(String string1, String string2){
         // Ignoring upper- and lowercase differences by turning both strings to uppercase.
         string1 = string1.toUpperCase();
