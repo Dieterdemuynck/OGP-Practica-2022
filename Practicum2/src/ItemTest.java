@@ -251,11 +251,11 @@ public class ItemTest {
 		assertEquals(fileDirectoryStringIntBooleanType, linkDirectoryStringItem.getLinkedItem());
 	}
 
-
-	/*
 	@Test
 	public void testIsValidName_LegalCase() {
 		assertTrue(File.isValidName("abcDEF123-_."));
+		assertTrue(Directory.isValidName("abcDEF123-_"));
+		assertTrue(Link.isValidName("abcDEF123-_."));
 	}
 
 	@Test
@@ -263,9 +263,16 @@ public class ItemTest {
 		assertFalse(File.isValidName(null));
 		assertFalse(File.isValidName(""));
 		assertFalse(File.isValidName("%illegalSymbol"));
+		assertFalse(Directory.isValidName(null));
+		assertFalse(Directory.isValidName(""));
+		assertFalse(Directory.isValidName("%illegalSymbol"));
+		assertFalse(Link.isValidName(null));
+		assertFalse(Link.isValidName(""));
+		assertFalse(Link.isValidName("%illegalSymbol"));
 		
 	}
 
+	/*
 	@Test
 	public void testChangeName_LegalCase() {
 		Date timeBeforeSetName = new Date();
