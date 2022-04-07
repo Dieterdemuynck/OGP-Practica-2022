@@ -284,6 +284,13 @@ public class ItemTest {
 		assertFalse(timeAfterSetName.before(fileDirectoryStringType.getModificationTime()));
 	}
 
+	@Test
+	public void testFileChangeName_IllegalName() {
+		fileDirectoryStringType.changeName("$IllegalName$");
+		assertEquals("bestand2", fileDirectoryStringType.getName());
+		assertNull(fileDirectoryStringType.getModificationTime());
+	}
+
 	@Test (expected = ItemNotWritableException.class)
 	public void testFileChangeName_FileNotWritable() {
 		fileNotWritable.changeName("NewLegalName");
@@ -307,6 +314,13 @@ public class ItemTest {
 	}
 
 	@Test
+	public void testDirectoryChangeName_IllegalName() {
+		directoryDirectoryString.changeName("$IllegalName$");
+		assertEquals("map3", directoryDirectoryString.getName());
+		assertNull(directoryDirectoryString.getModificationTime());
+	}
+
+	@Test
 	public void testLinkChangeName() {
 		Date timeBeforeSetName = new Date();
 		linkDirectoryStringItem.changeName("NewLegalName");
@@ -318,14 +332,14 @@ public class ItemTest {
 		assertFalse(timeAfterSetName.before(linkDirectoryStringItem.getModificationTime()));
 	}
 
-	/*
 	@Test
-	public void testChangeName_IllegalName() {
-		fileString.changeName("$IllegalName$");
-		assertEquals("bestand.txt", fileString.getName());
-		assertNull(fileString.getModificationTime());
+	public void testLinkChangeName_IllegalName() {
+		linkDirectoryStringItem.changeName("$IllegalName$");
+		assertEquals("link", linkDirectoryStringItem.getName());
+		assertNull(linkDirectoryStringItem.getModificationTime());
 	}
 
+	/*
 	@Test
 	public void testIsValidSize_LegalCase() {
 		assertTrue(File.isValidSize(0));
