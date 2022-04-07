@@ -169,6 +169,9 @@ public class Directory extends Item {
      * contents - defensive programming
      * *********************************************************/
     private List<Item> contents = new ArrayList();
+    //TODO ALS NAAM VERANDERD VAN ITEM MOET ARRAYLIST AANGEPAST WORDEN. -> verwijderen en terug toevoegen?
+    // add is al juist gemaakt voor item
+    // remove zou normaal deftig werken...
 
     // TODO: alles implementeren, ieder element in map moet in deze lijst te komen staan...
 
