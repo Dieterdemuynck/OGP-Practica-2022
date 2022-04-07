@@ -49,11 +49,12 @@ public class File extends Item {
      * thus the object is in a raw state upon entry of the constructor.
      */
     @Raw
-    public File(String name, int size, boolean writable, Type type) {
+    public File(Directory dir, String name, int size, boolean writable, Type type) {
         super(name);
         setSize(size);
         setWritable(writable);
         this.type = type;
+        setParentDirectory(dir);
     }
 
     /**
@@ -65,8 +66,8 @@ public class File extends Item {
      * | this(name,0,true)
      */
     @Raw
-    public File(String name, Type type) {
-        this(name, 0, true, type);
+    public File(Directory dir,String name, Type type) {
+        this(dir, name, 0, true, type);
     }
 
 
@@ -245,7 +246,7 @@ public class File extends Item {
     /* *********************************************************
      * type
      * *********************************************************/
-    public final Type type;
+    private final Type type;
 
     /**
      * Return the type of this file.
