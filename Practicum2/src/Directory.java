@@ -177,7 +177,7 @@ public class Directory extends Item {
 
     private int findIndexForInContents(Item item,int start, int einde){
         // complexiteit is lg(n)
-        if (start != einde){
+        if (start < einde){
             int mid = (start + einde)/2;
             if (compareStrings(item.getName(),contents.get(mid).getName()) == 1){
                 return findIndexForInContents(item, start,mid-1);
@@ -271,8 +271,13 @@ public class Directory extends Item {
         if (item == null){
             throw new IllegalDirectoryContentExeption(this, null);
         }
-        int place = findIndexForInContents(item,0,getContents().size());
-        getContents().add(place, item); //Moet gesorteerd worden op naam, zou moeten juist zijn zo
+        if (contents.size()>0){
+            int place = findIndexForInContents(item,0,getContents().size()-1);
+            getContents().add(place, item); //Moet gesorteerd worden op naam, zou moeten juist zijn zo
+        }
+        else {
+            getContents().add(item);
+        }
     }
 
     public void removeFromContents(Item item){
@@ -377,5 +382,14 @@ public class Directory extends Item {
             diskUsage += item.getTotalDiskUsage();
         }
         return diskUsage;
+    }
+
+    /* *********************************************************
+     * Destructor - defensive programming
+     * *********************************************************/
+
+    @Override
+    public void terminate() {
+
     }
 }
