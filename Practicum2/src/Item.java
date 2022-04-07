@@ -299,4 +299,19 @@ public abstract class Item {
         dir.addToContents(this);
         this.parentDirectory = dir;
     }
+
+    public Directory getRoot(){
+        return getRoot(this.getParentDirectory());
+
+    }
+
+    private Directory getRoot(Item item){
+        if (item.parentDirectory == null){
+            return (Directory) item;
+        }
+        else {
+            return getRoot(item.getParentDirectory());
+        }
+    }
+
 }
