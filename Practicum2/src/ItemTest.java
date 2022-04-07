@@ -269,27 +269,56 @@ public class ItemTest {
 		assertFalse(Link.isValidName(null));
 		assertFalse(Link.isValidName(""));
 		assertFalse(Link.isValidName("%illegalSymbol"));
+	}
+
+
+	@Test
+	public void testFileChangeName_LegalCase() {
+		Date timeBeforeSetName = new Date();
+		fileDirectoryStringType.changeName("NewLegalName");
+		Date timeAfterSetName = new Date();
 		
+		assertEquals("NewLegalName", fileDirectoryStringType.getName());
+		assertNotNull(fileDirectoryStringType.getModificationTime());
+		assertFalse(fileDirectoryStringType.getModificationTime().before(timeBeforeSetName));
+		assertFalse(timeAfterSetName.before(fileDirectoryStringType.getModificationTime()));
+	}
+
+	@Test (expected = ItemNotWritableException.class)
+	public void testFileChangeName_FileNotWritable() {
+		fileNotWritable.changeName("NewLegalName");
+	}
+
+	@Test
+	public void testDirectoryChangeName_LegalCase() {
+		Date timeBeforeSetName = new Date();
+		directoryDirectoryString.changeName("NewLegalName");
+		Date timeAfterSetName = new Date();
+
+		assertEquals("NewLegalName", directoryDirectoryString.getName());
+		assertNotNull(directoryDirectoryString.getModificationTime());
+		assertFalse(directoryDirectoryString.getModificationTime().before(timeBeforeSetName));
+		assertFalse(timeAfterSetName.before(directoryDirectoryString.getModificationTime()));
+	}
+
+	@Test (expected = ItemNotWritableException.class)
+	public void testDirectoryChangeName_FileNotWritable() {
+		directoryNotWritable.changeName("NewLegalName");
+	}
+
+	@Test
+	public void testLinkChangeName() {
+		Date timeBeforeSetName = new Date();
+		linkDirectoryStringItem.changeName("NewLegalName");
+		Date timeAfterSetName = new Date();
+
+		assertEquals("NewLegalName", linkDirectoryStringItem.getName());
+		assertNotNull(linkDirectoryStringItem.getModificationTime());
+		assertFalse(linkDirectoryStringItem.getModificationTime().before(timeBeforeSetName));
+		assertFalse(timeAfterSetName.before(linkDirectoryStringItem.getModificationTime()));
 	}
 
 	/*
-	@Test
-	public void testChangeName_LegalCase() {
-		Date timeBeforeSetName = new Date();
-		fileString.changeName("NewLegalName");
-		Date timeAfterSetName = new Date();
-		
-		assertEquals("NewLegalName", fileString.getName());
-		assertNotNull(fileString.getModificationTime());
-		assertFalse(fileString.getModificationTime().before(timeBeforeSetName));
-		assertFalse(timeAfterSetName.before(fileString.getModificationTime()));
-	}
-	
-	@Test (expected = ItemNotWritableException.class)
-	public void testChangeName_FileNotWritable() {
-		fileNotWritable.changeName("NewLegalName");
-	}
-	
 	@Test
 	public void testChangeName_IllegalName() {
 		fileString.changeName("$IllegalName$");
