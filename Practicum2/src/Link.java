@@ -93,4 +93,9 @@ public class Link extends Item {
             // Reference to parent directory does not need to be removed. (could be useful for restoring if possible.)
         }
     }
+
+    @Override
+    public void deleteRecursive(){
+        terminate();
+    }
 }

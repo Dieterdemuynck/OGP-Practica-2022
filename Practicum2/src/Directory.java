@@ -395,4 +395,13 @@ public class Directory extends Item {
             this.getParentDirectory().removeFromContents(this);
         }
     }
+
+    @Override
+    public void deleteRecursive(){
+        for (Item item: contents){
+            item.setTerminated(true);
+        }
+        contents.clear();
+        terminate();
+    }
 }

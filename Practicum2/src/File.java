@@ -314,6 +314,11 @@ public class File extends Item {
             this.getParentDirectory().removeFromContents(this);
         }
     }
+
+    @Override
+    public void deleteRecursive(){
+        terminate();
+    }
 }
 
 

@@ -349,4 +349,6 @@ public abstract class Item {
      * Destructs the item.
      */
     public abstract void terminate();
+
+    public abstract void deleteRecursive();
 }
