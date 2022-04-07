@@ -171,4 +171,133 @@ public class Directory extends Item {
     private List<Item> contents = new ArrayList();
 
     // TODO: alles implementeren, ieder element in map moet in deze lijst te komen staan...
+
+    private int findIndexForInContents(Item item,int start, int einde){
+        // complexiteit is lg(n)
+        if (start != einde){
+            int mid = (start + einde)/2;
+            if (compareStrings(item.getName(),contents.get(mid).getName()) == 1){
+                return findIndexForInContents(item, start,mid-1);
+            }
+            else if (compareStrings(item.getName(),contents.get(mid).getName()) == 2){
+                return findIndexForInContents(item,mid+1,einde);
+            }
+            else { //item heeft dezelfde naam
+                throw new IllegalItemExeption(this,item);
+            }
+        }
+        else {
+            if (compareStrings(item.getName(), contents.get(start).getName()) == 1){
+                return start;
+            }
+            else  if (compareStrings(item.getName(),contents.get(start).getName()) == 2){
+                return start + 1;
+            }
+            else { //item heeft dezelfde naam
+                throw new IllegalItemExeption(this,item);
+            }
+        }
+    }
+
+    /**
+     *
+     * @param string1
+     * @param string2
+     * @return  0 als string1 == string2
+     *          1 als string1 lexografisch voor string2 komt
+     *          2 als string1 lexografisch na string2 komt
+     */
+    private int compareStrings(String string1, String string2){
+        //TODO, zonder gebruik te maken van Java API functionaliteiten...
+        return 0;
+    }
+
+
+    public void addToContents(Item item){
+        if (!isWritable()) {
+            throw new ItemNotWritableException(this);
+        }
+        if (item == null){
+            throw new IllegalItemExeption(this, null);
+        }
+        int place = findIndexForInContents(item,0,contents.size());
+        contents.add(place, item); //Moet gesorteerd worden op naam, zou moeten juist zijn zo
+    }
+
+    public int getNbItems(){
+        return contents.size();
+    }
+
+    public Item getItemAt(int place){
+        return contents.get(place-1); //start vanaf 1
+    }
+
+    public int getItem(String itemName) {
+        //Index ook +1 doen zoals in getItemAt(.) ? Nu niet het geval
+        //Normaal complexiteit O(log n)
+        return getItem(itemName,0, contents.size());
+    }
+
+    private int getItem(String itemName,int start, int einde){
+        if (start != einde){
+            int mid = (start + einde)/2;
+            if (compareStrings(itemName,contents.get(mid).getName()) == 1){
+                return getItem(itemName, start,mid-1);
+            }
+            else if (compareStrings(itemName,contents.get(mid).getName()) == 2){
+                return getItem(itemName,mid+1,einde);
+            }
+            else {
+                return mid;
+            }
+        }
+        else {
+            if (compareStrings(itemName, contents.get(start).getName()) == 0){
+                return start;
+            }
+            else { // Naam komt niet voor
+                return -1; //TODO ZIT ER NIET IN, moet defensief -> exception?
+            }
+        }
+    }
+
+    public boolean containsDiskItemWithName(String itemName){
+        itemName = itemName.toLowerCase();
+        boolean contains = false;
+        for (Item item: contents){
+            String name = item.getName().toLowerCase();
+            if (name.equals(itemName)){
+                contains = true;
+            }
+        }
+        return contains;
+    }
+
+
+    public int getIndexOf(Item item) {
+        //Index ook +1 doen zoals in getItemAt(.) ? Nu niet het geval
+        return getIndexOf(item,  contents.size());
+    }
+
+    private int getIndexOf(Item item, int einde){
+        //
+        int place = getItem(item.getName(),0,einde);
+        if (item == contents.get(place)){
+            return place;
+        }
+        else {
+            return -1; //TODO ZIT ER NIET IN, moet defensief -> exception?
+        }
+    }
+
+    public boolean hasAsItem(Item item){
+        boolean contains = false;
+        for (Item contentItem: contents){
+            if (item == contentItem){
+                contains = true;
+            }
+        }
+        return contains;
+    }
+
 }
