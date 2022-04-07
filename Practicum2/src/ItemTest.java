@@ -227,6 +227,31 @@ public class ItemTest {
 		assertEquals(Type.PDF_FILE, fileDirectoryStringIntBooleanType.getType());
 	}
 
+	@Test
+	public void testLinkDirectoryStringItem_LegalCase(){
+		assertEquals("link", linkDirectoryStringItem.getName());
+		assertNull(linkDirectoryStringItem.getModificationTime());
+		assertFalse(timeBeforeConstruction.after(linkDirectoryStringItem.getCreationTime()));
+		assertFalse(linkDirectoryStringItem.getCreationTime().after(timeAfterConstruction));
+		assertEquals(root, linkDirectoryStringItem.getParentDirectory());
+		assertEquals(fileDirectoryStringIntBooleanType, linkDirectoryStringItem.getLinkedItem());
+	}
+
+	@Test
+	public void testLinkDirectoryStringItem_IllegalCase(){
+		timeBeforeConstruction = new Date();
+		linkDirectoryStringItem = new Link(root,"$link$",fileDirectoryStringIntBooleanType);
+		timeAfterConstruction = new Date();
+		assertFalse(File.isValidName("$link$"));
+		assertTrue(File.isValidName(linkDirectoryStringItem.getName()));
+		assertNull(linkDirectoryStringItem.getModificationTime());
+		assertFalse(timeBeforeConstruction.after(linkDirectoryStringItem.getCreationTime()));
+		assertFalse(linkDirectoryStringItem.getCreationTime().after(timeAfterConstruction));
+		assertEquals(root, linkDirectoryStringItem.getParentDirectory());
+		assertEquals(fileDirectoryStringIntBooleanType, linkDirectoryStringItem.getLinkedItem());
+	}
+
+
 	/*
 	@Test
 	public void testIsValidName_LegalCase() {
