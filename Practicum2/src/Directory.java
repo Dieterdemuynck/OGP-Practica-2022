@@ -19,7 +19,7 @@ import java.util.List;
  * @note		See Coding Rule 48 for more info on the encapsulation of class invariants.
  */
 
-public class Directory extends Item {
+public class Directory extends Item implements Writability {
 
     /* *********************************************************
      * Constructors
@@ -175,8 +175,8 @@ public class Directory extends Item {
 
     // TODO: alles implementeren, ieder element in map moet in deze lijst te komen staan...
 
-    private int findIndexForInContents(Item item,int start, int einde){
-        // complexiteit is lg(n)
+    private int findIndexForInContents(Item item, int start, int einde){
+        // Complexity of log(n)
         if (start < einde){
             int mid = (start + einde)/2;
             if (compareStrings(item.getName(),contents.get(mid).getName()) == 1){
@@ -196,63 +196,9 @@ public class Directory extends Item {
             else  if (compareStrings(item.getName(),contents.get(start).getName()) == 2){
                 return start + 1;
             }
-            else { //item heeft dezelfde naam
+            else { // Item has same name
                 throw new IllegalDirectoryContentExeption(this,item);
             }
-        }
-    }
-
-    /**
-     * Compares two strings and gives their lexicographic ordering based on the ASCII values of
-     * the characters. The difference between upper- and lowercase letters is ignored, as all lower-
-     * case letters will be set to uppercase during comparison. If the shorter string matches with
-     * the beginning of the longer string, the shorter string is considered to be lexicographically
-     * before the longer string.
-     *
-     * @pre    both strings differ from null
-     *       | string1 != null && string2 != null;
-     *
-     * @param  string1  The first string to compare
-     * @param  string2  The second string to compare
-     * @return  0 if the strings are the same;
-     *          1 if string1 lexicographically before string2;
-     *          2 if string1 lexicographically after string2.
-     *        | if (string1 == string2) {
-     *        |     result == 0
-     *        | }
-     *        | Assume string1 == a1 a2 a3 ... ak && string2 == b1 b2 b3 ... bl
-     *        | and i is the smallest index where ai != bi where i <= k && i <= l.
-     *        | if (ai < bi) {
-     *        |     result == 1;
-     *        | } else {
-     *        |     result == 2;
-     *        | }
-     *        | Assume string1 == a1 a2 a3 ... ak && string2 == b1 b2 b3 ... bl
-     *        | where k != l && a1 a2 a3 ... a(min(k, l)) == b1 b2 b3 ... b(min(k, l)).
-     *        | result == k < l ? 1 : 2
-     */
-    private int compareStrings(String string1, String string2){
-        // Ignoring upper- and lowercase differences by turning both strings to uppercase.
-        string1 = string1.toUpperCase();
-        string2 = string2.toUpperCase();
-
-        // Compare each character until different character has been found or end of string has been found
-        int result = 0;
-        for (int i = 0; i < Math.min(string1.length(), string2.length()); i++) {
-            if (string1.charAt(i) < string2.charAt(i)) {
-                return 1;
-            } else if (string1.charAt(i) > string2.charAt(i)) {
-                return 2;
-            }
-        }
-
-        // End of the shortest string reached ==> compare length
-        if (string1.length() < string2.length()) {
-            return 1;
-        } else if (string1.length() > string2.length()) {
-            return 2;
-        } else {
-            return 0;
         }
     }
 
@@ -286,10 +232,10 @@ public class Directory extends Item {
             throw new ItemNotWritableException(this);
         }
         if (item == null){
-            throw new IllegalDirectoryContentExeption(this, null);
+            throw new IllegalArgumentException("Cannot attempt to remove null Item from Directory");
         }
         int place = getIndexOf(item);
-        contents.remove(place);
+        getContents().remove(place);
     }
 
     public int getNbItems(){
@@ -370,8 +316,9 @@ public class Directory extends Item {
 
 
     /* *********************************************************
-     * bijkomende methodes
+     * Additional Methods
      * *********************************************************/
+
     public void makeRoot(){
         setParentDirectory(null);
     }
@@ -397,25 +344,26 @@ public class Directory extends Item {
         }
     }
 
-    private boolean canBeDeletedRecursively(){
-        //TODO kan iemand dit???
-        // idee we schrijven in link een methode isWritable die altijd true geeft -> dan kan je dit laten werken hahaha
-        boolean canBeTerminated = true;
-        for (Item item: contents){
-            Link link = (Link) item; // da mag nie zeker :(
-            if(link.isTerminated()){
-                canBeTerminated = false;
-            }
-            File file = (File) item; // da gaat nie zeker :(
-            if (file.isTerminated() && !file.isWritable()){
-                canBeTerminated = false;
-            }
-            Directory directory = (Directory) item; // da gaat nie zeker :(
-            if (directory.isTerminated() && !directory.isWritable()){
-                canBeTerminated = directory.canBeDeletedRecursively();
+    public boolean canBeDeleted() {
+        // A directory cannot be deleted if it is not writable
+        if (!isWritable()) {
+            return false;
+        }
+
+        for (Item item: getContents()) {
+            if (item instanceof Directory && !((Directory) item).canBeDeleted()) {
+                // There is a directory which cannot be deleted
+                return false;
+            } else if (item instanceof  Writability && !((Writability) item).isWritable()) {
+                // There is content of the directory which is not writable
+                return false;
+                /* NOTE: While the only other object which has writability is File, this allows for further expansion
+                 * of the current implementation.
+                 */
             }
         }
-        return canBeTerminated;
+
+        return true;
     }
 
     @Override

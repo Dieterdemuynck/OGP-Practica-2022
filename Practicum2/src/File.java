@@ -24,7 +24,7 @@ import be.kuleuven.cs.som.annotate.*;
  * 
  * @note		See Coding Rule 48 for more info on the encapsulation of class invariants.
  */
-public class File extends Item {
+public class File extends Item implements Writability {
 
     /* *********************************************************
      * Constructors

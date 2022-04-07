@@ -351,4 +351,61 @@ public abstract class Item {
     public abstract void terminate();
 
     public abstract void deleteRecursive();
+
+    /* *********************************************************
+     * Miscellaneous
+     * *********************************************************/
+    /**
+     * Compares two strings and gives their lexicographic ordering based on the ASCII values of
+     * the characters. The difference between upper- and lowercase letters is ignored, as all lower-
+     * case letters will be set to uppercase during comparison. If the shorter string matches with
+     * the beginning of the longer string, the shorter string is considered to be lexicographically
+     * before the longer string.
+     *
+     * @pre    both strings differ from null
+     *       | string1 != null && string2 != null;
+     *
+     * @param  string1  The first string to compare
+     * @param  string2  The second string to compare
+     * @return  0 if the strings are the same;
+     *          1 if string1 lexicographically before string2;
+     *          2 if string1 lexicographically after string2.
+     *        | if (string1 == string2) {
+     *        |     result == 0
+     *        | }
+     *        | Assume string1 == a1 a2 a3 ... ak && string2 == b1 b2 b3 ... bl
+     *        | and i is the smallest index where ai != bi where i <= k && i <= l.
+     *        | if (ai < bi) {
+     *        |     result == 1;
+     *        | } else {
+     *        |     result == 2;
+     *        | }
+     *        | Assume string1 == a1 a2 a3 ... ak && string2 == b1 b2 b3 ... bl
+     *        | where k != l && a1 a2 a3 ... a(min(k, l)) == b1 b2 b3 ... b(min(k, l)).
+     *        | result == k < l ? 1 : 2
+     */
+    public static int compareStrings(String string1, String string2){
+        // Ignoring upper- and lowercase differences by turning both strings to uppercase.
+        string1 = string1.toUpperCase();
+        string2 = string2.toUpperCase();
+
+        // Compare each character until different character has been found or end of string has been found
+        int result = 0;
+        for (int i = 0; i < Math.min(string1.length(), string2.length()); i++) {
+            if (string1.charAt(i) < string2.charAt(i)) {
+                return 1;
+            } else if (string1.charAt(i) > string2.charAt(i)) {
+                return 2;
+            }
+        }
+
+        // End of the shortest string reached ==> compare length
+        if (string1.length() < string2.length()) {
+            return 1;
+        } else if (string1.length() > string2.length()) {
+            return 2;
+        } else {
+            return 0;
+        }
+    }
 }
