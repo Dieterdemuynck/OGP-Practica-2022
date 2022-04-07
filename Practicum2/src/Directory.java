@@ -366,16 +366,32 @@ public class Directory extends Item implements Writability {
         return true;
     }
 
-    @Override
-    public void deleteRecursive(){
-        if (canBeDeletedRecursively()){
-            for (Item item: contents){
-                item.setTerminated(true);
-                Directory directory = (Directory) item;
-                directory.deleteRecursive();
-            }
-            contents.clear();
-            terminate();
+    /**
+     * Safely deletes the directory and all its contents, by first checking if all content, including content
+     * within child directories, is writable.
+     */
+    public void deleteRecursively(){
+        if (canBeDeleted()){
+            deleteRecursiveRaw();
         }
+    }
+
+    /**
+     * Deletes the directory and its contents, assuming the directory and its contents are all writable and can
+     * safely be deleted.
+     *
+     * @pre  The directory and its contents should all be writable, and each directory within this directory
+     *       should also be able to be deleted.
+     *     | this.canBeDeleted()
+     */
+    @Override
+    public void deleteRecursiveRaw() {
+        while (getContents().size() > 0){
+            // As long as the directory still has contents, delete the last item.
+            getContents().get(getContents().size() - 1).deleteRecursiveRaw();
+        }
+
+        // All items have been deleted, delete the directory itself.
+        terminate();
     }
 }

@@ -1,9 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import java.security.DigestException;
 import java.util.Date;
-import java.util.Dictionary;
 
 import static org.junit.Assert.*;
 //import org.junit.jupiter.api.Test;
@@ -580,7 +578,7 @@ public class ItemTest {
 		File file = new File(one,"bestand",Type.PDF_FILE);
 		sleep();
 		//re-initialise the other
-		other.deleteRecursive();
+		other.deleteRecursively();
 		System.out.println(other.getNbItems());
 		System.out.println(other.isTerminated());
 		other = new Directory(root,"other");
@@ -590,7 +588,7 @@ public class ItemTest {
 		//2 Test other created and modified before one created and modified
 		File file3 = new File(other,"bestand3",Type.PDF_FILE);
 		sleep();
-		one.deleteRecursive();
+		one.deleteRecursively();
 		System.out.println(one.getNbItems());
 		System.out.println(one.isTerminated());
 		one = new Directory(root,"one");

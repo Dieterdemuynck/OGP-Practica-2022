@@ -350,7 +350,7 @@ public abstract class Item {
      */
     public abstract void terminate();
 
-    public abstract void deleteRecursive();
+    public abstract void deleteRecursiveRaw();
 
     /* *********************************************************
      * Miscellaneous

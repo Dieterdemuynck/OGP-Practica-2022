@@ -316,7 +316,7 @@ public class File extends Item implements Writability {
     }
 
     @Override
-    public void deleteRecursive(){
+    public void deleteRecursiveRaw(){
         terminate();
     }
 }
