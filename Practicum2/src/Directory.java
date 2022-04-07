@@ -303,4 +303,12 @@ public class Directory extends Item {
         return contains;
     }
 
+
+    /* *********************************************************
+     * contents - defensive programming
+     * *********************************************************/
+    public void makeRoot(){
+        setParentDirectory(null);
+    }
+
 }

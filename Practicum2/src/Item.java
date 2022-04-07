@@ -271,7 +271,9 @@ public abstract class Item {
      */
     public void setParentDirectory(Directory parentDirectory) {
         this.parentDirectory = parentDirectory;
-        parentDirectory.addToContents(this);
+        if (parentDirectory != null) {
+            parentDirectory.addToContents(this);
+        }
     }
 
 
