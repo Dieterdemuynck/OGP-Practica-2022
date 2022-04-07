@@ -24,8 +24,10 @@ public class Directory extends Item {
      * E.g. the name is defaulted to null, which is not allowed,
      * thus the object is in a raw state upon entry of the constructor.
      */
-    public Directory(Directory parentDirectory, String name, boolean writable) {
+    public Directory(Directory dir, String name, boolean writable) {
         super(name);
+        setParentDirectory(dir);
+        setWritable(writable);
     }
 
     public Directory(String name, boolean writable) {

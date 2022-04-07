@@ -25,13 +25,13 @@ public class Link extends Item {
      * thus the object is in a raw state upon entry of the constructor.
      */
     @Raw
-    public Link(Directory directory, String name, Item linkedItem) {
+    public Link(Directory dir, String name, Item linkedItem) {
         super(name);  // Damn you java, for making the call to super a necessity to be the first statement!!!
         if (linkedItem instanceof Link) {
             throw new IllegalArgumentException("linkedItem cannot be instance of Link");
         }
         this.linkedItem = linkedItem;
-        setParentDirectory(directory);
+        setParentDirectory(dir);
     }
 
     /* *********************************************************
