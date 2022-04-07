@@ -1,5 +1,20 @@
 import be.kuleuven.cs.som.annotate.*;
 
+/**
+ * A class of links.
+ *
+ * -> name
+ * -> creationTime
+ * -> modificationTime
+ * -> directory
+ * -> LinkedItem
+ *
+ * @author  Team 2: Dieter Demuynck, Hannes Ingelaere en Ine Malfait
+ * @version 4
+ *
+ * @note		See Coding Rule 48 for more info on the encapsulation of class invariants.
+ */
+
 public class Link extends Item {
 
     /* *********************************************************

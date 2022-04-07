@@ -11,10 +11,16 @@ import be.kuleuven.cs.som.annotate.*;
  *          | isValidCreationTime(getCreationTime())
  * @invar   Each file must have a valid modification time.
  *          | canHaveAsModificationTime(getModificationTime())
- * 
+ *
+ * -> directory
+ * -> writable
+ * -> type
+ *
+ *
  * @author  Mark Dreesen
  * @author  Tommy Messelis
- * @version 3.3
+ * @author  Team 2: Dieter Demuynck, Hannes Ingelaere en Ine Malfait
+ * @version 4
  * 
  * @note		See Coding Rule 48 for more info on the encapsulation of class invariants.
  */
@@ -273,6 +279,8 @@ public class File extends Item {
         }
         super.setParentDirectory(parentDirectory);
     }
+
+
 }
 
 

@@ -10,8 +10,11 @@ import java.util.Date;
 /**
  * A class of Items.
  *
- * @author  Mark Dreesen
- * @author  Tommy Messelis
+ * -> name
+ * -> creationTime
+ * -> modificationTime
+ * -> directory
+ *
  * @author  Team 2: Dieter Demuynck, Hannes Ingelaere en Ine Malfait
  * @version 4
  */
@@ -272,6 +275,7 @@ public abstract class Item {
 
 
     /*
+    TODO
     Moet er nog bij komen:
     - public void move(...)
     - public String getRoot()

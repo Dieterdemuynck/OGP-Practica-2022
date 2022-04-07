@@ -1,10 +1,29 @@
 import be.kuleuven.cs.som.annotate.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * A class of directories.
+ *
+ * -> name
+ * -> creationTime
+ * -> modificationTime
+ * -> directory
+ * -> contents
+ * -> writable
+ *
+ * @author  Team 2: Dieter Demuynck, Hannes Ingelaere en Ine Malfait
+ * @version 4
+ *
+ * @note		See Coding Rule 48 for more info on the encapsulation of class invariants.
+ */
+
 public class Directory extends Item {
 
-    /* *********************************************************
+    /**********************************************************
      * Constructors
-     * *********************************************************/
+     **********************************************************/
 
     /**
      * Initialize a new directory with given name, parent directory and writability
@@ -42,9 +61,9 @@ public class Directory extends Item {
         this(null, name, true);
     }
 
-    /* *********************************************************
+    /**********************************************************
      * name - total programming
-     * *********************************************************/
+     *********************************************************/
 
     /**
      * Check whether the given name is a legal name for a directory.
@@ -111,9 +130,9 @@ public class Directory extends Item {
         }
     }
 
-    /* *********************************************************
+    /**********************************************************
      * writability - defensive programming
-     * *********************************************************/
+     **********************************************************/
     // TODO: properly implement (check if methods obey requests, such as changing lastModificationTime)
     private boolean isWritable = true;
 
@@ -124,4 +143,12 @@ public class Directory extends Item {
     public void setWritable(boolean writable) {
         isWritable = writable;
     }
+
+
+    /**********************************************************
+     * contents - defensive programming
+     **********************************************************/
+    private List<Item> contents = new ArrayList();
+
+    // TODO: alles implementeren, ieder element in map moet in deze lijst te komen staan...
 }
