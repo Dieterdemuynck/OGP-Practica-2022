@@ -309,7 +309,7 @@ public class File extends Item {
 
     @Override
     public void terminate() {
-        if (!isTerminated()) {
+        if (!isTerminated()&& isWritable()) {
             setTerminated(true);
             this.getParentDirectory().removeFromContents(this);
         }
