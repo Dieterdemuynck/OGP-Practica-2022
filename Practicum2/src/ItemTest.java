@@ -251,6 +251,8 @@ public class ItemTest {
 		assertEquals(fileDirectoryStringIntBooleanType, linkDirectoryStringItem.getLinkedItem());
 	}
 
+
+	// ITEM NAME TESTS -> test for Link, File and Directory
 	@Test
 	public void testIsValidName_LegalCase() {
 		assertTrue(File.isValidName("abcDEF123-_."));
@@ -339,7 +341,8 @@ public class ItemTest {
 		assertNull(linkDirectoryStringItem.getModificationTime());
 	}
 
-	/*
+
+	// FILE SIZE TESTS
 	@Test
 	public void testIsValidSize_LegalCase() {
 		assertTrue(File.isValidSize(0));
@@ -357,7 +360,7 @@ public class ItemTest {
 
 	@Test
 	public void testEnlarge_LegalCase() {
-		File file = new File("bestand.txt", File.getMaximumSize()-1,true,Type.PDF_FILE);
+		File file = new File(root,"bestand.txt", File.getMaximumSize()-1,true,Type.PDF_FILE);
 		Date timeBeforeEnlarge = new Date();
 		file.enlarge(1);
 		Date timeAfterEnlarge = new Date();		
@@ -366,58 +369,76 @@ public class ItemTest {
 		assertFalse(file.getModificationTime().before(timeBeforeEnlarge));
 		assertFalse(timeAfterEnlarge.before(file.getModificationTime()));
 	}
-	
+
 	@Test (expected = ItemNotWritableException.class)
 	public void testEnlarge_FileNotWritable() {
 		fileNotWritable.enlarge(1);
 	}
-	
+
 	@Test
 	public void testShorten_LegalCase() {
-		fileStringIntBoolean.shorten(1);
+		fileDirectoryStringIntBooleanType.shorten(1);
 		Date timeAfterShorten = new Date();		
-		assertEquals(fileStringIntBoolean.getSize(),99);
-		assertNotNull(fileStringIntBoolean.getModificationTime());
-		assertFalse(fileStringIntBoolean.getModificationTime().before(timeAfterConstruction));
-		assertFalse(timeAfterShorten.before(fileStringIntBoolean.getModificationTime()));
+		assertEquals(fileDirectoryStringIntBooleanType.getSize(),99);
+		assertNotNull(fileDirectoryStringIntBooleanType.getModificationTime());
+		assertFalse(fileDirectoryStringIntBooleanType.getModificationTime().before(timeAfterConstruction));
+		assertFalse(timeAfterShorten.before(fileDirectoryStringIntBooleanType.getModificationTime()));
 	}
-	
+
 	@Test (expected = ItemNotWritableException.class)
 	public void testShorten_FileNotWritable() {
 		fileNotWritable.shorten(1);
 	}
 
+	// ITEM CREATIONTIME TESTS
 	@Test
 	public void testIsValidCreationTime_LegalCase() {
 		Date now = new Date();
 		assertTrue(File.isValidCreationTime(now));
+		assertTrue(Directory.isValidCreationTime(now));
+		assertTrue(Link.isValidCreationTime(now));
 	}
 	
 	@Test
 	public void testIsValidCreationTime_IllegalCase() {
 		assertFalse(File.isValidCreationTime(null));
+		assertFalse(Directory.isValidCreationTime(null));
+		assertFalse(Link.isValidCreationTime(null));
+
 		Date inFuture = new Date(System.currentTimeMillis() + 1000*60*60);
 		assertFalse(File.isValidCreationTime(inFuture));
+		assertFalse(Directory.isValidCreationTime(inFuture));
+		assertFalse(Link.isValidCreationTime(inFuture));
 	}
-	
+
+
 	@Test
 	public void testcanHaveAsModificationTime_LegalCase() {
-		assertTrue(fileString.canHaveAsModificationTime(null));
-		assertTrue(fileString.canHaveAsModificationTime(new Date()));
+		assertTrue(fileDirectoryStringType.canHaveAsModificationTime(null));
+		assertTrue(fileDirectoryStringType.canHaveAsModificationTime(new Date()));
+		assertTrue(root.canHaveAsModificationTime(null));
+		assertTrue(root.canHaveAsModificationTime(new Date()));
+		assertTrue(linkDirectoryStringItem.canHaveAsModificationTime(null));
+		assertTrue(linkDirectoryStringItem.canHaveAsModificationTime(new Date()));
 	}
 	
 	@Test
 	public void testcanHaveAsModificationTime_IllegalCase() {
-		assertFalse(fileString.canHaveAsModificationTime(new Date(timeAfterConstruction.getTime() - 1000*60*60)));
-		assertFalse(fileString.canHaveAsModificationTime(new Date(System.currentTimeMillis() + 1000*60*60)));
+		assertFalse(fileDirectoryStringType.canHaveAsModificationTime(new Date(timeAfterConstruction.getTime() - 1000*60*60)));
+		assertFalse(fileDirectoryStringType.canHaveAsModificationTime(new Date(System.currentTimeMillis() + 1000*60*60)));
+		assertFalse(root.canHaveAsModificationTime(new Date(timeAfterConstruction.getTime() - 1000*60*60)));
+		assertFalse(root.canHaveAsModificationTime(new Date(System.currentTimeMillis() + 1000*60*60)));
+		assertFalse(linkDirectoryStringItem.canHaveAsModificationTime(new Date(timeAfterConstruction.getTime() - 1000*60*60)));
+		assertFalse(linkDirectoryStringItem.canHaveAsModificationTime(new Date(System.currentTimeMillis() + 1000*60*60)));
 	}
 
+/*
 	@Test
 	public void testHasOverlappingUsePeriod_UnmodifiedFiles() {
 		// one = implicit argument ; other = explicit argument
-		File one = new File("one",Type.PDF_FILE);
+		File one = new File(root,"one",Type.PDF_FILE);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
-		File other = new File("other",Type.PDF_FILE);
+		File other = new File(root,"other",Type.PDF_FILE);
 		
 		//1 Test unmodified case
 		assertFalse(one.hasOverlappingUsePeriod(other));
@@ -433,7 +454,7 @@ public class ItemTest {
 		assertFalse(one.hasOverlappingUsePeriod(other));
 		
 	}
-	
+
 	@Test
 	public void testHasOverlappingUsePeriod_ModifiedNoOverlap() {
 		// one = implicit argument ; other = explicit argument
