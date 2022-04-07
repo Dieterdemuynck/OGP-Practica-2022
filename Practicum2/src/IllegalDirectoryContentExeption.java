@@ -9,12 +9,12 @@ import be.kuleuven.cs.som.annotate.Immutable;
  * @version 4
  */
 
-public class IllegalItemExeption extends RuntimeException{
+public class IllegalDirectoryContentExeption extends RuntimeException{
 
     /**
-     * Required because this class inherits from Exception TODO SNAP DIT NIET?
+     * Required because this class inherits from Exception
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     /**
      * Variable referencing the directory to which the item cannot be added.
@@ -39,13 +39,13 @@ public class IllegalItemExeption extends RuntimeException{
      * is set to the given directory.
      * | new.getDirectory() == dir
      */
-    public IllegalItemExeption(Directory dir, Item item) {  // TODO: adjust FileTest
+    public IllegalDirectoryContentExeption(Directory dir, Item item) {  // TODO: adjust FileTest
         this.dir = dir;
         this.item = item;
     }
 
     /**
-     * Return the item involved in this illegal item exception.
+     * Return the item involved in the exception.
      */
     @Basic
     @Immutable
@@ -54,7 +54,7 @@ public class IllegalItemExeption extends RuntimeException{
     }
 
     /**
-     * Return the directory involved in this illegal item exception.
+     * Return the directory involved in the exception.
      */
     @Basic
     @Immutable

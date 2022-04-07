@@ -186,7 +186,7 @@ public class Directory extends Item {
                 return findIndexForInContents(item,mid+1,einde);
             }
             else { //item heeft dezelfde naam
-                throw new IllegalItemExeption(this,item);
+                throw new IllegalDirectoryContentExeption(this,item);
             }
         }
         else {
@@ -197,22 +197,63 @@ public class Directory extends Item {
                 return start + 1;
             }
             else { //item heeft dezelfde naam
-                throw new IllegalItemExeption(this,item);
+                throw new IllegalDirectoryContentExeption(this,item);
             }
         }
     }
 
     /**
+     * Compares two strings and gives their lexicographic ordering based on the ASCII values of
+     * the characters. The difference between upper- and lowercase letters is ignored, as all lower-
+     * case letters will be set to uppercase during comparison. If the shorter string matches with
+     * the beginning of the longer string, the shorter string is considered to be lexicographically
+     * before the longer string.
      *
-     * @param string1
-     * @param string2
-     * @return  0 als string1 == string2
-     *          1 als string1 lexografisch voor string2 komt
-     *          2 als string1 lexografisch na string2 komt
+     * @pre    both strings differ from null
+     *       | string1 != null && string2 != null;
+     *
+     * @param  string1  The first string to compare
+     * @param  string2  The second string to compare
+     * @return  0 if the strings are the same;
+     *          1 if string1 lexicographically before string2;
+     *          2 if string1 lexicographically after string2.
+     *        | if (string1 == string2) {
+     *        |     result == 0
+     *        | }
+     *        | Assume string1 == a1 a2 a3 ... ak && string2 == b1 b2 b3 ... bl
+     *        | and i is the smallest index where ai != bi where i <= k && i <= l.
+     *        | if (ai < bi) {
+     *        |     result == 1;
+     *        | } else {
+     *        |     result == 2;
+     *        | }
+     *        | Assume string1 == a1 a2 a3 ... ak && string2 == b1 b2 b3 ... bl
+     *        | where k != l && a1 a2 a3 ... a(min(k, l)) == b1 b2 b3 ... b(min(k, l)).
+     *        | result == k < l ? 1 : 2
      */
     private int compareStrings(String string1, String string2){
-        //TODO, zonder gebruik te maken van Java API functionaliteiten...
-        return 0;
+        // Ignoring upper- and lowercase differences by turning both strings to uppercase.
+        string1 = string1.toUpperCase();
+        string2 = string2.toUpperCase();
+
+        // Compare each character until different character has been found or end of string has been found
+        int result = 0;
+        for (int i = 0; i < Math.min(string1.length(), string2.length()); i++) {
+            if (string1.charAt(i) < string2.charAt(i)) {
+                return 1;
+            } else if (string1.charAt(i) > string2.charAt(i)) {
+                return 2;
+            }
+        }
+
+        // End of the shortest string reached ==> compare length
+        if (string1.length() < string2.length()) {
+            return 1;
+        } else if (string1.length() > string2.length()) {
+            return 2;
+        } else {
+            return 0;
+        }
     }
 
     public List<Item> getContents() {
@@ -228,7 +269,7 @@ public class Directory extends Item {
             throw new ItemNotWritableException(this);
         }
         if (item == null){
-            throw new IllegalItemExeption(this, null);
+            throw new IllegalDirectoryContentExeption(this, null);
         }
         int place = findIndexForInContents(item,0,getContents().size());
         getContents().add(place, item); //Moet gesorteerd worden op naam, zou moeten juist zijn zo
@@ -239,7 +280,7 @@ public class Directory extends Item {
             throw new ItemNotWritableException(this);
         }
         if (item == null){
-            throw new IllegalItemExeption(this, null);
+            throw new IllegalDirectoryContentExeption(this, null);
         }
         int place = getIndexOf(item);
         contents.remove(place);
