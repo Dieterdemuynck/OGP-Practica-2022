@@ -328,5 +328,9 @@ public abstract class Item {
         }
     }
 
+    public int getTotalDiskUsage(){
+        return 0;
+    }
+
 
 }

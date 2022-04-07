@@ -292,6 +292,15 @@ public class File extends Item {
     }
 
 
+    /* *********************************************************
+     * bijkomende methodes
+     * *********************************************************/
+    @Override
+    public int getTotalDiskUsage(){
+        return getSize();
+    }
+
+
 }
 
 
