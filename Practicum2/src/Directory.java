@@ -26,7 +26,7 @@ public class Directory extends Item implements Writability {
      * *********************************************************/
 
     /**
-     * Initialize a new directory with given name, parent directory and writability
+     * Initialize a new directory with given name, parent directory and writability.
      *
      * @param name The name of the new directory.
      *
@@ -46,20 +46,52 @@ public class Directory extends Item implements Writability {
      * E.g. the name is defaulted to null, which is not allowed,
      * thus the object is in a raw state upon entry of the constructor.
      */
+    @Model @Raw
     public Directory(Directory dir, String name, boolean writable) {
         super(name);
         setParentDirectory(dir);
         setWritable(writable);
     }
 
+    /**
+     * Initialize a new directory with given name, parent directory. This new directory is by default
+     * writable.
+     *
+     * @param dir  The directory which will be the new directory's parent directory.
+     * @param name The name of the new directory.
+     *
+     * @effect A new directory object is created, which is by default writable.
+     * | Directory(dir, name, true)
+     */
+    @Raw
     public Directory(Directory dir, String name){
         this(dir,name,true);
     }
 
+    /**
+     * Initialize a new directory with given name and writability. This new directory will be a root directory.
+     *
+     * @param name      The name of the new directory.
+     * @param writable  The directory which will be the new directory's parent directory.
+     *
+     * @effect A new directory object is created, which is by default a root directory.
+     * | Directory(null, name, writable)
+     */
+    @Raw
     public Directory(String name, boolean writable) {
         this(null, name, writable);
     }
 
+    /**
+     * Initialize a new directory with given name. This new directory is by default writable, and will be a root
+     * directory.
+     *
+     * @param name The name of the new directory.
+     *
+     * @effect A new directory object is created, which is by default writable and a root directory.
+     * | Directory(null, name, true)
+     */
+    @Raw
     public Directory(String name) {
         this(null, name, true);
     }
