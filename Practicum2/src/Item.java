@@ -130,6 +130,8 @@ public abstract class Item {
      * Changes the name of the item to the given name, if valid. If the given name is not valid, the name will not
      * change.
      *
+     * @effect adds the file to the content of the directory.
+     * | addToContents(this)
      * @param   name
      *          The string to which the new name will be set
      * @throws  ItemNotWritableException
@@ -307,6 +309,8 @@ public abstract class Item {
      * @effect  removes the item from the current parentDirectory and adds it to the targetParentDirectory.
      *          | getParentDirectory().removeFromContents(this)
      *          | parentDirectory.addToContents(this)
+     * @effect adds the file to the content of the directory.
+     *          | addToContents(this)
      * @throws  IllegalArgumentException
      *          The given new parentDirectory may not be null.
      *          | parentDirectory != null

@@ -37,6 +37,8 @@ public class Directory extends Item implements Writability {
      * @effect The name of the directory is set to the given name.
      * If the given name is not valid, a default name is set.
      * | setName(name)
+     * @effect adds the file to the content of the directory.
+     * | addToContents(this)
      * @post The new creation time of this directory is initialized to some time during
      * constructor execution.
      * | (new.getCreationTime().getTime() >= System.currentTimeMillis()) &&
@@ -241,8 +243,8 @@ public class Directory extends Item implements Writability {
     }
 
     /**
-     * TODO: specification
-     * @return
+     * Returns the contents of the directory.
+     * @return the list of contents of the directory.
      */
     @Basic
     public List<Item> getContents() {
@@ -261,6 +263,7 @@ public class Directory extends Item implements Writability {
      * @param   item
      *          The item which will be added to the directory.
      */
+    @Model
     public void addToContents(Item item){
         if (!isWritable()) {
             // Directory must be writable.
@@ -305,17 +308,28 @@ public class Directory extends Item implements Writability {
         setModificationTime();
     }
 
-    // TODO: specification
+    /**
+     * Returns the number of items in the directory.
+     * @return the number of items in the directory.
+     */
     public int getNbItems(){
         return getContents().size();
     }
 
-    // TODO: specification
+    /**
+     * Returns the item at the given index in the list.
+     * @param place the index of the requested item in the list.
+     * @return the Item with the given index in the list.
+     */
     public Item getItemAt(int place){
         return getContents().get(place-1); //start vanaf 1
     }
 
-    // TODO: specification
+    /**
+     * Returns the item with the given name.
+     * @param itemName the name of the wanted item.
+     * @return the Item with the given name.
+     */
     public Item getItem(String itemName) {
         //Index ook +1 doen zoals in getItemAt(.) ? Nu niet het geval
         //Normaal complexiteit O(log n)

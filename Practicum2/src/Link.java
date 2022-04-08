@@ -30,7 +30,8 @@ public class Link extends Item {
      * @effect The name of the link is set to the given name.
      * If the given name is not valid, a default name is set.
      * | setName(name)
-     *
+     * @effect adds the file to the content of the directory.
+     * | addToContents(this)
      * @post The new creation time of this link is initialized to some time during
      * constructor execution.
      * | (new.getCreationTime().getTime() >= System.currentTimeMillis()) &&

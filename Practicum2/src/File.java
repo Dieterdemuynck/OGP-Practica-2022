@@ -33,7 +33,7 @@ public class File extends Item implements Writability {
      * @param writable The writability of the new file.
      * @param type     The type of the new file
      * @effect The directory of the file is set to the given directory dir.
-     * | setParentDirectory(dir) TODO: controleren
+     * | setParentDirectory(dir)
      * @effect The name of the file is set to the given name.
      * If the given name is not valid, a default name is set.
      * | setName(name)
@@ -42,7 +42,9 @@ public class File extends Item implements Writability {
      * @effect The writability is set to the given flag
      * | setWritable(writable)
      * @effect The type of the file is set to the given type.
-     * | this.type = type TODO: controleren
+     * | this.type = type
+     * @effect adds the file to the content of the directory.
+     * | dir.addToContents(this)
      * @post The new creation time of this file is initialized to some time during
      * constructor execution.
      * | (new.getCreationTime().getTime() >= System.currentTimeMillis()) &&
