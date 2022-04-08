@@ -208,6 +208,11 @@ public class Directory extends Item implements Writability {
         return contents;
     }
 
+    // TODO:
+    // Is dit nodig? Kvind da lik beetje gevaarlijk, want ge wilt toch nie da iemand die contents helemaal kan veranderen?
+    // Veel veiliger via add en remove...
+    // en et private zetten is ook nie nuttig want twordt nergens gebruikt...
+
     // TODO: specification
     public void setContents(List<Item> contents) {
         this.contents = contents;
@@ -303,7 +308,6 @@ public class Directory extends Item implements Writability {
     }
 
     private int getIndexOf(Item item, int einde){  // TODO: Only used once, redundant separation? move code to public version
-        //
         int place = getItem(item.getName(),0,einde);
         if (item == getContents().get(place)){
             return place;
@@ -324,6 +328,10 @@ public class Directory extends Item implements Writability {
         return contains;
     }
 
+
+    /* *********************************************************
+     * parentDirectory
+     * *********************************************************/
 
     @Override
     protected void setParentDirectory(Directory parentDirectory) {
