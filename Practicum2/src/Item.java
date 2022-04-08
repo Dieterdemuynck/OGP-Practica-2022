@@ -352,7 +352,11 @@ public abstract class Item {
      * bijkomende methodes
      * *********************************************************/
 
-    // TODO: specification
+    /**
+     * returns the root directory of the item.
+     *
+     * @return The root directory of the item.
+     */
     public Directory getRoot(){
         if (this.getParentDirectory() == null) {
             return (Directory) this;
@@ -362,7 +366,11 @@ public abstract class Item {
         }
     }
 
-    // TODO: specification
+    /**
+     * checks whether the item is a child of the directory.
+     * @param directory the possible parent directory.
+     * @return boolean for whether the item is a child of the directory.
+     */
     public boolean isDirectOrIndirectChildOf(Directory directory){
         if (directory.getContents().size() == 0){
             // Case 1: contents of given directory are empty ==> item is not a child of given directory.
@@ -381,13 +389,19 @@ public abstract class Item {
         }
     }
 
-    // TODO: specification
+    /**
+     * it returns the default disk usage, which is zero.
+     * @return zero.
+     */
     // Bit odd that an item, "by default", does not use disk space. Hm.
     public int getTotalDiskUsage(){
         return 0;
     }
 
-    // TODO: specification
+    /**
+     * Returns the path of this item, written with a '/' between items and directories.
+     * @return the path of this item.
+     */
     public String getAbsolutePath(){
         if (this.getParentDirectory() ==  null){
             return "/" + this.getName();
@@ -405,12 +419,18 @@ public abstract class Item {
     // TODO: specification
     private boolean isTerminated = false;
 
-    // TODO: specification
+    /**
+     * checks whether an item is terminated.
+     * @return boolean of whether the item is terminated.
+     */
     public boolean isTerminated() {
         return isTerminated;
     }
 
-    // TODO: specification
+    /**
+     * Terminates or Activates an item.
+     * @param terminated the boolean of whether to actviate (false) or terminate (true) the item
+     */
     public void setTerminated(boolean terminated) {
         isTerminated = terminated;
     }
