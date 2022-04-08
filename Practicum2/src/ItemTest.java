@@ -962,7 +962,7 @@ public class ItemTest {
 
 	// DIRECTORY MAKE ROOT TESTS----------------------------------------------------------------------------------------
 	@Test
-	public void testDirectoryMakeRoot_WritableCase(){
+	public void testDirectoryMakeRoot_WritableRootCase(){
 		Directory writable = new Directory(root,"writable_directory",true);
 		assertEquals(root,writable.getParentDirectory());
 		assertTrue(root.containsDiskItemWithName("writable_directory"));
@@ -979,6 +979,35 @@ public class ItemTest {
 		assertTrue(root.containsDiskItemWithName("writable_directory"));
 		writable.makeRoot();
 	}
+
+
+	// DIRECTORY MOVE TESTS---------------------------------------------------------------------------------------------
+	@Test
+	public void testFileMove_WritableRoots(){
+		Directory root1 = new Directory("root1");
+		Directory root2 = new Directory("root2");
+		File file = new File(root1,"file",Type.TEXT_FILE);
+		assertEquals(root1, file.getParentDirectory());
+		file.move(root2);
+		assertEquals(root2,file.getParentDirectory());
+	}
+
+	@Test (expected = ItemNotWritableException.class)
+	public void testFileMove_NotWritableRoot1(){
+		Directory root1 = new Directory("root1",false);
+		Directory root2 = new Directory("root2");
+		File file = new File(root1,"file",Type.TEXT_FILE);
+	}
+
+	@Test (expected = ItemNotWritableException.class)
+	public void testFileMove_NotWritableRoot2(){
+		Directory root1 = new Directory("root1",false);
+		Directory root2 = new Directory("root2");
+		File file = new File(root1,"file",Type.TEXT_FILE);
+		assertEquals(root1, file.getParentDirectory());
+		file.move(root2);
+	}
+
 
 	// SLEEP METHOD
 	private void sleep() {
