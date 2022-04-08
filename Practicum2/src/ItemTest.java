@@ -1221,6 +1221,57 @@ public class ItemTest {
 	}
 
 
+	// FILE GET ABSOLUTE PATH TESTS-------------------------------------------------------------------------------------
+	@Test
+	public void testFileGetAbsolutePath_directChildCase(){
+		Directory root = new Directory("root");
+		File file = new File(root,"file",Type.TEXT_FILE);
+		assertEquals("/root/file.txt", file.getAbsolutePath());
+	}
+
+	@Test
+	public void testFileGetAbsolutePath_indirectChildCase(){
+		Directory root = new Directory("root");
+		Directory dir = new Directory(root,"dir");
+		File file = new File(dir,"file",Type.TEXT_FILE);
+		assertEquals("/root/dir/file.txt", file.getAbsolutePath());
+	}
+
+
+	// DIRECTORY GET ABSOLUTE PATH TESTS--------------------------------------------------------------------------------
+	@Test
+	public void testDirectoryGetAbsolutePath_directChildCase(){
+		Directory root = new Directory("root");
+		Directory directory = new Directory(root,"directory");
+		assertEquals("/root/directory", directory.getAbsolutePath());
+	}
+
+	@Test
+	public void testDirectoryGetAbsolutePath_indirectChildCase(){
+		Directory root = new Directory("root");
+		Directory dir = new Directory(root,"dir");
+		Directory directory = new Directory(dir,"directory");
+		assertEquals("/root/dir/directory", directory.getAbsolutePath());
+	}
+
+
+	// LINK GET ABSOLUTE PATH TESTS-------------------------------------------------------------------------------------
+	@Test
+	public void testLinkGetAbsolutePath_directChildCase(){
+		Directory root = new Directory("root");
+		Link link = new Link(root,"link",fileDirectoryStringIntBooleanType);
+		assertEquals("/root/link", link.getAbsolutePath());
+	}
+
+	@Test
+	public void testLinkGetAbsolutePath_indirectChildCase(){
+		Directory root = new Directory("root");
+		Directory dir = new Directory(root,"dir");
+		Link link = new Link(dir,"link",fileDirectoryStringIntBooleanType);
+		assertEquals("/root/dir/link", link.getAbsolutePath());
+	}
+
+
 	// SLEEP METHOD
 	private void sleep() {
 		try {
