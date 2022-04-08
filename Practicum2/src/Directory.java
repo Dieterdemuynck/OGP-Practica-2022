@@ -176,7 +176,6 @@ public class Directory extends Item implements Writability {
     /* *********************************************************
      * writability - defensive programming
      * *********************************************************/
-    // TODO: properly implement (check if methods obey requests, such as changing lastModificationTime)
 
     /**
      * Variable registering whether this directory is writable.
@@ -477,60 +476,62 @@ public class Directory extends Item implements Writability {
     // beter private zetten zeker?
 
     /**
-     * Tells whether the directory is deletable or not.
+     * Checks if the directory and its contents (including content from child directories) are writable.
+     * If a non-writable file is found, throws an error.
      *
-     * @pre    The directory and its items must be writable and the items must be deletable.
-     * |
-     * @return The result will tell whether the directory can be deleted, depending on the writability of the directory and of the items in the directory.
+     * @throws  ItemNotWritableException
+     *          All items must be writable.
      */
-    public boolean canBeDeleted() {
+    public void checkIfReadyForDeletion() throws ItemNotWritableException {
         // A directory cannot be deleted if it is not writable
         if (!isWritable()) {
-            return false;
+            throw new ItemNotWritableException(this);
         }
 
         for (Item item: getContents()) {
-            if (item instanceof Directory && !((Directory) item).canBeDeleted()) {
-                // There is a directory which cannot be deleted
-                return false;
+            if (item instanceof Directory ) {
+                // Continue down file until error is found.
+                ((Directory) item).checkIfReadyForDeletion();
             } else if (item instanceof  Writability && !((Writability) item).isWritable()) {
                 // There is content of the directory which is not writable
-                return false;
+                throw new ItemNotWritableException(item);
                 /* NOTE: While the only other object which has writability is File, current implementation allows for
                  * further expansion of subclasses which implement writability.
                  */
             }
         }
-
-        return true;
     }
 
-    // TODO: any pre or post conditions? Anything?
-    // Note: we do not use "@effect" doctag or "@Model" annotation as the precondition from deleteRecursivelyRaw() does not transfer.
+    /* Note: we do not use "@effect" doctag or "@Model" annotation as the precondition from deleteRecursivelyRaw()
+     * does not transfer.
+     */
     /**
      * Safely deletes the directory and all its contents, by first checking if all content, including content
      * within child directories, is writable.
+     *
+     * @post    The directory and all its contents (including contents within child directories) will be terminated.
+     *          | this.isTerminated() == true
      */
     @Override
     public void deleteRecursive(){
-        // TODO: should this throw an error upon finding a non-writable file? FIX: rename "canBeDeleted()" to "checkDirectoryAndContentWritability()"
-        // The implementation of the renamed function should be relatively obvious.
-        if (canBeDeleted()){
-            deleteRecursiveRaw();
-        }
+        checkIfReadyForDeletion();
+        deleteRecursiveRaw();
     }
 
+    // Relatively dirty, but efficient!... somewhat.
     /**
      * Deletes the directory and its contents, assuming the directory and its contents are all writable and can
      * safely be deleted.
      *
-     * @pre  The directory and its contents should all be writable, and each directory within this directory
-     *       should also be able to be deleted.
-     *     | this.canBeDeleted()
+     * @pre     The directory and its contents should all be writable, and each directory within this directory
+     *          should also be able to be deleted.
+     *          | this.checkIfReadyForDeletion() throws no errors.
+     * @post    The directory and all its contents (including contents within child directories) will be terminated.
+     *          | this.isTerminated() == true
      */
     @Raw //@Model
     public void deleteRecursiveRaw() {
-        Item lastItem = null;
+        Item lastItem;
         while (getContents().size() > 0){
             // As long as the directory still has contents, delete the last item.
             lastItem = getContents().get(getContents().size() - 1);

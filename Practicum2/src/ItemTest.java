@@ -344,8 +344,6 @@ public class ItemTest {
 	@Test
 	public void testLinkChangeName() {
 		Date timeBeforeSetName = new Date();
-		System.out.println(linkDirectoryStringItem.getParentDirectory());
-		System.out.println(linkDirectoryStringItem.getParentDirectory().getNbItems());
 		linkDirectoryStringItem.changeName("NewLegalName");
 		Date timeAfterSetName = new Date();
 
@@ -1301,12 +1299,17 @@ public class ItemTest {
 		assertTrue(directory.isTerminated());
 	}
 
-	@Test
+	@Test(expected = ItemNotWritableException.class)
 	public void testDirectoryTerminate_notWritableCase(){
 		Directory directory = new Directory(root, "directory",false);
 		assertFalse(directory.isTerminated());
-		directory.terminate();
-		assertFalse(directory.isTerminated());
+		try {
+			directory.terminate();
+		} catch (ItemNotWritableException e) {
+			assertFalse(directory.isTerminated());
+			assertSame(e.getItem(), directory);
+			throw e;
+		}
 	}
 
 
@@ -1347,12 +1350,11 @@ public class ItemTest {
 		assertTrue(directory.isTerminated());
 	}
 
-	@Test
+	@Test(expected = ItemNotWritableException.class)
 	public void testDirectoryDeleteRecursive_notWritableCase_emptyDirectory(){
 		Directory directory = new Directory(root, "directory",false);
 		assertFalse(directory.isTerminated());
 		directory.deleteRecursive();
-		assertFalse(directory.isTerminated());
 	}
 
 	@Test
@@ -1365,34 +1367,47 @@ public class ItemTest {
 		assertTrue(file.isTerminated());
 	}
 
-	@Test
+	@Test(expected = ItemNotWritableException.class)
 	public void testDirectoryDeleteRecursive_notWritableCase_notEmptyDirectory_contentsWritable(){
 		Directory directory = new Directory(root, "directory",false);
 		File file = new File(root,"file",Type.JAVA_FILE);
 		assertFalse(directory.isTerminated());
-		directory.deleteRecursive();
-		assertFalse(directory.isTerminated());
-		assertFalse(file.isTerminated());
+		try {
+			directory.deleteRecursive();
+		} catch (ItemNotWritableException e) {
+			assertFalse(directory.isTerminated());
+			assertFalse(file.isTerminated());
+			throw e;
+		}
 	}
 
-	@Test
+	@Test(expected = ItemNotWritableException.class)
 	public void testDirectoryDeleteRecursive_writableCase_notEmptyDirectory_contentsNotWritable(){
 		Directory directory = new Directory(root, "directory");
 		File file = new File(directory,"file",10,false,Type.JAVA_FILE);
 		assertFalse(directory.isTerminated());
-		directory.deleteRecursive();
-		assertFalse(directory.isTerminated());
-		assertFalse(file.isTerminated());
+		try {
+			directory.deleteRecursive();
+		} catch (ItemNotWritableException e) {
+			assertFalse(directory.isTerminated());
+			assertFalse(file.isTerminated());
+			throw e;
+		}
 	}
 
-	@Test
+	@Test(expected = ItemNotWritableException.class)
 	public void testDirectoryDeleteRecursive_notWritableCase_notEmptyDirectory_contentsNotWritable(){
 		Directory directory = new Directory(root, "directory",false);
 		File file = new File(root,"file",10,false,Type.JAVA_FILE);
 		assertFalse(directory.isTerminated());
-		directory.deleteRecursive();
-		assertFalse(directory.isTerminated());
-		assertFalse(file.isTerminated());
+		try {
+			directory.deleteRecursive();
+		} catch (ItemNotWritableException e) {
+			assertFalse(directory.isTerminated());
+			assertFalse(file.isTerminated());
+			assertFalse(((Writability) e.getItem()).isWritable() && e.getItem().isDirectOrIndirectChildOf(directory));
+			throw e;
+		}
 	}
 
 
