@@ -350,17 +350,11 @@ public abstract class Item {
 
     // TODO: specification
     public Directory getRoot(){
-        return getRoot(this.getParentDirectory());
-
-    }
-
-    // TODO: specification
-    private Directory getRoot(Item item){
-        if (item.parentDirectory == null){
-            return (Directory) item;
+        if (this.getParentDirectory() == null) {
+            return (Directory) this;
         }
         else {
-            return getRoot(item.getParentDirectory());
+            return getParentDirectory().getRoot();
         }
     }
 
