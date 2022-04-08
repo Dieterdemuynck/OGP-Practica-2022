@@ -13,9 +13,7 @@ import static org.junit.Assert.*;
  * @author Team 2: Dieter Demuynck, Hannes Ingelaere en Ine Malfait
  *
  */
-// TODO splitsen en controleren of er nog gesplitst moeten worden
 public class ItemTest {
-
 	File fileDirectoryStringIntBooleanType;
 	File fileDirectoryStringType;
 	Link linkDirectoryStringItem;
@@ -23,7 +21,6 @@ public class ItemTest {
 	Directory directoryDirectoryStringBoolean;
 	Directory directoryDirectoryString;
 	Directory directoryStringBoolean;
-
 	Date timeBeforeConstruction, timeAfterConstruction;
 	
 	File fileNotWritable;
@@ -971,6 +968,13 @@ public class ItemTest {
 		File file = new File(root,"file",Type.PDF_FILE);
 		assertTrue(root.hasAsItem(file));
 		assertFalse(root.hasAsItem(linkDirectoryStringItem));
+	}
+
+
+	// LINK LINKED ITEM TESTS-------------------------------------------------------------------------------------------
+	@Test
+	public void testLinkLinkedItem(){
+		assertEquals(fileDirectoryStringIntBooleanType,linkDirectoryStringItem.getLinkedItem());
 	}
 
 
