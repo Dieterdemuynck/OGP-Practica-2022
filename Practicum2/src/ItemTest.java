@@ -341,6 +341,8 @@ public class ItemTest {
 	@Test
 	public void testLinkChangeName() {
 		Date timeBeforeSetName = new Date();
+		System.out.println(linkDirectoryStringItem.getParentDirectory());
+		System.out.println(linkDirectoryStringItem.getParentDirectory().getNbItems());
 		linkDirectoryStringItem.changeName("NewLegalName");
 		Date timeAfterSetName = new Date();
 
@@ -970,12 +972,40 @@ public class ItemTest {
 	}
 
 
-	// LINK LINKED ITEM TESTS-------------------------------------------------------------------------------------------
+	// LINK LINKED ITEM TEST--------------------------------------------------------------------------------------------
 	@Test
 	public void testLinkLinkedItem(){
 		assertEquals(fileDirectoryStringIntBooleanType,linkDirectoryStringItem.getLinkedItem());
 	}
 
+
+	// DIRECTORY MAKE ROOT TESTS----------------------------------------------------------------------------------------
+	@Test
+	public void testDirectoryMakeRoot_WritableCase(){
+		Directory writable = new Directory(root,"writable_directory",true);
+		assertEquals(root,writable.getParentDirectory());
+		assertTrue(root.containsDiskItemWithName("writable_directory"));
+		writable.makeRoot();
+		assertNull(writable.getParentDirectory());
+		assertFalse(root.containsDiskItemWithName("writable_directory"));
+	}
+
+	@Test (expected = ItemNotWritableException.class)
+	public void testDirectoryMakeRoot_NotWritableDirectoryCase(){
+		Directory writable = new Directory(root,"writable_directory",false);
+		assertEquals(root,writable.getParentDirectory());
+		assertTrue(root.containsDiskItemWithName("writable_directory"));
+		writable.makeRoot();
+	}
+
+	@Test (expected = ItemNotWritableException.class)
+	public void testDirectoryMakeRoot_NotWritableRootCase(){
+		Directory root = new Directory("root",false);
+		Directory writable = new Directory(root,"writable_directory",true);
+		assertEquals(root,writable.getParentDirectory());
+		assertTrue(root.containsDiskItemWithName("writable_directory"));
+		writable.makeRoot();
+	}
 
 	// SLEEP METHOD
 	private void sleep() {
