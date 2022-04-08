@@ -260,20 +260,20 @@ public class Directory extends Item implements Writability {
     }
 
     // TODO: specification
-    public int getItem(String itemName) {
+    public Item getItem(String itemName) {
         //Index ook +1 doen zoals in getItemAt(.) ? Nu niet het geval
         //Normaal complexiteit O(log n)
-        return getItem(itemName,0, getContents().size());
+        return contents.get(getItemIndex(itemName,0, getContents().size()));
     }
 
-    private int getItem(String itemName,int start, int einde){
+    private int getItemIndex(String itemName,int start, int einde){
         if (start != einde){
             int mid = (start + einde)/2;
             if (compareStrings(itemName,getContents().get(mid).getName()) == 1){
-                return getItem(itemName, start,mid-1);
+                return getItemIndex(itemName, start,mid-1);
             }
             else if (compareStrings(itemName,getContents().get(mid).getName()) == 2){
-                return getItem(itemName,mid+1,einde);
+                return getItemIndex(itemName,mid+1,einde);
             }
             else {
                 return mid;
@@ -308,7 +308,7 @@ public class Directory extends Item implements Writability {
     }
 
     private int getIndexOf(Item item, int einde){  // TODO: Only used once, redundant separation? move code to public version
-        int place = getItem(item.getName(),0,einde);
+        int place = getItemIndex(item.getName(),0,einde);
         if (item == getContents().get(place)){
             return place;
         }
@@ -378,6 +378,7 @@ public class Directory extends Item implements Writability {
         }
     }
 
+    // beter private zetten zeker?
     // TODO: specification
     public boolean canBeDeleted() {
         // A directory cannot be deleted if it is not writable
