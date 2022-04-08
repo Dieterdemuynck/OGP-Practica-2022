@@ -1320,6 +1320,92 @@ public class ItemTest {
 	}
 
 
+	// FILE DELETE RECURSIVE TESTS--------------------------------------------------------------------------------------
+	@Test
+	public void testFileDeleteRecursive_writableCase(){
+		File file = new File(root, "file", Type.JAVA_FILE);
+		assertFalse(file.isTerminated());
+		file.deleteRecursive();
+		assertTrue(file.isTerminated());
+	}
+
+	@Test
+	public void testFileDeleteRecursive_notWritableCase(){
+		File file = new File(root, "file",0, false, Type.JAVA_FILE);
+		assertFalse(file.isTerminated());
+		file.deleteRecursive();
+		assertFalse(file.isTerminated());
+	}
+
+
+	// DIRECTORY DELETE RECURSIVE TESTS---------------------------------------------------------------------------------
+	@Test
+	public void testDirectoryDeleteRecursive_writableCase_emptyDirectory(){
+		Directory directory = new Directory(root, "directory");
+		assertFalse(directory.isTerminated());
+		directory.deleteRecursive();
+		assertTrue(directory.isTerminated());
+	}
+
+	@Test
+	public void testDirectoryDeleteRecursive_notWritableCase_emptyDirectory(){
+		Directory directory = new Directory(root, "directory",false);
+		assertFalse(directory.isTerminated());
+		directory.deleteRecursive();
+		assertFalse(directory.isTerminated());
+	}
+
+	@Test //TODO FOUT IN DELETE RECURSIVE
+	public void testDirectoryDeleteRecursive_writableCase_notEmptyDirectory_contentsWritable(){
+		Directory directory = new Directory(root, "directory");
+		File file = new File(root,"file",Type.JAVA_FILE);
+		assertFalse(directory.isTerminated());
+		directory.deleteRecursive();
+		assertTrue(directory.isTerminated());
+		assertTrue(file.isTerminated());
+	}
+
+	@Test
+	public void testDirectoryDeleteRecursive_notWritableCase_notEmptyDirectory_contentsWritable(){
+		Directory directory = new Directory(root, "directory",false);
+		File file = new File(root,"file",Type.JAVA_FILE);
+		assertFalse(directory.isTerminated());
+		directory.deleteRecursive();
+		assertFalse(directory.isTerminated());
+		assertFalse(file.isTerminated());
+	}
+
+	@Test //TODO FOUT IN DELETE RECURSIVE
+	public void testDirectoryDeleteRecursive_writableCase_notEmptyDirectory_contentsNotWritable(){
+		Directory directory = new Directory(root, "directory");
+		File file = new File(root,"file",10,false,Type.JAVA_FILE);
+		assertFalse(directory.isTerminated());
+		directory.deleteRecursive();
+		assertFalse(directory.isTerminated());
+		assertFalse(file.isTerminated());
+	}
+
+	@Test
+	public void testDirectoryDeleteRecursive_notWritableCase_notEmptyDirectory_contentsNotWritable(){
+		Directory directory = new Directory(root, "directory",false);
+		File file = new File(root,"file",10,false,Type.JAVA_FILE);
+		assertFalse(directory.isTerminated());
+		directory.deleteRecursive();
+		assertFalse(directory.isTerminated());
+		assertFalse(file.isTerminated());
+	}
+
+
+	// LINK DELETE RECURSIVE TESTS--------------------------------------------------------------------------------------
+	@Test
+	public void testLinkDeleteRecursive(){
+		Link link = new Link(root, "link1",fileDirectoryStringIntBooleanType);
+		assertFalse(link.isTerminated());
+		link.deleteRecursive();
+		assertTrue(link.isTerminated());
+	}
+
+
 	// SLEEP METHOD
 	private void sleep() {
 		try {
