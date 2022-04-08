@@ -1355,10 +1355,10 @@ public class ItemTest {
 		assertFalse(directory.isTerminated());
 	}
 
-	@Test //TODO FOUT IN DELETE RECURSIVE
+	@Test
 	public void testDirectoryDeleteRecursive_writableCase_notEmptyDirectory_contentsWritable(){
 		Directory directory = new Directory(root, "directory");
-		File file = new File(root,"file",Type.JAVA_FILE);
+		File file = new File(directory,"file",Type.JAVA_FILE);
 		assertFalse(directory.isTerminated());
 		directory.deleteRecursive();
 		assertTrue(directory.isTerminated());
@@ -1375,10 +1375,10 @@ public class ItemTest {
 		assertFalse(file.isTerminated());
 	}
 
-	@Test //TODO FOUT IN DELETE RECURSIVE
+	@Test
 	public void testDirectoryDeleteRecursive_writableCase_notEmptyDirectory_contentsNotWritable(){
 		Directory directory = new Directory(root, "directory");
-		File file = new File(root,"file",10,false,Type.JAVA_FILE);
+		File file = new File(directory,"file",10,false,Type.JAVA_FILE);
 		assertFalse(directory.isTerminated());
 		directory.deleteRecursive();
 		assertFalse(directory.isTerminated());
