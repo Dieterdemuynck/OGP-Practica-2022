@@ -101,7 +101,7 @@ public class Link extends Item {
     }
 
     @Override
-    public void deleteRecursiveRaw(){
+    public void deleteRecursive(){
         terminate();
     }
 }

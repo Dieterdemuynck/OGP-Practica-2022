@@ -378,7 +378,7 @@ public abstract class Item {
     public abstract void terminate();
 
     // TODO: specification? Does it need documentation? Perhaps a simple explanation instead of full documentation with eg. doctags...
-    public abstract void deleteRecursiveRaw();
+    public abstract void deleteRecursive();
 
     /* *********************************************************
      * Miscellaneous

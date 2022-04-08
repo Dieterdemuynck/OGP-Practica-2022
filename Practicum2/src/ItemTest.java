@@ -454,7 +454,7 @@ public class ItemTest {
 		
 		//3 Test other unmodified case
 		//so re-initialise the other file by first terminating existing other file and then recreating that file
-		other.deleteRecursiveRaw();
+		other.deleteRecursive();
 		other = new File(root, "other",Type.PDF_FILE);
 		one.enlarge(File.getMaximumSize());
 		assertFalse(one.hasOverlappingUsePeriod(other));
@@ -473,7 +473,7 @@ public class ItemTest {
 		one.enlarge(File.getMaximumSize());
         sleep();
         //re-initialise the other
-		other.deleteRecursiveRaw();
+		other.deleteRecursive();
         other = new File(root,"other",Type.PDF_FILE);
         other.enlarge(File.getMaximumSize());
 	    assertFalse(one.hasOverlappingUsePeriod(other));
@@ -481,7 +481,7 @@ public class ItemTest {
 	    //2 Test other created and modified before one created and modified
 		other.enlarge(File.getMaximumSize());
         sleep();
-		one.deleteRecursiveRaw();
+		one.deleteRecursive();
         one = new File(root,"one",Type.PDF_FILE);
         one.enlarge(File.getMaximumSize());
         assertFalse(one.hasOverlappingUsePeriod(other));
@@ -584,7 +584,7 @@ public class ItemTest {
 		File file = new File(one,"file1",Type.PDF_FILE);
 		sleep();
 		//re-initialise the other
-		other.deleteRecursively();
+		other.deleteRecursive();
 		other = new Directory(root,"other");
 		File file2 = new File(other,"file2",Type.PDF_FILE);
 		assertFalse(one.hasOverlappingUsePeriod(other));
@@ -592,7 +592,7 @@ public class ItemTest {
 		//2 Test other created and modified before one created and modified
 		File file3 = new File(other,"file3",Type.PDF_FILE);
 		sleep();
-		one.deleteRecursively();
+		one.deleteRecursive();
 		one = new Directory(root,"one");
 		File file4 = new File(root,"file4",Type.PDF_FILE);
 		assertFalse(one.hasOverlappingUsePeriod(other));
@@ -675,7 +675,7 @@ public class ItemTest {
 
 		//3 Test other unmodified case
 		//so re-initialise the other file by first terminating existing other file and then recreating that file
-		other.deleteRecursiveRaw();
+		other.deleteRecursive();
 		sleep();
 		other = new Link(root,"other",fileDirectoryStringIntBooleanType);
 		other.changeName("2");
@@ -695,7 +695,7 @@ public class ItemTest {
 		one.changeName("1");
 		sleep();
 		//re-initialise the other
-		other.deleteRecursiveRaw();
+		other.deleteRecursive();
 		other = new Link(root,"other",fileDirectoryStringIntBooleanType);
 		other.changeName("2");
 		assertFalse(one.hasOverlappingUsePeriod(other));
@@ -703,7 +703,7 @@ public class ItemTest {
 		//2 Test other created and modified before one created and modified
 		other.changeName("3");
 		sleep();
-		one.deleteRecursiveRaw();
+		one.deleteRecursive();
 		one = new Link(root,"one",fileDirectoryStringIntBooleanType);
 		one.changeName("4");
 		assertFalse(one.hasOverlappingUsePeriod(other));

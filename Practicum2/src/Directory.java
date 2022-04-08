@@ -408,7 +408,8 @@ public class Directory extends Item implements Writability {
      * Safely deletes the directory and all its contents, by first checking if all content, including content
      * within child directories, is writable.
      */
-    public void deleteRecursively(){
+    @Override
+    public void deleteRecursive(){
         // TODO: should this throw an error upon finding a non-writable file? FIX: rename "canBeDeleted()" to "checkDirectoryAndContentWritability()"
         // The implementation of the renamed function should be relatively obvious.
         if (canBeDeleted()){
@@ -424,11 +425,17 @@ public class Directory extends Item implements Writability {
      *       should also be able to be deleted.
      *     | this.canBeDeleted()
      */
-    @Override @Raw //@Model
+    @Raw //@Model
     public void deleteRecursiveRaw() {
+        Item lastItem = null;
         while (getContents().size() > 0){
             // As long as the directory still has contents, delete the last item.
-            getContents().get(getContents().size() - 1).deleteRecursiveRaw();
+            lastItem = getContents().get(getContents().size() - 1);
+            if (lastItem instanceof Directory) {
+                ((Directory)lastItem).deleteRecursiveRaw();
+            } else {
+                lastItem.deleteRecursive();
+            }
         }
 
         // All items have been deleted, delete the directory itself.
