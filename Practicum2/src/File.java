@@ -57,6 +57,9 @@ public class File extends Item implements Writability {
     @Raw
     public File(Directory dir, String name, int size, boolean writable, Type type) {
         super(name);
+        if (dir == null) {
+            throw new IllegalArgumentException("Link must be content of directory");
+        }
         setSize(size);
         setWritable(writable);
         this.type = type;

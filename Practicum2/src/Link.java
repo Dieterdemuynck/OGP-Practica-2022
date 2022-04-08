@@ -48,6 +48,8 @@ public class Link extends Item {
         super(name);  // Damn you java, for making the call to super a necessity to be the first statement!!!
         if (linkedItem instanceof Link) {
             throw new IllegalArgumentException("linkedItem cannot be instance of Link");
+        } else if (dir == null) {
+            throw new IllegalArgumentException("Link must be content of directory");
         }
         this.linkedItem = linkedItem;
         setParentDirectory(dir);
