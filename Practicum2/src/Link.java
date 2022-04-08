@@ -37,6 +37,12 @@ public class Link extends Item {
      * | (new.getCreationTime().getTime() <= (new System).currentTimeMillis())
      * @post The new link has no time of last modification.
      * | new.getModificationTime() == null
+     * @throws  IllegalArgumentException
+     *          linkedItem may not be instance of Link
+     *          | !(linkedItem instanceof Link)
+     * @throws  IllegalArgumentException
+     *          parentDirectory may not be null
+     *          | dir != null
      *
      * @note The constructor is annotated raw because at the start of the execution, not all fields are
      * defaulted to a value that is accepted by the invariants.
@@ -44,7 +50,7 @@ public class Link extends Item {
      * thus the object is in a raw state upon entry of the constructor.
      */
     @Raw
-    public Link(Directory dir, String name, Item linkedItem) {
+    public Link(Directory dir, String name, Item linkedItem) throws IllegalArgumentException {
         super(name);  // Damn you java, for making the call to super a necessity to be the first statement!!!
         if (linkedItem instanceof Link) {
             throw new IllegalArgumentException("linkedItem cannot be instance of Link");

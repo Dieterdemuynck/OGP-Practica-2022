@@ -49,16 +49,19 @@ public class File extends Item implements Writability {
      * | (new.getCreationTime().getTime() <= (new System).currentTimeMillis())
      * @post The new file has no time of last modification.
      * | new.getModificationTime() == null
+     * @throws  IllegalArgumentException
+     *          parentDirectory may not be null
+     *          | dir != null
      * @note The constructor is annotated raw because at the start of the execution, not all fields are
      * defaulted to a value that is accepted by the invariants.
      * E.g. the name is defaulted to null, which is not allowed,
      * thus the object is in a raw state upon entry of the constructor.
      */
     @Raw
-    public File(Directory dir, String name, int size, boolean writable, Type type) {
+    public File(Directory dir, String name, int size, boolean writable, Type type) throws IllegalArgumentException{
         super(name);
         if (dir == null) {
-            throw new IllegalArgumentException("Link must be content of directory");
+            throw new IllegalArgumentException("File must be content of directory");
         }
         setSize(size);
         setWritable(writable);
@@ -78,7 +81,7 @@ public class File extends Item implements Writability {
      * | this(dir,name,0,true,type)
      */
     @Raw
-    public File(Directory dir, String name, Type type) {
+    public File(Directory dir, String name, Type type) throws IllegalArgumentException {
         this(dir, name, 0, true, type);
     }
 
