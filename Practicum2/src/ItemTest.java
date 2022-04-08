@@ -1,6 +1,8 @@
+import com.sun.source.tree.AssertTree;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.beans.JavaBean;
 import java.security.DigestException;
 import java.util.Date;
 
@@ -1269,6 +1271,52 @@ public class ItemTest {
 		Directory dir = new Directory(root,"dir");
 		Link link = new Link(dir,"link",fileDirectoryStringIntBooleanType);
 		assertEquals("/root/dir/link", link.getAbsolutePath());
+	}
+
+
+	// FILE TERMINATE TESTS---------------------------------------------------------------------------------------------
+	@Test
+	public void testFileTerminate_writableCase(){
+		File file = new File(root, "file", Type.JAVA_FILE);
+		assertFalse(file.isTerminated());
+		file.terminate();
+		assertTrue(file.isTerminated());
+	}
+
+	@Test
+	public void testFileTerminate_notWritableCase(){
+		File file = new File(root, "file",0, false, Type.JAVA_FILE);
+		assertFalse(file.isTerminated());
+		file.terminate();
+		assertFalse(file.isTerminated());
+	}
+
+
+	// DIRECTORY TERMINATE TESTS----------------------------------------------------------------------------------------
+	@Test
+	public void testDirectoryTerminate_writableCase(){
+		Directory directory = new Directory(root, "directory");
+		assertFalse(directory.isTerminated());
+		directory.terminate();
+		assertTrue(directory.isTerminated());
+	}
+
+	@Test
+	public void testDirectoryTerminate_notWritableCase(){
+		Directory directory = new Directory(root, "directory",false);
+		assertFalse(directory.isTerminated());
+		directory.terminate();
+		assertFalse(directory.isTerminated());
+	}
+
+
+	// LINK TERMINATE TESTS---------------------------------------------------------------------------------------------
+	@Test
+	public void testLinkTerminate(){
+		Link link = new Link(root, "link1",fileDirectoryStringIntBooleanType);
+		assertFalse(link.isTerminated());
+		link.terminate();
+		assertTrue(link.isTerminated());
 	}
 
 
