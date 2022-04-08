@@ -282,18 +282,10 @@ public class File extends Item implements Writability {
         super.setParentDirectory(parentDirectory);
     }
 
-    @Override
-    public void changeParentDirectory(Directory parentDiretory){
-        if (!this.isWritable()){
-            throw new ItemNotWritableException(this);
-        }
-        setParentDirectory(parentDiretory);
-    }
-
-
     /* *********************************************************
      * bijkomende methodes
      * *********************************************************/
+
     @Override
     public int getTotalDiskUsage() {
         return getSize();

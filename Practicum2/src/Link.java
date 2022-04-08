@@ -87,11 +87,6 @@ public class Link extends Item {
         super.setParentDirectory(parentDirectory);
     }
 
-    @Override
-    public void changeParentDirectory(Directory parentDiretory){
-        setParentDirectory(parentDiretory);
-    }
-
     public void terminate() {
         if (!isTerminated()) {
             setTerminated(true);
