@@ -10,9 +10,11 @@ import java.util.List;
  *          and/or digits.
  * 	        | isValidName(getName())
  * @invar   Contents may never contain a null element.
- *          | for (Item item: getContent()): item != null
+ *          | for (Item item: getContent()) item != null;
  * @invar   Parent directory may not be child directory (direct or indirect)
- *          |
+ *          | !getParentDirectory().isDirectOrIndirectChildOf(this)
+ * @invar   Each item in the directory's contents has its parentDirectory set to this directory.
+ *          | for (Item item: getContent()) item.getParentDirectory() == this;
  * @author  Team 2: Dieter Demuynck, Hannes Ingelaere en Ine Malfait
  * @version 4
  *
@@ -28,12 +30,13 @@ public class Directory extends Item implements Writability {
     /**
      * Initialize a new directory with given name, parent directory and writability.
      *
-     * @param name The name of the new directory.
+     * @param dir       The directory which will be the new directory's parent directory.
+     * @param name      The name of the new directory.
+     * @param writable  The boolean indicating whether the directory is writable or not.
      *
      * @effect The name of the directory is set to the given name.
      * If the given name is not valid, a default name is set.
      * | setName(name)
-     *
      * @post The new creation time of this directory is initialized to some time during
      * constructor execution.
      * | (new.getCreationTime().getTime() >= System.currentTimeMillis()) &&
@@ -57,8 +60,8 @@ public class Directory extends Item implements Writability {
      * Initialize a new directory with given name, parent directory. This new directory is by default
      * writable.
      *
-     * @param dir  The directory which will be the new directory's parent directory.
-     * @param name The name of the new directory.
+     * @param dir   The directory which will be the new directory's parent directory.
+     * @param name  The name of the new directory.
      *
      * @effect A new directory object is created, which is by default writable.
      * | Directory(dir, name, true)
@@ -72,7 +75,7 @@ public class Directory extends Item implements Writability {
      * Initialize a new directory with given name and writability. This new directory will be a root directory.
      *
      * @param name      The name of the new directory.
-     * @param writable  The directory which will be the new directory's parent directory.
+     * @param writable  The boolean indicating whether the directory is writable or not.
      *
      * @effect A new directory object is created, which is by default a root directory.
      * | Directory(null, name, writable)
@@ -379,13 +382,12 @@ public class Directory extends Item implements Writability {
      * @return whether the item is in this directory.
      */
     public boolean hasAsItem(Item item){
-        boolean contains = false;
         for (Item contentItem: getContents()){
             if (item == contentItem){
-                contains = true;
+                return true;
             }
         }
-        return contains;
+        return false;
     }
 
 

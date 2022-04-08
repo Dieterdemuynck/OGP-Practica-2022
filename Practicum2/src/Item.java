@@ -10,8 +10,9 @@ import java.util.Date;
 /**
  * A class of Items.
  *
- * -> directory  // TODO: does this even need any invariants? The parent directory is either a directory or null? That's always the case though...
- *
+ * @invar   An item must be part of the content of its parentDirectory, if parentDirectory is not null.
+ *          | if (getParentDirectory() != null)
+ *          |     getParentDirectory().hasAsItem(this);
  * @invar	Each item must have a valid name, existing out of: letters (upper- or lowercase), hyphens, periods,
  *          underscores and/or digits.
  * 	        | isValidName(getName())
@@ -125,8 +126,18 @@ public abstract class Item {
         return "new_item";
     }
 
+    /**
+     * Changes the name of the item to the given name, if valid. If the given name is not valid, the name will not
+     * change.
+     *
+     * @param   name
+     *          The string to which the new name will be set
+     * @throws  ItemNotWritableException
+     *          The item must be writable to change its name.
+     */
     public void changeName(String name) throws ItemNotWritableException {
         if (isValidName(name)){
+            // TODO: this changes the modification time of the directory.
             getParentDirectory().removeFromContents(this);
             setName(name);
             setModificationTime();
@@ -267,6 +278,10 @@ public abstract class Item {
      */
     private Directory parentDirectory = null;
 
+    /**
+     * Returns the parentDirectory of the item.
+     * @return  The directory which is the parent directory of the item.
+     */
     @Basic
     public Directory getParentDirectory() {
         return parentDirectory;
@@ -275,12 +290,12 @@ public abstract class Item {
     /**
      * Sets the parent directory of the item to the given directory, if the given directory is not null.
      *
-     * @post    the new parentDirectory will be set to the given directory,
-     *
-     * @throws  IllegalArgumentException if the
-     * @param   parentDirectory  The directory in to which the link will be moved or in which it will be created.
+     * @post    the new parentDirectory will be set to the given directory.
+     *          | new.getParentDirectory() == parentDirectory
+     * @param   parentDirectory
+     *          The directory in to which the link will be moved or in which it will be created.
      */
-    @Basic @Raw
+    @Raw
     protected void setParentDirectory(Directory parentDirectory) {
         // TODO: check usages, if content is added to each item.
         this.parentDirectory = parentDirectory;
