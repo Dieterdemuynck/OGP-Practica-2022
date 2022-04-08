@@ -1,7 +1,6 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -832,20 +831,20 @@ public class ItemTest {
 	@Test
 	public void testFileParentDirectory(){
 		assertEquals(root,fileDirectoryStringType.getParentDirectory());
-		fileDirectoryStringType.changeParentDirectory(directoryStringBoolean);
+		fileDirectoryStringType.move(directoryStringBoolean);
 		assertEquals(directoryStringBoolean,fileDirectoryStringType.getParentDirectory());
 	}
 
 	@Test (expected = ItemNotWritableException.class)
 	public void testFileParentDirectory_NotWritableDirectory(){
 		Directory rootNotWritable = new Directory("not_writable_root",false);
-		fileDirectoryStringType.changeParentDirectory(rootNotWritable);
+		fileDirectoryStringType.move(rootNotWritable);
 
 	}
 
 	@Test (expected = ItemNotWritableException.class)
 	public void testFileParentDirectory_NotWritableFile(){
-		fileNotWritable.changeParentDirectory(directoryStringBoolean);
+		fileNotWritable.move(directoryStringBoolean);
 	}
 
 
@@ -854,24 +853,24 @@ public class ItemTest {
 	public void testDirectoryParentDirectory(){
 		Directory newRoot = new Directory("new_root");
 		assertNull(root.getParentDirectory());
-		root.changeParentDirectory(newRoot);
+		root.move(newRoot);
 		assertEquals(newRoot,root.getParentDirectory());
 
 		assertEquals(root,directoryDirectoryString.getParentDirectory());
-		directoryDirectoryString.changeParentDirectory(newRoot);
+		directoryDirectoryString.move(newRoot);
 		assertEquals(newRoot,directoryDirectoryString.getParentDirectory());
 	}
 
 	@Test (expected = ItemNotWritableException.class)
 	public void testDirectoryParentDirectory_NotWritableRoot(){
 		Directory rootNotWritable = new Directory("not_writable_root",false);
-		rootNotWritable.changeParentDirectory(root);
+		rootNotWritable.move(root);
 	}
 
 	@Test (expected = ItemNotWritableException.class)
 	public void testDirectoryParentDirectory_NotWritableDirectory(){
 		Directory newRoot = new Directory("new_root");
-		directoryNotWritable.changeParentDirectory(newRoot);
+		directoryNotWritable.move(newRoot);
 	}
 
 
@@ -879,7 +878,7 @@ public class ItemTest {
 	@Test
 	public void testLinkParentDirectory(){
 		assertEquals(root,linkDirectoryStringItem.getParentDirectory());
-		linkDirectoryStringItem.changeParentDirectory(directoryStringBoolean);
+		linkDirectoryStringItem.move(directoryStringBoolean);
 		assertEquals(directoryStringBoolean,linkDirectoryStringItem.getParentDirectory());
 	}
 

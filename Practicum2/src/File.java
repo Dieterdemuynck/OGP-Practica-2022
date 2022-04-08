@@ -283,7 +283,7 @@ public class File extends Item implements Writability {
     }
 
     @Override
-    public void changeParentDirectory(Directory parentDiretory){
+    public void move(Directory parentDiretory){
         if (!this.isWritable()){
             throw new ItemNotWritableException(this);
         }

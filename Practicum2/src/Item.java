@@ -285,7 +285,29 @@ public abstract class Item {
         }
     }
 
-    public void changeParentDirectory(Directory parentDirectory) {
+    /**
+     * Moves the current file to the given directory, if the current and target directories are both  writable.
+     * To move a directory to null, e.g. to make it a root directory, use Directory.makeRoot() instead.
+     *
+     * @throws  IllegalArgumentException
+     *          The given new parentDirectory may not be null.
+     * @throws  ItemNotWritableException
+     *          The new parentDirectory and current parentDirectory must both be writable.
+     * @param  parentDirectory  The directory in to which the link will be moved or in which it will be created.
+     */
+    public void move(Directory parentDirectory) throws IllegalArgumentException, ItemNotWritableException {
+        if (parentDirectory == null) {
+            // move() must move item to a new directory.
+            throw new IllegalArgumentException("target parentDirectory may not be null.");
+        } else if (!getParentDirectory().isWritable()) {
+            // the current parentDirectory must be writable.
+            throw new ItemNotWritableException(getParentDirectory());
+        } else if (!parentDirectory.isWritable()) {
+            // the target parentDirectory must be writable.
+            throw new ItemNotWritableException(parentDirectory);
+        }
+        getParentDirectory().removeFromContents(this);
+        parentDirectory.addToContents(this);
         setParentDirectory(parentDirectory);
     }
 
@@ -293,15 +315,6 @@ public abstract class Item {
     /* *********************************************************
      * bijkomende methodes
      * *********************************************************/
-
-    // TODO: specification
-    public void move(Directory dir){
-        Directory oldDirectory = parentDirectory;
-
-        oldDirectory.removeFromContents(this);
-        dir.addToContents(this);
-        this.parentDirectory = dir;
-    }
 
     // TODO: specification
     public Directory getRoot(){

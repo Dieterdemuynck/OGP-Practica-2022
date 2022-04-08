@@ -88,7 +88,7 @@ public class Link extends Item {
     }
 
     @Override
-    public void changeParentDirectory(Directory parentDiretory){
+    public void move(Directory parentDiretory){
         setParentDirectory(parentDiretory);
     }
 
