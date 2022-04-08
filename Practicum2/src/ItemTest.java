@@ -1,6 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import java.security.DigestException;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -1062,6 +1063,79 @@ public class ItemTest {
 		link.move(root2);
 	}
 
+
+	// FILE IS DIRECT OR INDIRECT CHILD OF TESTS------------------------------------------------------------------------
+	@Test
+	public void testFileIsDirectOrIndirectChildOf_directChildCase(){
+		Directory root = new Directory("root",true);
+		File file = new File(root,"file",Type.TEXT_FILE);
+		assertTrue(file.isDirectOrIndirectChildOf(root));
+	}
+
+	@Test
+	public void testFileIsDirectOrIndirectChildOf_indirectChildCase(){
+		Directory root = new Directory("root",true);
+		Directory dir = new Directory(root,"dir");
+		File file = new File(dir,"file",Type.TEXT_FILE);
+		assertTrue(file.isDirectOrIndirectChildOf(root));
+	}
+
+	@Test
+	public void testFileIsDirectOrIndirectChildOf_neitherCase(){
+		Directory root = new Directory("root",true);
+		Directory otherRoot = new Directory("other_root");
+		File file = new File(otherRoot,"file",Type.TEXT_FILE);
+		assertFalse(file.isDirectOrIndirectChildOf(root));
+	}
+
+	// DIRECTORY IS DIRECT OR INDIRECT CHILD OF TESTS-------------------------------------------------------------------
+	@Test
+	public void testDirectoryIsDirectOrIndirectChildOf_directChildCase(){
+		Directory root = new Directory("root",true);
+		Directory directory = new Directory(root,"directory");
+		assertTrue(directory.isDirectOrIndirectChildOf(root));
+	}
+
+	@Test
+	public void testDirectoryIsDirectOrIndirectChildOf_indirectChildCase(){
+		Directory root = new Directory("root",true);
+		Directory dir = new Directory(root,"dir");
+		Directory directory = new Directory(dir,"directory");
+		assertTrue(directory.isDirectOrIndirectChildOf(root));
+	}
+
+	@Test
+	public void testDirectoryIsDirectOrIndirectChildOf_neitherCase(){
+		Directory root = new Directory("root",true);
+		Directory otherRoot = new Directory("other_root");
+		Directory directory = new Directory(otherRoot,"file");
+		assertFalse(directory.isDirectOrIndirectChildOf(root));
+	}
+
+
+	// LINK IS DIRECT OR INDIRECT CHILD OF TESTS-------------------------------------------------------------------
+	@Test
+	public void testLinkIsDirectOrIndirectChildOf_directChildCase(){
+		Directory root = new Directory("root",true);
+		Link link = new Link(root,"directory",fileDirectoryStringIntBooleanType);
+		assertTrue(link.isDirectOrIndirectChildOf(root));
+	}
+
+	@Test
+	public void testLinkIsDirectOrIndirectChildOf_indirectChildCase(){
+		Directory root = new Directory("root",true);
+		Directory dir = new Directory(root,"dir");
+		Link link = new Link(dir,"directory",fileDirectoryStringIntBooleanType);
+		assertTrue(link.isDirectOrIndirectChildOf(root));
+	}
+
+	@Test
+	public void testLinkIsDirectOrIndirectChildOf_neitherCase(){
+		Directory root = new Directory("root",true);
+		Directory otherRoot = new Directory("other_root");
+		Link link = new Link(otherRoot,"directory",fileDirectoryStringIntBooleanType);
+		assertFalse(link.isDirectOrIndirectChildOf(root));
+	}
 
 	// SLEEP METHOD
 	private void sleep() {
