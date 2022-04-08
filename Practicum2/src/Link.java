@@ -1,7 +1,7 @@
 import be.kuleuven.cs.som.annotate.*;
 
 /**
- * TODO: invariants
+ *
  * A class of links.
  *
  * -> name

@@ -421,7 +421,10 @@ public class Directory extends Item implements Writability {
     /**
      * Make a directory a root directory.
      *
-     * @post    the referenced Directory will not have a parent directory.
+     * @post the referenced Directory will not have a parent directory.
+     * | new.getParentDirectory() == null
+     * @effect directory will be removed from its parent directory.
+     * | getParentDirectory().removeFromContents(this)
      */
     public void makeRoot(){
         if (!getParentDirectory().isWritable){
@@ -432,9 +435,9 @@ public class Directory extends Item implements Writability {
     }
 
     /**
-     * gives you the total disk usage.
-     *
+     * Returns the total disk usage.
      * @return the amount of memory this directory needs.
+     * | results == sum(getContents().getItem(i).getTotalDiskUsage())
      */
     @Override
     public int getTotalDiskUsage(){
@@ -453,13 +456,21 @@ public class Directory extends Item implements Writability {
      * This terminates the referenced directory.
      *
      * @pre     The directory must not be terminated already.
+     * | isTermineted() == false
      * @post    The directory will be terminated.
+     * | new.isTerminated() == true
+     * @post    The directory will be removed from its parent directory if not null.
+     * | if (getParentDirectory() != null) getParentDirectory().removeFromContents(this)
+     * @throws ItemNotWritableException directory must be writable.
      */
     @Override
     public void terminate() {
-        if (!isTerminated() && isWritable() && contents.isEmpty()) {
+        if (!isWritable()) {
+          throw new ItemNotWritableException(this);
+        }
+        else if (!isTerminated() && contents.isEmpty()) {
             setTerminated(true);
-            this.getParentDirectory().removeFromContents(this);
+            getParentDirectory().removeFromContents(this);
         }
     }
 
@@ -468,7 +479,8 @@ public class Directory extends Item implements Writability {
     /**
      * Tells whether the directory is deletable or not.
      *
-     * @pre    The directory and it's items must be writable and the items must be deletable.
+     * @pre    The directory and its items must be writable and the items must be deletable.
+     * |
      * @return The result will tell whether the directory can be deleted, depending on the writability of the directory and of the items in the directory.
      */
     public boolean canBeDeleted() {
