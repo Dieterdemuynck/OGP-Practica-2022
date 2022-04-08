@@ -393,11 +393,15 @@ public class Directory extends Item implements Writability {
         setParentDirectory(null);
     }
 
-    // TODO: specification
+    /**
+     * gives you the total disk usage.
+     *
+     * @return the amount of memory this directory needs.
+     */
     @Override
     public int getTotalDiskUsage(){
         int diskUsage = 0;
-        for (Item item: contents){
+        for (Item item: getContents()){
             diskUsage += item.getTotalDiskUsage();
         }
         return diskUsage;
