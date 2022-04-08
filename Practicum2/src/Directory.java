@@ -234,32 +234,40 @@ public class Directory extends Item implements Writability {
         }
     }
 
-    // TODO: specification
+    /**
+     * TODO: specification
+     * @return
+     */
     @Basic
     public List<Item> getContents() {
         return contents;
     }
 
-    // TODO:
-    // Is dit nodig? Kvind da lik beetje gevaarlijk, want ge wilt toch nie da iemand die contents helemaal kan veranderen?
-    // Veel veiliger via add en remove...
-    // en et private zetten is ook nie nuttig want twordt nergens gebruikt...
+    /* DELETED: setContents(List<Item>)
+     * Needless setter, could seriously mess up the code too. Use Directory.addToContents(Item item) instead.
+     */
 
-    // TODO: specification
-    public void setContents(List<Item> contents) {
-        this.contents = contents;
-    }
-
-    // TODO: specification
+    /**
+     * Adds an item to the contents of the directory. This counts as a modification of the directory.
+     *
+     * @effect  The directory's modification time will be set to some time during execution.
+     *          | setModificationTime()
+     * @param   item
+     *          The item which will be added to the directory.
+     */
     public void addToContents(Item item){
         if (!isWritable()) {
+            // Directory must be writable.
             throw new ItemNotWritableException(this);
         }
-        if (item == null){  // TODO: why is this not an IllegalArgumentException?
-            throw new IllegalDirectoryContentExeption(this, null);
+        if (item == null) {
+            // Directory content cannot be null.
+            throw new IllegalArgumentException("Directory content may not be null.");
         }
-        // TODO: check if added item is parent directory -> if yes: throw exception (newly defined?)
-        setModificationTime();
+        if (item instanceof Directory && this.isDirectOrIndirectChildOf((Directory)item) || item == this) {
+            // Directory paths may not have any loops.
+            throw new IllegalDirectoryContentExeption(this, item);
+        }
         if (contents.size()>0){
             int place = findIndexForInContents(item,0,getContents().size()-1);
             getContents().add(place, item); //Moet gesorteerd worden op naam, zou moeten juist zijn zo
@@ -267,18 +275,28 @@ public class Directory extends Item implements Writability {
         else {
             getContents().add(item);
         }
+        setModificationTime();
     }
 
-    // TODO: specification
+    /**
+     * Removes an item from the contents of the directory. This counts as a modification of the directory.
+     *
+     * @effect  The directory's modification time will be set to some time during execution.
+     *          | setModificationTime()
+     * @param   item
+     *          The item which will be removed from the directory.
+     */
+    @Model
     public void removeFromContents(Item item){
         if (!isWritable()) {
             throw new ItemNotWritableException(this);
         }
         if (item == null){
-            throw new IllegalArgumentException("Cannot attempt to remove null Item from Directory");
+            throw new IllegalArgumentException("Cannot attempt to remove null Item from Directory.");
         }
         int place = getIndexOf(item);
         getContents().remove(place);
+        setModificationTime();
     }
 
     // TODO: specification
@@ -375,10 +393,7 @@ public class Directory extends Item implements Writability {
      * parentDirectory
      * *********************************************************/
 
-    @Override
-    protected void setParentDirectory(Directory parentDirectory) {
-        super.setParentDirectory(parentDirectory);
-    }
+    // DELETED: needless override of setParentDirectory(Directory parentDirectory)
 
     /* *********************************************************
      * Additional Methods

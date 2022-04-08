@@ -275,25 +275,32 @@ public abstract class Item {
     /**
      * Sets the parent directory of the item to the given directory, if the given directory is not null.
      *
-     * @throws IllegalArgumentException if the
-     * @param  parentDirectory  The directory in to which the link will be moved or in which it will be created.
+     * @post    the new parentDirectory will be set to the given directory,
+     *
+     * @throws  IllegalArgumentException if the
+     * @param   parentDirectory  The directory in to which the link will be moved or in which it will be created.
      */
+    @Basic @Raw
     protected void setParentDirectory(Directory parentDirectory) {
+        // TODO: check usages, if content is added to each item.
         this.parentDirectory = parentDirectory;
-        if (parentDirectory != null) {
-            parentDirectory.addToContents(this);
-        }
     }
 
     /**
      * Moves the current file to the given directory, if the current and target directories are both  writable.
      * To move a directory to null, e.g. to make it a root directory, use Directory.makeRoot() instead.
      *
+     * @effect  removes the item from the current parentDirectory and adds it to the targetParentDirectory.
+     *          | getParentDirectory().removeFromContents(this)
+     *          | parentDirectory.addToContents(this)
      * @throws  IllegalArgumentException
      *          The given new parentDirectory may not be null.
+     *          | parentDirectory != null
      * @throws  ItemNotWritableException
      *          The new parentDirectory and current parentDirectory must both be writable.
-     * @param  parentDirectory  The directory in to which the link will be moved or in which it will be created.
+     *          | parentDirectory.isWritable() && getParentDirectory.isWritable()
+     * @param   parentDirectory
+     *          The directory in to which the link will be moved or in which it will be created.
      */
     public void move(Directory parentDirectory) throws IllegalArgumentException, ItemNotWritableException {
         if (parentDirectory == null) {
@@ -305,9 +312,16 @@ public abstract class Item {
         } else if (!parentDirectory.isWritable()) {
             // the target parentDirectory must be writable.
             throw new ItemNotWritableException(parentDirectory);
+        } else if (this instanceof Directory && parentDirectory.isDirectOrIndirectChildOf((Directory)this)
+                || parentDirectory == this) {
+            // Directory paths may not contain any loops.
+            throw new IllegalDirectoryContentExeption(parentDirectory, this);
         }
+        // Remove item from current parentDirectory.
         getParentDirectory().removeFromContents(this);
+        // Add item to target parentDirectory.
         parentDirectory.addToContents(this);
+        // Adjust item's reference to parentDirectory.
         setParentDirectory(parentDirectory);
     }
 
