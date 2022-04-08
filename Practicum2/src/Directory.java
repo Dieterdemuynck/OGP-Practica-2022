@@ -207,12 +207,8 @@ public class Directory extends Item implements Writability {
     /* *********************************************************
      * contents - defensive programming
      * *********************************************************/
-    private List<Item> contents = new ArrayList();
-    //TODO ALS NAAM VERANDERD VAN ITEM MOET ARRAYLIST AANGEPAST WORDEN. -> verwijderen en terug toevoegen?
-    // add is al juist gemaakt voor item
-    // remove zou normaal deftig werken...
 
-    // TODO: alles implementeren, ieder element in map moet in deze lijst te komen staan...
+    private List<Item> contents = new ArrayList();
 
     private int findIndexForInContents(Item item, int start, int einde){
         // Complexity of log(n)
@@ -276,7 +272,7 @@ public class Directory extends Item implements Writability {
             // Directory paths may not have any loops.
             throw new IllegalDirectoryContentExeption(this, item);
         }
-        if (contents.size()>0){
+        if (getContents().size()>0){
             int place = findIndexForInContents(item,0,getContents().size()-1);
             getContents().add(place, item); //Moet gesorteerd worden op naam, zou moeten juist zijn zo
         }
@@ -317,25 +313,28 @@ public class Directory extends Item implements Writability {
 
     /**
      * Returns the item at the given index in the list.
-     * @param place the index of the requested item in the list.
-     * @return the Item with the given index in the list.
+     * @pre     the given position is within the boundaries of possible positions.
+     *          | 1 <= place <= getContents.size()
+     * @param   place the index of the requested item in the list.
+     * @return  the Item with the given index in the list.
      */
     public Item getItemAt(int place){
-        return getContents().get(place-1); //start vanaf 1
+        return getContents().get(place-1); // positions start from 0 for user.
     }
 
     /**
      * Returns the item with the given name.
-     * @param itemName the name of the wanted item.
-     * @return the Item with the given name.
+     *
+     * @param   itemName the name of the requested item.
+     * @throws  ItemNameNotPresentInDirectoryException
+     *          The item name must be present within the contents of this directory.
+     * @return  the item with the given name.
      */
-    public Item getItem(String itemName) {
-        //Index ook +1 doen zoals in getItemAt(.) ? Nu niet het geval
-        //Normaal complexiteit O(log n)
+    public Item getItem(String itemName) throws ItemNameNotPresentInDirectoryException {
         return contents.get(getItemIndex(itemName,0, getContents().size()));
     }
 
-    private int getItemIndex(String itemName,int start, int einde){
+    private int getItemIndex(String itemName,int start, int einde) throws ItemNameNotPresentInDirectoryException {
         if (start != einde){
             int mid = (start + einde)/2;
             if (compareStrings(itemName,getContents().get(mid).getName()) == 1){
@@ -352,8 +351,9 @@ public class Directory extends Item implements Writability {
             if (compareStrings(itemName, getContents().get(start).getName()) == 0){
                 return start;
             }
-            else { // Naam komt niet voor
-                return -1; //TODO ZIT ER NIET IN, moet defensief -> exception?
+            else {
+                // Name not present
+                throw new ItemNameNotPresentInDirectoryException(this, itemName);
             }
         }
     }
@@ -458,7 +458,7 @@ public class Directory extends Item implements Writability {
      * This terminates the referenced directory.
      *
      * @pre     The directory must not be terminated already.
-     * | isTermineted() == false
+     * | isTerminated() == false
      * @post    The directory will be terminated.
      * | new.isTerminated() == true
      * @post    The directory will be removed from its parent directory if not null.
@@ -475,8 +475,6 @@ public class Directory extends Item implements Writability {
             getParentDirectory().removeFromContents(this);
         }
     }
-
-    // beter private zetten zeker?
 
     /**
      * Checks if the directory and its contents (including content from child directories) are writable.

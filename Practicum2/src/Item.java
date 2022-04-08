@@ -139,7 +139,7 @@ public abstract class Item {
      */
     public void changeName(String name) throws ItemNotWritableException {
         if (isValidName(name)){
-            // TODO: this changes the modification time of the directory.
+            // this changes the modification time of the directory twice.
             getParentDirectory().removeFromContents(this);
             setName(name);
             setModificationTime();
