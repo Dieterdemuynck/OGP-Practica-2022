@@ -297,7 +297,6 @@ public abstract class Item {
      */
     @Raw
     protected void setParentDirectory(Directory parentDirectory) {
-        // TODO: check usages, if content is added to each item.
         this.parentDirectory = parentDirectory;
     }
 

@@ -51,6 +51,7 @@ public class Link extends Item {
         }
         this.linkedItem = linkedItem;
         setParentDirectory(dir);
+        dir.addToContents(this);
     }
 
 

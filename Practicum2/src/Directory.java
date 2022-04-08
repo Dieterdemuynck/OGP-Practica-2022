@@ -53,6 +53,7 @@ public class Directory extends Item implements Writability {
     public Directory(Directory dir, String name, boolean writable) {
         super(name);
         setParentDirectory(dir);
+        dir.addToContents(this);
         setWritable(writable);
     }
 

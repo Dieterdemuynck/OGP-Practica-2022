@@ -61,6 +61,7 @@ public class File extends Item implements Writability {
         setWritable(writable);
         this.type = type;
         setParentDirectory(dir);
+        dir.addToContents(this);
     }
 
     /**
