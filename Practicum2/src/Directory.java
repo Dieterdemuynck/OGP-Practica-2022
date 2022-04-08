@@ -410,6 +410,10 @@ public class Directory extends Item implements Writability {
      * @post    the referenced Directory will not have a parent directory.
      */
     public void makeRoot(){
+        if (!getParentDirectory().isWritable){
+            throw new ItemNotWritableException(getParentDirectory());
+        }
+        getParentDirectory().removeFromContents(this);
         setParentDirectory(null);
     }
 

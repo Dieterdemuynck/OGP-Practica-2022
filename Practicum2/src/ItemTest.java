@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 //import org.junit.jupiter.api.Test;
 
 /**
- * A JUnit test class for testing the public methods of the File Class  
+ * A JUnit test class for testing the public methods of the File Class
  * @author Tommy Messelis
  * @author Team 2: Dieter Demuynck, Hannes Ingelaere en Ine Malfait
  *
@@ -21,11 +21,11 @@ public class ItemTest {
 	Directory directoryDirectoryString;
 	Directory directoryStringBoolean;
 	Date timeBeforeConstruction, timeAfterConstruction;
-	
+
 	File fileNotWritable;
 	Directory directoryNotWritable;
 	Date timeBeforeConstructionNotWritable, timeAfterConstructionNotWritable;
-	
+
 	@Before
 	public void setUpFixture(){
 		timeBeforeConstruction = new Date();
@@ -367,7 +367,7 @@ public class ItemTest {
 		assertTrue(File.isValidSize(File.getMaximumSize()/2));
 		assertTrue(File.isValidSize(File.getMaximumSize()));
 	}
-	
+
 	@Test
 	public void testIsValidSize_IllegalCase() {
 		assertFalse(File.isValidSize(-1));
@@ -381,7 +381,7 @@ public class ItemTest {
 		File file = new File(root,"file", File.getMaximumSize()-1,true,Type.PDF_FILE);
 		Date timeBeforeEnlarge = new Date();
 		file.enlarge(1);
-		Date timeAfterEnlarge = new Date();		
+		Date timeAfterEnlarge = new Date();
 		assertEquals(file.getSize(), File.getMaximumSize());
 		assertNotNull(file.getModificationTime());
 		assertFalse(file.getModificationTime().before(timeBeforeEnlarge));
@@ -396,7 +396,7 @@ public class ItemTest {
 	@Test
 	public void testShorten_LegalCase() {
 		fileDirectoryStringIntBooleanType.shorten(1);
-		Date timeAfterShorten = new Date();		
+		Date timeAfterShorten = new Date();
 		assertEquals(fileDirectoryStringIntBooleanType.getSize(),99);
 		assertNotNull(fileDirectoryStringIntBooleanType.getModificationTime());
 		assertFalse(fileDirectoryStringIntBooleanType.getModificationTime().before(timeAfterConstruction));
@@ -415,7 +415,7 @@ public class ItemTest {
 		Date now = new Date();
 		assertTrue(File.isValidCreationTime(now));
 	}
-	
+
 	@Test
 	public void testFileIsValidCreationTime_IllegalCase() {
 		assertFalse(File.isValidCreationTime(null));
@@ -463,7 +463,7 @@ public class ItemTest {
 		assertTrue(fileDirectoryStringType.canHaveAsModificationTime(null));
 		assertTrue(fileDirectoryStringType.canHaveAsModificationTime(new Date()));
 	}
-	
+
 	@Test
 	public void testFileCanHaveAsModificationTime_IllegalCase() {
 		assertFalse(linkDirectoryStringItem.canHaveAsModificationTime(new Date(timeAfterConstruction.getTime() - 1000*60*60)));
@@ -476,21 +476,21 @@ public class ItemTest {
 		File one = new File(root,"one",Type.PDF_FILE);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
 		File other = new File(root,"other",Type.PDF_FILE);
-		
+
 		//1 Test unmodified case
 		assertFalse(one.hasOverlappingUsePeriod(other));
-		
+
 		//2 Test one unmodified case
 		other.enlarge(File.getMaximumSize());
 		assertFalse(one.hasOverlappingUsePeriod(other));
-		
+
 		//3 Test other unmodified case
 		//so re-initialise the other file by first terminating existing other file and then recreating that file
 		other.deleteRecursive();
 		other = new File(root, "other",Type.PDF_FILE);
 		one.enlarge(File.getMaximumSize());
 		assertFalse(one.hasOverlappingUsePeriod(other));
-		
+
 	}
 
 	@Test
@@ -500,23 +500,23 @@ public class ItemTest {
 		one = new File(root,"one",Type.PDF_FILE);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
 		other = new File(root,"other",Type.PDF_FILE);
-		
+
 		//1 Test one created and modified before other created and modified case
 		one.enlarge(File.getMaximumSize());
-        sleep();
-        //re-initialise the other
+		sleep();
+		//re-initialise the other
 		other.deleteRecursive();
-        other = new File(root,"other",Type.PDF_FILE);
-        other.enlarge(File.getMaximumSize());
-	    assertFalse(one.hasOverlappingUsePeriod(other));
-	    
-	    //2 Test other created and modified before one created and modified
+		other = new File(root,"other",Type.PDF_FILE);
 		other.enlarge(File.getMaximumSize());
-        sleep();
+		assertFalse(one.hasOverlappingUsePeriod(other));
+
+		//2 Test other created and modified before one created and modified
+		other.enlarge(File.getMaximumSize());
+		sleep();
 		one.deleteRecursive();
-        one = new File(root,"one",Type.PDF_FILE);
-        one.enlarge(File.getMaximumSize());
-        assertFalse(one.hasOverlappingUsePeriod(other));
+		one = new File(root,"one",Type.PDF_FILE);
+		one.enlarge(File.getMaximumSize());
+		assertFalse(one.hasOverlappingUsePeriod(other));
 
 	}
 
@@ -524,47 +524,47 @@ public class ItemTest {
 	public void testFileHasOverlappingUsePeriod_ModifiedOverlap_A() {
 		// one = implicit argument ; other = explicit argument
 		//A Test one created before other created before one modified before other modified
-	    File one, other;
+		File one, other;
 		one = new File(root,"one",Type.PDF_FILE);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
 		other = new File(root,"other",Type.PDF_FILE);
-	
+
 		one.enlarge(File.getMaximumSize());
-        sleep();
-        other.enlarge(File.getMaximumSize());
-        assertTrue(one.hasOverlappingUsePeriod(other));
+		sleep();
+		other.enlarge(File.getMaximumSize());
+		assertTrue(one.hasOverlappingUsePeriod(other));
 	}
-	
+
 	@Test
 	public void testFileHasOverlappingUsePeriod_ModifiedOverlap_B() {
 		// one = implicit argument ; other = explicit argument
 		//B Test one created before other created before other modified before one modified
-       	File one, other;
+		File one, other;
 		one = new File(root,"one",Type.PDF_FILE);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
 		other = new File(root,"other",Type.PDF_FILE);
-	
+
 		other.enlarge(File.getMaximumSize());
-        sleep();
-        one.enlarge(File.getMaximumSize());
-        assertTrue(one.hasOverlappingUsePeriod(other));
+		sleep();
+		one.enlarge(File.getMaximumSize());
+		assertTrue(one.hasOverlappingUsePeriod(other));
 	}
-	
+
 	@Test
 	public void testFileHasOverlappingUsePeriod_ModifiedOverlap_C() {
 		// one = implicit argument ; other = explicit argument
 		//C Test other created before one created before other modified before one modified
-        File one, other;
+		File one, other;
 		other = new File(root,"other",Type.PDF_FILE);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
 		one = new File(root,"one",Type.PDF_FILE);
-		
+
 		other.enlarge(File.getMaximumSize());
-        sleep();
-        one.enlarge(File.getMaximumSize());
-        assertTrue(one.hasOverlappingUsePeriod(other));
+		sleep();
+		one.enlarge(File.getMaximumSize());
+		assertTrue(one.hasOverlappingUsePeriod(other));
 	}
-	
+
 	@Test
 	public void testFileHasOverlappingUsePeriod_ModifiedOverlap_D() {
 		// one = implicit argument ; other = explicit argument
@@ -573,11 +573,11 @@ public class ItemTest {
 		other = new File(root,"one",Type.PDF_FILE);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
 		one = new File(root,"other",Type.PDF_FILE);
-	
+
 		one.enlarge(File.getMaximumSize());
-        sleep();
-        other.enlarge(File.getMaximumSize());
-        assertTrue(one.hasOverlappingUsePeriod(other));
+		sleep();
+		other.enlarge(File.getMaximumSize());
+		assertTrue(one.hasOverlappingUsePeriod(other));
 	}
 
 
@@ -592,7 +592,7 @@ public class ItemTest {
 	public void testDirectoryCanHaveAsModificationTime_IllegalCase() {
 		assertFalse(root.canHaveAsModificationTime(new Date(timeAfterConstruction.getTime() - 1000*60*60)));
 		assertFalse(root.canHaveAsModificationTime(new Date(System.currentTimeMillis() + 1000*60*60)));
-		}
+	}
 
 	@Test
 	public void testDirectoryHasOverlappingUsePeriod_UnmodifiedFiles() {
@@ -841,12 +841,6 @@ public class ItemTest {
 	public void testFileParentDirectory_NotWritableDirectory(){
 		Directory rootNotWritable = new Directory("not_writable_root",false);
 		fileDirectoryStringType.move(rootNotWritable);
-
-	}
-
-	@Test (expected = ItemNotWritableException.class)
-	public void testFileParentDirectory_NotWritableFile(){
-		fileNotWritable.move(directoryStringBoolean);
 	}
 
 
@@ -862,19 +856,6 @@ public class ItemTest {
 		directoryDirectoryString.move(newRoot);
 		assertEquals(newRoot,directoryDirectoryString.getParentDirectory());
 	}
-
-	@Test (expected = ItemNotWritableException.class)
-	public void testDirectoryParentDirectory_NotWritableRoot(){
-		Directory rootNotWritable = new Directory("not_writable_root",false);
-		rootNotWritable.move(root);
-	}
-
-	@Test (expected = ItemNotWritableException.class)
-	public void testDirectoryParentDirectory_NotWritableDirectory(){
-		Directory newRoot = new Directory("new_root");
-		directoryNotWritable.move(newRoot);
-	}
-
 
 	// LINK PARENT DIRECTORY TESTS--------------------------------------------------------------------------------------
 	@Test
@@ -991,14 +972,6 @@ public class ItemTest {
 	}
 
 	@Test (expected = ItemNotWritableException.class)
-	public void testDirectoryMakeRoot_NotWritableDirectoryCase(){
-		Directory writable = new Directory(root,"writable_directory",false);
-		assertEquals(root,writable.getParentDirectory());
-		assertTrue(root.containsDiskItemWithName("writable_directory"));
-		writable.makeRoot();
-	}
-
-	@Test (expected = ItemNotWritableException.class)
 	public void testDirectoryMakeRoot_NotWritableRootCase(){
 		Directory root = new Directory("root",false);
 		Directory writable = new Directory(root,"writable_directory",true);
@@ -1009,12 +982,12 @@ public class ItemTest {
 
 	// SLEEP METHOD
 	private void sleep() {
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+		try {
+			Thread.sleep(50);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 
 
 }
