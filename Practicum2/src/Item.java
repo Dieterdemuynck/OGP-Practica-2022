@@ -127,8 +127,10 @@ public abstract class Item {
 
     public void changeName(String name) throws ItemNotWritableException {
         if (isValidName(name)){
+            getParentDirectory().removeFromContents(this);
             setName(name);
             setModificationTime();
+            getParentDirectory().addToContents(this);
         }
     }
 

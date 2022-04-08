@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
 /**
  * A JUnit test class for testing the public methods of the File Class  
  * @author Tommy Messelis
+ * @author Team 2: Dieter Demuynck, Hannes Ingelaere en Ine Malfait
  *
  */
 public class ItemTest {
@@ -447,7 +448,7 @@ public class ItemTest {
 		
 		//3 Test other unmodified case
 		//so re-initialise the other file by first terminating existing other file and then recreating that file
-		other.terminate();
+		other.deleteRecursiveRaw();
 		other = new File(root, "other",Type.PDF_FILE);
 		one.enlarge(File.getMaximumSize());
 		assertFalse(one.hasOverlappingUsePeriod(other));
@@ -466,7 +467,7 @@ public class ItemTest {
 		one.enlarge(File.getMaximumSize());
         sleep();
         //re-initialise the other
-		other.terminate();
+		other.deleteRecursiveRaw();
         other = new File(root,"other",Type.PDF_FILE);
         other.enlarge(File.getMaximumSize());
 	    assertFalse(one.hasOverlappingUsePeriod(other));
@@ -474,7 +475,7 @@ public class ItemTest {
 	    //2 Test other created and modified before one created and modified
 		other.enlarge(File.getMaximumSize());
         sleep();
-		one.terminate();
+		one.deleteRecursiveRaw();
         one = new File(root,"one",Type.PDF_FILE);
         one.enlarge(File.getMaximumSize());
         assertFalse(one.hasOverlappingUsePeriod(other));
@@ -558,7 +559,7 @@ public class ItemTest {
 
 		//3 Test other unmodified case
 		//so re-initialise the other file by first terminating existing other file and then recreating that file
-		other.terminate();
+		other.deleteRecursiveRaw();
 		other = new Directory(root, "other");
 		File file2 = new File(one,"bestand2",Type.PDF_FILE);
 		assertFalse(one.hasOverlappingUsePeriod(other));
@@ -578,8 +579,6 @@ public class ItemTest {
 		sleep();
 		//re-initialise the other
 		other.deleteRecursively();
-		System.out.println(other.getNbItems());
-		System.out.println(other.isTerminated());
 		other = new Directory(root,"other");
 		File file2 = new File(other,"bestand2",Type.PDF_FILE);
 		assertFalse(one.hasOverlappingUsePeriod(other));
@@ -588,8 +587,6 @@ public class ItemTest {
 		File file3 = new File(other,"bestand3",Type.PDF_FILE);
 		sleep();
 		one.deleteRecursively();
-		System.out.println(one.getNbItems());
-		System.out.println(one.isTerminated());
 		one = new Directory(root,"one");
 		File file4 = new File(root,"bestand4",Type.PDF_FILE);
 		assertFalse(one.hasOverlappingUsePeriod(other));
@@ -655,7 +652,7 @@ public class ItemTest {
 		File file2 = new File(other,"bestand2",Type.PDF_FILE);
 		assertTrue(one.hasOverlappingUsePeriod(other));
 	}
-/*
+
 	@Test
 	public void testLinkHasOverlappingUsePeriod_UnmodifiedFiles() {
 		// one = implicit argument ; other = explicit argument
@@ -672,86 +669,83 @@ public class ItemTest {
 
 		//3 Test other unmodified case
 		//so re-initialise the other file by first terminating existing other file and then recreating that file
-		other.terminate();
+		other.deleteRecursiveRaw();
+		sleep();
 		other = new Link(root,"other",fileDirectoryStringIntBooleanType);
 		other.changeName("2");
 		assertFalse(one.hasOverlappingUsePeriod(other));
 
 	}
-/*
+
 	@Test
-	public void testDirectoryHasOverlappingUsePeriod_ModifiedNoOverlap() {
+	public void testLinkHasOverlappingUsePeriod_ModifiedNoOverlap() {
 		// one = implicit argument ; other = explicit argument
-		Directory one, other;
-		one = new Directory(root,"one");
+		Link one, other;
+		one = new Link(root,"one",fileDirectoryStringIntBooleanType);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
-		other = new Directory(root,"other");
+		other = new Link(root,"other",fileDirectoryStringIntBooleanType);
 
 		//1 Test one created and modified before other created and modified case
-		File file = new File(one,"bestand",Type.PDF_FILE);
+		one.changeName("1");
 		sleep();
 		//re-initialise the other
-		other.deleteRecursive();
-		System.out.println(other.getNbItems());
-		System.out.println(other.isTerminated());
-		other = new Directory(root,"other");
-		File file2 = new File(other,"bestand2",Type.PDF_FILE);
+		other.deleteRecursiveRaw();
+		other = new Link(root,"other",fileDirectoryStringIntBooleanType);
+		other.changeName("2");
 		assertFalse(one.hasOverlappingUsePeriod(other));
 
 		//2 Test other created and modified before one created and modified
-		File file3 = new File(other,"bestand3",Type.PDF_FILE);
+		other.changeName("3");
 		sleep();
-		one.deleteRecursive();
-		System.out.println(one.getNbItems());
-		System.out.println(one.isTerminated());
-		one = new Directory(root,"one");
-		File file4 = new File(root,"bestand4",Type.PDF_FILE);
+		one.deleteRecursiveRaw();
+		one = new Link(root,"one",fileDirectoryStringIntBooleanType);
+		one.changeName("4");
 		assertFalse(one.hasOverlappingUsePeriod(other));
 
 	}
 
 	@Test
-	public void testDirectoryHasOverlappingUsePeriod_ModifiedOverlap_A() {
+	public void testLinkHasOverlappingUsePeriod_ModifiedOverlap_A() {
 		// one = implicit argument ; other = explicit argument
 		//A Test one created before other created before one modified before other modified
-		Directory one, other;
-		one = new Directory(root,"one");
+		Link one, other;
+		one = new Link(root,"one",fileDirectoryStringIntBooleanType);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
-		other = new Directory(root,"other");
+		other = new Link(root,"other",fileDirectoryStringIntBooleanType);
 
-		File file = new File(one,"bestand",Type.PDF_FILE);
+		one.changeName("1");
 		sleep();
-		File file2 = new File(other,"bestand2",Type.PDF_FILE);
+		other.changeName("2");
 		assertTrue(one.hasOverlappingUsePeriod(other));
 	}
 
 	@Test
-	public void testDirectoryHasOverlappingUsePeriod_ModifiedOverlap_B() {
+	public void testLinkHasOverlappingUsePeriod_ModifiedOverlap_B() {
 		// one = implicit argument ; other = explicit argument
 		//B Test one created before other created before other modified before one modified
-		Directory one, other;
-		one = new Directory(root,"one");
+		Link one, other;
+		one = new Link(root,"one",fileDirectoryStringIntBooleanType);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
-		other = new Directory(root,"other");
+		other = new Link(root,"other",fileDirectoryStringIntBooleanType);
 
-		File file = new File(other,"bestand",Type.PDF_FILE);
+		other.changeName("1");
 		sleep();
-		File file2 = new File(one,"bestand2",Type.PDF_FILE);
+		one.changeName("2");
 		assertTrue(one.hasOverlappingUsePeriod(other));
 	}
 
 	@Test
-	public void testDirectoryHasOverlappingUsePeriod_ModifiedOverlap_C() {
+	public void testLinkHasOverlappingUsePeriod_ModifiedOverlap_C() {
 		// one = implicit argument ; other = explicit argument
 		//C Test other created before one created before other modified before one modified
-		Directory one, other;
-		other = new Directory(root,"other");
+		Link one, other;
+		other = new Link(root,"other",fileDirectoryStringIntBooleanType);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
-		one = new Directory(root,"one");
+		one = new Link(root,"one",fileDirectoryStringIntBooleanType);
 
-		File file = new File(other,"bestand",Type.PDF_FILE);
+		other.changeName("1");
 		sleep();
-		File file2 = new File(one,"bestand2",Type.PDF_FILE);
+		one.changeName("2");
 		assertTrue(one.hasOverlappingUsePeriod(other));
 	}
 
@@ -759,26 +753,35 @@ public class ItemTest {
 	public void testLinkHasOverlappingUsePeriod_ModifiedOverlap_D() {
 		// one = implicit argument ; other = explicit argument
 		//D Test other created before one created before one modified before other modified
-		Directory one, other;
-		other = new Directory(root,"other");
+		Link one, other;
+		other = new Link(root,"other",fileDirectoryStringIntBooleanType);
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
-		one = new Directory(root,"one");
+		one = new Link(root,"one",fileDirectoryStringIntBooleanType);
 
-		File file = new File(one,"bestand",Type.PDF_FILE);
+		one.changeName("1");
 		sleep();
-		File file2 = new File(other,"bestand2",Type.PDF_FILE);
+		other.changeName("2");
 		assertTrue(one.hasOverlappingUsePeriod(other));
 	}
-*/
-/*
+
+
 	@Test
-	public void testSetWritable() {
-		fileString.setWritable(false);
+	public void testFileSetWritable() {
+		fileDirectoryStringType.setWritable(false);
 		fileNotWritable.setWritable(true);
-		assertFalse(fileString.isWritable());
+		assertFalse(fileDirectoryStringType.isWritable());
 		assertTrue(fileNotWritable.isWritable());
 	}
-	*/
+
+	@Test
+	public void testDirectorySetWritable() {
+		directoryDirectoryString.setWritable(false);
+		directoryNotWritable.setWritable(true);
+		assertFalse(directoryDirectoryString.isWritable());
+		assertTrue(directoryNotWritable.isWritable());
+	}
+
+
 	private void sleep() {
         try {
             Thread.sleep(50);
