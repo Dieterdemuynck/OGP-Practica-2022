@@ -1,6 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import java.awt.*;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -255,6 +256,7 @@ public class ItemTest {
 
 
 	// ITEM NAME TESTS
+	// TODO splitsen en controleren of er nog gesplitst moeten worden
 	@Test
 	public void testIsValidName_LegalCase() {
 		assertTrue(File.isValidName("abcDEF123-_."));
@@ -839,7 +841,7 @@ public class ItemTest {
 
 	// FILE TYPE TEST
 	@Test
-	public void test(){
+	public void testType(){
 		File pdfFile = new File(root,"Pdf_file",Type.PDF_FILE);
 		File javaFile = new File(root,"Java_file",Type.JAVA_FILE);
 		File textFile = new File(root,"Text_file",Type.TEXT_FILE);
@@ -848,6 +850,59 @@ public class ItemTest {
 		assertEquals(Type.TEXT_FILE,textFile.getType());
 	}
 
+	// DIRECTORY CONTENTS TESTS
+	@Test
+	public void testGetNbItem(){
+		Directory root = new Directory("root");
+		assertEquals(0,root.getNbItems());
+		File file = new File(root,"file",Type.PDF_FILE);
+		assertEquals(1, root.getNbItems());
+		Link link = new Link(root,"link",file);
+		assertEquals(2,root.getNbItems());
+	}
+
+	@Test
+	public void testGetItemAt(){
+		Directory root = new Directory("root");
+		File file = new File(root,"file",Type.PDF_FILE);
+		Link link = new Link(root,"link",file);
+		assertEquals(file,root.getItemAt(1));
+		assertEquals(link,root.getItemAt(2));
+	}
+
+	@Test
+	public void testGetItem(){
+		Directory root = new Directory("root");
+		File file = new File(root,"file",Type.PDF_FILE);
+		Link link = new Link(root,"link",file);
+		assertEquals(file,root.getItem("file"));
+		assertEquals(link,root.getItem("link"));
+	}
+
+	@Test
+	public void testContainsDiskItemWhitName(){
+		Directory root = new Directory("root");
+		File file = new File(root,"file",Type.PDF_FILE);
+		assertTrue(root.containsDiskItemWithName("file"));
+		assertFalse(root.containsDiskItemWithName("link"));
+	}
+
+	@Test
+	public void testGetIndexOf(){
+		Directory root = new Directory("root");
+		File file = new File(root,"file",Type.PDF_FILE);
+		Link link = new Link(root,"link",file);
+		assertEquals(0,root.getIndexOf(file));
+		assertEquals(1,root.getIndexOf(link));
+	}
+
+	@Test
+	public void testHasAsItem(){
+		Directory root = new Directory("root");
+		File file = new File(root,"file",Type.PDF_FILE);
+		assertTrue(root.hasAsItem(file));
+		assertFalse(root.hasAsItem(linkDirectoryStringItem));
+	}
 
 
 	// SLEEP METHOD
