@@ -320,9 +320,11 @@ public abstract class Item {
         if (parentDirectory == null) {
             // move() must move item to a new directory.
             throw new IllegalArgumentException("target parentDirectory may not be null.");
-        } else if (!getParentDirectory().isWritable()) {
-            // the current parentDirectory must be writable.
-            throw new ItemNotWritableException(getParentDirectory());
+        } else if (getParentDirectory() != null){
+            if (!getParentDirectory().isWritable()) {
+                // the current parentDirectory must be writable.
+                throw new ItemNotWritableException(getParentDirectory());
+            }
         } else if (!parentDirectory.isWritable()) {
             // the target parentDirectory must be writable.
             throw new ItemNotWritableException(parentDirectory);
@@ -332,7 +334,9 @@ public abstract class Item {
             throw new IllegalDirectoryContentExeption(parentDirectory, this);
         }
         // Remove item from current parentDirectory.
-        getParentDirectory().removeFromContents(this);
+        if (getParentDirectory()!= null){
+            getParentDirectory().removeFromContents(this);
+        }
         // Add item to target parentDirectory.
         parentDirectory.addToContents(this);
         // Adjust item's reference to parentDirectory.
