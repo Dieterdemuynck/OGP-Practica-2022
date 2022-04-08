@@ -1,15 +1,16 @@
-import be.kuleuven.cs.som.annotate.*;
+package com.ogppractica.filesystem;
+
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 
 /**
- * A class for signaling illegal to add an item to a directoy.
+ * A class for signaling illegal to add an item to a directory.
  *
  * @author Team 2: Dieter Demuynck, Hannes Ingelaere en Ine Malfait
  * @version 4
  */
 
-public class IllegalDirectoryContentExeption extends RuntimeException{
+public class IllegalDirectoryContentException extends RuntimeException{
 
     /**
      * Required because this class inherits from Exception
@@ -39,7 +40,7 @@ public class IllegalDirectoryContentExeption extends RuntimeException{
      * is set to the given directory.
      * | new.getDirectory() == dir
      */
-    public IllegalDirectoryContentExeption(Directory dir, Item item) {
+    public IllegalDirectoryContentException(Directory dir, Item item) {
         this.dir = dir;
         this.item = item;
     }

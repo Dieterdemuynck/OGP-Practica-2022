@@ -1,3 +1,5 @@
+package com.ogppractica.filesystem;
+
 public interface Writability {
 
     boolean isWritable();

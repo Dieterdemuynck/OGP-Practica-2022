@@ -1,3 +1,5 @@
+package com.ogppractica.filesystem;
+
 import be.kuleuven.cs.som.annotate.*;
 
 /**
@@ -5,7 +7,7 @@ import be.kuleuven.cs.som.annotate.*;
  *
  * @invar	Each file must have a valid size.
  * 		    | isValidSize(getSize())
- * @invar   Each file must belong to a directory (eg. parentDirectory may not be null)
+ * @invar   Each file must belong to a directory (e.g. parentDirectory may not be null)
  *          | this.getParentDirectory() != null
  * -> writable
  * -> type
@@ -292,7 +294,7 @@ public class File extends Item implements Writability {
     }
 
     /* *********************************************************
-     * bijkomende methodes
+     * Additional Methods
      * *********************************************************/
 
     @Override

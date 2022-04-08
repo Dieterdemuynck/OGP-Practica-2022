@@ -1,3 +1,5 @@
+package com.ogppractica.filesystem;
+
 /**
  * An enum representing the type (and extension) a file can have.
  * For now, we distinguish text-files, java-files and pdfs.

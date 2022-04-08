@@ -1,11 +1,11 @@
+package com.ogppractica.filesystem;
+
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Model;
 import be.kuleuven.cs.som.annotate.Raw;
 
 import java.util.Date;
-
-// VOORLOPIG HEB IK GWN DINGEN GEKOPIEERD EN GEPLAKT HIERIN, NOG NIET AF!
 
 /**
  * A class of Items.
@@ -91,7 +91,7 @@ public abstract class Item {
      */
     public static boolean isValidName(String name) {
         return (name != null && name.matches("[a-zA-Z_0-9.-]+"));
-    } // Moet overschreven worden voor map "[a-zA-Z_0-9-]+"
+    }
 
     /**
      * Set the name of this item to the given name.
@@ -335,7 +335,7 @@ public abstract class Item {
         } else if (this instanceof Directory && parentDirectory.isDirectOrIndirectChildOf((Directory)this)
                 || parentDirectory == this) {
             // Directory paths may not contain any loops.
-            throw new IllegalDirectoryContentExeption(parentDirectory, this);
+            throw new IllegalDirectoryContentException(parentDirectory, this);
         }
         // Remove item from current parentDirectory.
         if (getParentDirectory()!= null){
@@ -349,7 +349,7 @@ public abstract class Item {
 
 
     /* *********************************************************
-     * bijkomende methodes
+     * Additional Methods
      * *********************************************************/
 
     /**
@@ -393,7 +393,7 @@ public abstract class Item {
      * it returns the default disk usage, which is zero.
      * @return zero.
      */
-    // Bit odd that an item, "by default", does not use disk space. Hm.
+    // A bit odd that an item, "by default", does not use disk space. Hm.
     public int getTotalDiskUsage(){
         return 0;
     }
@@ -431,7 +431,7 @@ public abstract class Item {
 
     /**
      * Terminates or Activates an item.
-     * @param terminated the boolean of whether to actviate (false) or terminate (true) the item
+     * @param terminated the boolean of whether to activate (false) or terminate (true) the item
      */
     public void setTerminated(boolean terminated) {
         isTerminated = terminated;

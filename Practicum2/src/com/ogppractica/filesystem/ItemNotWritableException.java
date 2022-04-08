@@ -1,7 +1,9 @@
+package com.ogppractica.filesystem;
+
 import be.kuleuven.cs.som.annotate.*;
 
 /**
- * A class for signaling illegal attempts to change a item.
+ * A class for signaling illegal attempts to change an item.
  *
  * @author Tommy Messelis
  * @author Team 2: Dieter Demuynck, Hannes Ingelaere en Ine Malfait

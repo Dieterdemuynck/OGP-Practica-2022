@@ -1,3 +1,5 @@
+package com.ogppractica.filesystem;
+
 import be.kuleuven.cs.som.annotate.*;
 
 import java.util.ArrayList;
@@ -220,8 +222,8 @@ public class Directory extends Item implements Writability {
             else if (compareStrings(item.getName(),contents.get(mid).getName()) == 2){
                 return findIndexForInContents(item,mid+1,einde);
             }
-            else { //item heeft dezelfde naam
-                throw new IllegalDirectoryContentExeption(this,item);
+            else { // Item has same name
+                throw new IllegalDirectoryContentException(this,item);
             }
         }
         else {
@@ -232,7 +234,7 @@ public class Directory extends Item implements Writability {
                 return start + 1;
             }
             else { // Item has same name
-                throw new IllegalDirectoryContentExeption(this,item);
+                throw new IllegalDirectoryContentException(this,item);
             }
         }
     }
@@ -270,11 +272,11 @@ public class Directory extends Item implements Writability {
         }
         if (item instanceof Directory && this.isDirectOrIndirectChildOf((Directory)item) || item == this) {
             // Directory paths may not have any loops.
-            throw new IllegalDirectoryContentExeption(this, item);
+            throw new IllegalDirectoryContentException(this, item);
         }
         if (getContents().size()>0){
             int place = findIndexForInContents(item,0,getContents().size()-1);
-            getContents().add(place, item); //Moet gesorteerd worden op naam, zou moeten juist zijn zo
+            getContents().add(place, item);
         }
         else {
             getContents().add(item);
@@ -361,7 +363,7 @@ public class Directory extends Item implements Writability {
     /**
      * Checks whether there is an item with the relevant name in this directory.
      *
-     * @param itemName is the name of the relevent item.
+     * @param itemName the name of the relevant item.
      * @return whether there is an item with the given name in this directory, ignoring upper or lower case letters.
      */
     public boolean containsDiskItemWithName(String itemName){
