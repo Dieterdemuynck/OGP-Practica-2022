@@ -51,6 +51,7 @@ public class ItemTest {
 		timeAfterConstructionNotWritable = new Date();
 	}
 
+	// DIRECTORY CONSTRUCTOR TEST
 	@Test
 	public void testEmptyRoot_LegalCase(){
 		timeBeforeConstruction = new Date();
@@ -171,6 +172,7 @@ public class ItemTest {
 	}
 
 
+	// FILE CONSTRUCTOR TESTS
 	@Test
 	public void testFileDirectoryStringIntBooleanType_LegalCase() {
 		assertEquals("bestand1", fileDirectoryStringIntBooleanType.getName());
@@ -226,6 +228,7 @@ public class ItemTest {
 		assertEquals(Type.PDF_FILE, fileDirectoryStringIntBooleanType.getType());
 	}
 
+	// LINK CONSTRUCTOR TEST
 	@Test
 	public void testLinkDirectoryStringItem_LegalCase(){
 		assertEquals("link", linkDirectoryStringItem.getName());
@@ -251,7 +254,7 @@ public class ItemTest {
 	}
 
 
-	// ITEM NAME TESTS -> test for Link, File and Directory
+	// ITEM NAME TESTS
 	@Test
 	public void testIsValidName_LegalCase() {
 		assertTrue(File.isValidName("abcDEF123-_."));
@@ -271,7 +274,6 @@ public class ItemTest {
 		assertFalse(Link.isValidName(""));
 		assertFalse(Link.isValidName("%illegalSymbol"));
 	}
-
 
 	@Test
 	public void testFileChangeName_LegalCase() {
@@ -389,6 +391,7 @@ public class ItemTest {
 		fileNotWritable.shorten(1);
 	}
 
+
 	// ITEM CREATIONTIME TESTS
 	@Test
 	public void testIsValidCreationTime_LegalCase() {
@@ -411,6 +414,7 @@ public class ItemTest {
 	}
 
 
+	// ITEM MODIFICATIONTIME TESTS
 	@Test
 	public void testcanHaveAsModificationTime_LegalCase() {
 		assertTrue(fileDirectoryStringType.canHaveAsModificationTime(null));
@@ -764,7 +768,59 @@ public class ItemTest {
 		assertTrue(one.hasOverlappingUsePeriod(other));
 	}
 
+	// ITEM DIRECTORY TESTS
+	@Test
+	public void testFileParentDirectory(){
+		assertEquals(root,fileDirectoryStringType.getParentDirectory());
+		fileDirectoryStringType.changeParentDirectory(directoryStringBoolean);
+		assertEquals(directoryStringBoolean,fileDirectoryStringType.getParentDirectory());
+	}
 
+	@Test (expected = ItemNotWritableException.class)
+	public void testFileParentDirectory_NotWritableDirectory(){
+		Directory rootNotWritable = new Directory("not_writable_root",false);
+		fileDirectoryStringType.changeParentDirectory(rootNotWritable);
+
+	}
+
+	@Test (expected = ItemNotWritableException.class)
+	public void testFileParentDirectory_NotWritableFile(){
+		fileNotWritable.changeParentDirectory(directoryStringBoolean);
+	}
+
+	@Test
+	public void testDirectoryParentDirectory(){
+		Directory newRoot = new Directory("new_root");
+		assertNull(root.getParentDirectory());
+		root.changeParentDirectory(newRoot);
+		assertEquals(newRoot,root.getParentDirectory());
+
+		assertEquals(root,directoryDirectoryString.getParentDirectory());
+		directoryDirectoryString.changeParentDirectory(newRoot);
+		assertEquals(newRoot,directoryDirectoryString.getParentDirectory());
+	}
+
+	@Test (expected = ItemNotWritableException.class)
+	public void testDirectoryParentDirectory_NotWritableRoot(){
+		Directory rootNotWritable = new Directory("not_writable_root",false);
+		rootNotWritable.changeParentDirectory(root);
+	}
+
+	@Test (expected = ItemNotWritableException.class)
+	public void testDirectoryParentDirectory_NotWritableDirectory(){
+		Directory newRoot = new Directory("new_root");
+		directoryNotWritable.changeParentDirectory(newRoot);
+	}
+
+	@Test
+	public void testLinkParentDirectory(){
+		assertEquals(root,linkDirectoryStringItem.getParentDirectory());
+		linkDirectoryStringItem.changeParentDirectory(directoryStringBoolean);
+		assertEquals(directoryStringBoolean,linkDirectoryStringItem.getParentDirectory());
+	}
+
+
+	// FILE & DIRECTORY WRITABLE TESTS
 	@Test
 	public void testFileSetWritable() {
 		fileDirectoryStringType.setWritable(false);
@@ -782,6 +838,9 @@ public class ItemTest {
 	}
 
 
+
+
+	// SLEEP FUNCTIE
 	private void sleep() {
         try {
             Thread.sleep(50);
