@@ -1088,6 +1088,7 @@ public class ItemTest {
 		assertFalse(file.isDirectOrIndirectChildOf(root));
 	}
 
+
 	// DIRECTORY IS DIRECT OR INDIRECT CHILD OF TESTS-------------------------------------------------------------------
 	@Test
 	public void testDirectoryIsDirectOrIndirectChildOf_directChildCase(){
@@ -1137,6 +1138,7 @@ public class ItemTest {
 		assertFalse(link.isDirectOrIndirectChildOf(root));
 	}
 
+
 	// FILE GET ROOT TESTS----------------------------------------------------------------------------------------------
 	@Test
 	public void testFileGetRoot_directChildCase(){
@@ -1152,6 +1154,7 @@ public class ItemTest {
 		File file = new File(dir,"file",Type.TEXT_FILE);
 		assertEquals(root,file.getRoot());
 	}
+
 
 	// DIRECTORY GET ROOT TESTS----------------------------------------------------------------------------------------------
 	@Test
@@ -1186,6 +1189,36 @@ public class ItemTest {
 		assertEquals(root,link.getRoot());
 	}
 
+
+	// FILE GET TOTAL DISK USAGE TESTS----------------------------------------------------------------------------------
+	@Test
+	public void testFileGetTotalDiskUsage(){
+		Directory root = new Directory("root");
+		File file = new File(root,"file",100,true,Type.TEXT_FILE);
+		assertEquals(file.getSize(), file.getTotalDiskUsage());
+	}
+
+
+	// DIRECTORY GET TOTAL DISK USAGE TESTS-----------------------------------------------------------------------------
+	@Test
+	public void testDirectoryGetTotalDiskUsage(){
+		Directory directory = new Directory(root,"directory",true);
+		File file = new File(directory,"file",100,true,Type.TEXT_FILE);
+		assertEquals(file.getSize(), directory.getTotalDiskUsage());
+		File file2 = new File(directory,"file2",1000,true,Type.TEXT_FILE);
+		assertEquals(file.getSize() + file2.getSize(), directory.getTotalDiskUsage());
+		Link link = new Link(directory,"link",file);
+		assertEquals(file.getSize() + file2.getSize(), directory.getTotalDiskUsage());
+	}
+
+
+	// LINK GET TOTAL DISK USAGE TESTS----------------------------------------------------------------------------------
+	@Test
+	public void testLinkGetTotalDiskUsage(){
+		Directory root = new Directory("root");
+		Link link = new Link(root,"link",fileDirectoryStringIntBooleanType);
+		assertEquals(0, link.getTotalDiskUsage());
+	}
 
 
 	// SLEEP METHOD
