@@ -39,7 +39,7 @@ public class IllegalDirectoryContentExeption extends RuntimeException{
      * is set to the given directory.
      * | new.getDirectory() == dir
      */
-    public IllegalDirectoryContentExeption(Directory dir, Item item) {  // TODO: adjust FileTest
+    public IllegalDirectoryContentExeption(Directory dir, Item item) {
         this.dir = dir;
         this.item = item;
     }

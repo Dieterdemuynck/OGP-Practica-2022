@@ -416,7 +416,9 @@ public abstract class Item {
      * Destructor - defensive programming
      * *********************************************************/
 
-    // TODO: specification
+    /**
+     * Variable that checks whether the item is terminated or not
+     */
     private boolean isTerminated = false;
 
     /**
@@ -440,7 +442,10 @@ public abstract class Item {
      */
     public abstract void terminate();
 
-    // TODO: specification? Does it need documentation? Perhaps a simple explanation instead of full documentation with eg. doctags...
+    /**
+     * Destructs the item
+     * If the item is a directory it destructs everything in that directory as well
+     */
     public abstract void deleteRecursive();
 
     /* *********************************************************

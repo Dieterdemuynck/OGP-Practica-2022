@@ -28,7 +28,7 @@ public class ItemNotWritableException extends RuntimeException {
      * is set to the given item.
      * | new.getItem() == item
      */
-    public ItemNotWritableException(Item item) {  // TODO: adjust FileTest
+    public ItemNotWritableException(Item item) {
         this.item = item;
     }
 
