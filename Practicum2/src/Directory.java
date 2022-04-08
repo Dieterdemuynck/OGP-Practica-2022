@@ -321,7 +321,12 @@ public class Directory extends Item implements Writability {
         }
     }
 
-    // TODO: specification
+    /**
+     * Checks whether there is an item with the relevant name in this directory.
+     *
+     * @param itemName is the name of the relevent item.
+     * @return whether there is an item with the given name in this directory, ignoring upper or lower case letters.
+     */
     public boolean containsDiskItemWithName(String itemName){
         itemName = itemName.toLowerCase();
         for (Item item: getContents()){
@@ -349,7 +354,12 @@ public class Directory extends Item implements Writability {
         }
     }
 
-    // TODO: specification
+    /**
+     * Looks for a specific item in this directory.
+     *
+     * @param item is the item we are looking for.
+     * @return whether the item is in this directory.
+     */
     public boolean hasAsItem(Item item){
         boolean contains = false;
         for (Item contentItem: getContents()){
@@ -382,7 +392,11 @@ public class Directory extends Item implements Writability {
      * Additional Methods
      * *********************************************************/
 
-    // TODO: specification
+    /**
+     * Make a directory a root directory.
+     *
+     * @post    the referenced Directory will not have a parent directory.
+     */
     public void makeRoot(){
         setParentDirectory(null);
     }
@@ -401,7 +415,12 @@ public class Directory extends Item implements Writability {
      * Destructor - defensive programming
      * *********************************************************/
 
-    // TODO: specification
+    /**
+     * This terminates the referenced directory.
+     *
+     * @pre     The directory must not be terminated already.
+     * @post    The directory will be terminated.
+     */
     @Override
     public void terminate() {
         if (!isTerminated() && isWritable() && contents.isEmpty()) {
@@ -411,7 +430,13 @@ public class Directory extends Item implements Writability {
     }
 
     // beter private zetten zeker?
-    // TODO: specification
+
+    /**
+     * Tells whether the directory is deletable or not.
+     *
+     * @pre    The directory and it's items must be writable and the items must be deletable.
+     * @return The result will tell whether the directory can be deleted, depending on the writability of the directory and of the items in the directory.
+     */
     public boolean canBeDeleted() {
         // A directory cannot be deleted if it is not writable
         if (!isWritable()) {
