@@ -375,19 +375,22 @@ public class Directory extends Item implements Writability {
         return false;
     }
 
-
-    public int getIndexOf(Item item) {
-        //Index ook +1 doen zoals in getItemAt(.) ? Nu niet het geval
-        return getIndexOf(item,  getContents().size());
-    }
-
-    private int getIndexOf(Item item, int einde){  // TODO: Only used once, redundant separation? move code to public version
-        int place = getItemIndex(item.getName(),0,einde);
+    /**
+     * Returns the index of the requested item inside the contents of the directory.
+     *
+     * @param   item  The item of which the index in this directory's content is requested
+     * @return  the index of the item in the directory's contents.
+     *          | this.getContents.get(result) == item
+     * @throws  ItemNotInDirectoryException
+     *          The item must be present in the directory.
+     */
+    public int getIndexOf(Item item) throws ItemNotInDirectoryException {
+        int place = getItemIndex(item.getName(),0,getContents().size());
         if (item == getContents().get(place)){
             return place;
         }
         else {
-            return -1; //TODO ZIT ER NIET IN, moet defensief -> exception?
+            throw new ItemNotInDirectoryException(this, item);
         }
     }
 
