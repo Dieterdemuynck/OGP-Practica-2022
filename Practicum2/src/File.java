@@ -279,7 +279,9 @@ public class File extends Item implements Writability {
         if (parentDirectory == null) {
             throw new IllegalArgumentException("Parent directory of File may not be null.");
         }
-        super.setParentDirectory(parentDirectory);
+        if (this.isWritable()) {
+            super.setParentDirectory(parentDirectory);
+        }
     }
 
 
