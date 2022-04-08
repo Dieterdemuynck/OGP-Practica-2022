@@ -64,7 +64,7 @@ public class ItemTest {
 		assertFalse(timeBeforeConstruction.after(root.getCreationTime()));
 		assertFalse(root.getCreationTime().after(timeAfterConstruction));
 		assertNull(root.getParentDirectory());
-		assertEquals(0,root.getNbItems()); //TODO is this a good test to check contents?
+		assertEquals(0,root.getNbItems());
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class ItemTest {
 		assertFalse(timeBeforeConstruction.after(root.getCreationTime()));
 		assertFalse(root.getCreationTime().after(timeAfterConstruction));
 		assertNull(root.getParentDirectory());
-		assertEquals(0,root.getNbItems()); //TODO is this a good test to check contents?
+		assertEquals(0,root.getNbItems());
 	}
 
 	@Test

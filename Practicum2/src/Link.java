@@ -1,9 +1,12 @@
 import be.kuleuven.cs.som.annotate.*;
 
 /**
- *
  * A class of links.
  *
+ * @invar Each new link must link to a (parent/child)directory or file, but not to another link.
+ *          | instanceof getLinkedItem == File, Directory
+ * @invar   Each link must belong to a directory (e.g. parentDirectory may not be null)
+ *          | this.getParentDirectory() != null
  * -> name
  * -> creationTime
  * -> modificationTime
