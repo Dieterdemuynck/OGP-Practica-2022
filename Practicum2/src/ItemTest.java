@@ -1137,6 +1137,57 @@ public class ItemTest {
 		assertFalse(link.isDirectOrIndirectChildOf(root));
 	}
 
+	// FILE GET ROOT TESTS----------------------------------------------------------------------------------------------
+	@Test
+	public void testFileGetRoot_directChildCase(){
+		Directory root = new Directory("root",true);
+		File file = new File(root,"file",Type.TEXT_FILE);
+		assertEquals(root,file.getRoot());
+	}
+
+	@Test
+	public void testFileGetRoot_indirectChildCase(){
+		Directory root = new Directory("root",true);
+		Directory dir = new Directory(root,"dir");
+		File file = new File(dir,"file",Type.TEXT_FILE);
+		assertEquals(root,file.getRoot());
+	}
+
+	// DIRECTORY GET ROOT TESTS----------------------------------------------------------------------------------------------
+	@Test
+	public void testDirectoryGetRoot_directChildCase(){
+		Directory root = new Directory("root",true);
+		Directory directory = new Directory(root,"directory");
+		assertEquals(root,directory.getRoot());
+	}
+
+	@Test
+	public void testDirectoryGetRoot_indirectChildCase(){
+		Directory root = new Directory("root",true);
+		Directory dir = new Directory(root,"dir");
+		Directory directory = new Directory(dir,"directory");
+		assertEquals(root,directory.getRoot());
+	}
+
+
+	// LINK GET ROOT TESTS----------------------------------------------------------------------------------------------
+	@Test
+	public void testLinkGetRoot_directChildCase(){
+		Directory root = new Directory("root",true);
+		Link link = new Link(root,"directory",fileDirectoryStringIntBooleanType);
+		assertEquals(root,link.getRoot());
+	}
+
+	@Test
+	public void testLinkGetRoot_indirectChildCase(){
+		Directory root = new Directory("root",true);
+		Directory dir = new Directory(root,"dir");
+		Link link = new Link(dir,"directory",fileDirectoryStringIntBooleanType);
+		assertEquals(root,link.getRoot());
+	}
+
+
+
 	// SLEEP METHOD
 	private void sleep() {
 		try {
