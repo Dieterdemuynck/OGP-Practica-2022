@@ -1,6 +1,8 @@
+import com.sun.source.tree.AssertTree;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.beans.JavaBean;
 import java.security.DigestException;
 import java.util.Date;
 
@@ -1088,6 +1090,7 @@ public class ItemTest {
 		assertFalse(file.isDirectOrIndirectChildOf(root));
 	}
 
+
 	// DIRECTORY IS DIRECT OR INDIRECT CHILD OF TESTS-------------------------------------------------------------------
 	@Test
 	public void testDirectoryIsDirectOrIndirectChildOf_directChildCase(){
@@ -1137,6 +1140,7 @@ public class ItemTest {
 		assertFalse(link.isDirectOrIndirectChildOf(root));
 	}
 
+
 	// FILE GET ROOT TESTS----------------------------------------------------------------------------------------------
 	@Test
 	public void testFileGetRoot_directChildCase(){
@@ -1152,6 +1156,7 @@ public class ItemTest {
 		File file = new File(dir,"file",Type.TEXT_FILE);
 		assertEquals(root,file.getRoot());
 	}
+
 
 	// DIRECTORY GET ROOT TESTS----------------------------------------------------------------------------------------------
 	@Test
@@ -1186,6 +1191,133 @@ public class ItemTest {
 		assertEquals(root,link.getRoot());
 	}
 
+
+	// FILE GET TOTAL DISK USAGE TESTS----------------------------------------------------------------------------------
+	@Test
+	public void testFileGetTotalDiskUsage(){
+		Directory root = new Directory("root");
+		File file = new File(root,"file",100,true,Type.TEXT_FILE);
+		assertEquals(file.getSize(), file.getTotalDiskUsage());
+	}
+
+
+	// DIRECTORY GET TOTAL DISK USAGE TESTS-----------------------------------------------------------------------------
+	@Test
+	public void testDirectoryGetTotalDiskUsage(){
+		Directory directory = new Directory(root,"directory",true);
+		File file = new File(directory,"file",100,true,Type.TEXT_FILE);
+		assertEquals(file.getSize(), directory.getTotalDiskUsage());
+		File file2 = new File(directory,"file2",1000,true,Type.TEXT_FILE);
+		assertEquals(file.getSize() + file2.getSize(), directory.getTotalDiskUsage());
+		Link link = new Link(directory,"link",file);
+		assertEquals(file.getSize() + file2.getSize(), directory.getTotalDiskUsage());
+	}
+
+
+	// LINK GET TOTAL DISK USAGE TESTS----------------------------------------------------------------------------------
+	@Test
+	public void testLinkGetTotalDiskUsage(){
+		Directory root = new Directory("root");
+		Link link = new Link(root,"link",fileDirectoryStringIntBooleanType);
+		assertEquals(0, link.getTotalDiskUsage());
+	}
+
+
+	// FILE GET ABSOLUTE PATH TESTS-------------------------------------------------------------------------------------
+	@Test
+	public void testFileGetAbsolutePath_directChildCase(){
+		Directory root = new Directory("root");
+		File file = new File(root,"file",Type.TEXT_FILE);
+		assertEquals("/root/file.txt", file.getAbsolutePath());
+	}
+
+	@Test
+	public void testFileGetAbsolutePath_indirectChildCase(){
+		Directory root = new Directory("root");
+		Directory dir = new Directory(root,"dir");
+		File file = new File(dir,"file",Type.TEXT_FILE);
+		assertEquals("/root/dir/file.txt", file.getAbsolutePath());
+	}
+
+
+	// DIRECTORY GET ABSOLUTE PATH TESTS--------------------------------------------------------------------------------
+	@Test
+	public void testDirectoryGetAbsolutePath_directChildCase(){
+		Directory root = new Directory("root");
+		Directory directory = new Directory(root,"directory");
+		assertEquals("/root/directory", directory.getAbsolutePath());
+	}
+
+	@Test
+	public void testDirectoryGetAbsolutePath_indirectChildCase(){
+		Directory root = new Directory("root");
+		Directory dir = new Directory(root,"dir");
+		Directory directory = new Directory(dir,"directory");
+		assertEquals("/root/dir/directory", directory.getAbsolutePath());
+	}
+
+
+	// LINK GET ABSOLUTE PATH TESTS-------------------------------------------------------------------------------------
+	@Test
+	public void testLinkGetAbsolutePath_directChildCase(){
+		Directory root = new Directory("root");
+		Link link = new Link(root,"link",fileDirectoryStringIntBooleanType);
+		assertEquals("/root/link", link.getAbsolutePath());
+	}
+
+	@Test
+	public void testLinkGetAbsolutePath_indirectChildCase(){
+		Directory root = new Directory("root");
+		Directory dir = new Directory(root,"dir");
+		Link link = new Link(dir,"link",fileDirectoryStringIntBooleanType);
+		assertEquals("/root/dir/link", link.getAbsolutePath());
+	}
+
+
+	// FILE TERMINATE TESTS---------------------------------------------------------------------------------------------
+	@Test
+	public void testFileTerminate_writableCase(){
+		File file = new File(root, "file", Type.JAVA_FILE);
+		assertFalse(file.isTerminated());
+		file.terminate();
+		assertTrue(file.isTerminated());
+	}
+
+	@Test
+	public void testFileTerminate_notWritableCase(){
+		File file = new File(root, "file",0, false, Type.JAVA_FILE);
+		assertFalse(file.isTerminated());
+		file.terminate();
+		assertFalse(file.isTerminated());
+	}
+
+
+	// DIRECTORY TERMINATE TESTS----------------------------------------------------------------------------------------
+	@Test
+	public void testDirectoryTerminate_writableCase(){
+		Directory directory = new Directory(root, "directory");
+		assertFalse(directory.isTerminated());
+		directory.terminate();
+		assertTrue(directory.isTerminated());
+	}
+
+	@Test
+	public void testDirectoryTerminate_notWritableCase(){
+		Directory directory = new Directory(root, "directory",false);
+		assertFalse(directory.isTerminated());
+		directory.terminate();
+		assertFalse(directory.isTerminated());
+	}
+
+
+	// LINK TERMINATE TESTS---------------------------------------------------------------------------------------------
+	@Test
+	public void testLinkTerminate(){
+		Link link = new Link(root, "link1",fileDirectoryStringIntBooleanType);
+		assertFalse(link.isTerminated());
+		link.terminate();
+		assertTrue(link.isTerminated());
+	}
 
 
 	// SLEEP METHOD
