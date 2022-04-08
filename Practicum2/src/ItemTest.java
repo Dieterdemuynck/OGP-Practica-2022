@@ -32,12 +32,12 @@ public class ItemTest {
 	public void setUpFixture(){
 		timeBeforeConstruction = new Date();
 		root = new Directory("root");
-		directoryStringBoolean = new Directory("map1",true);
-		directoryDirectoryStringBoolean = new Directory(root,"map2",true);
-		directoryDirectoryString = new Directory(root, "map3");
+		directoryStringBoolean = new Directory("dir1",true);
+		directoryDirectoryStringBoolean = new Directory(root,"dir2",true);
+		directoryDirectoryString = new Directory(root, "dir3");
 
-		fileDirectoryStringIntBooleanType = new File(root,"bestand1",100, true,Type.PDF_FILE);
-		fileDirectoryStringType = new File(root,"bestand2",Type.PDF_FILE);
+		fileDirectoryStringIntBooleanType = new File(root,"file1",100, true,Type.PDF_FILE);
+		fileDirectoryStringType = new File(root,"file2",Type.PDF_FILE);
 
 		linkDirectoryStringItem = new Link(root, "link", fileDirectoryStringIntBooleanType);
 
@@ -45,8 +45,8 @@ public class ItemTest {
 
 		timeBeforeConstructionNotWritable = new Date();
 
-		fileNotWritable = new File(root,"bestand3",100, false,Type.PDF_FILE);
-		directoryNotWritable = new Directory(root,"map4",false);
+		fileNotWritable = new File(root,"file3",100, false,Type.PDF_FILE);
+		directoryNotWritable = new Directory(root,"dir4",false);
 
 		timeAfterConstructionNotWritable = new Date();
 	}
@@ -63,7 +63,7 @@ public class ItemTest {
 		assertFalse(timeBeforeConstruction.after(root.getCreationTime()));
 		assertFalse(root.getCreationTime().after(timeAfterConstruction));
 		assertNull(root.getParentDirectory());
-		assertEquals(0,root.getNbItems()); //TODO is dit een goede test voor contents te testen?
+		assertEquals(0,root.getNbItems()); //TODO is this a good test to check contents?
 	}
 
 	@Test
@@ -78,23 +78,23 @@ public class ItemTest {
 		assertFalse(timeBeforeConstruction.after(root.getCreationTime()));
 		assertFalse(root.getCreationTime().after(timeAfterConstruction));
 		assertNull(root.getParentDirectory());
-		assertEquals(0,root.getNbItems()); //TODO is dit een goede test voor contents te testen?
+		assertEquals(0,root.getNbItems()); //TODO is this a good test to check contents?
 	}
 
 	@Test
 	public void testNonEmptyRoot_LegalCase(){
 		assertEquals("root", root.getName());
 		assertTrue(root.isWritable());
-		assertNotNull(root.getModificationTime()); //Want er zijn dingen toegevoegd aan root
+		assertNotNull(root.getModificationTime()); //Because things where added to root
 		assertFalse(timeBeforeConstruction.after(root.getCreationTime()));
 		assertFalse(root.getCreationTime().after(timeAfterConstruction));
 		assertNull(root.getParentDirectory());
-		assertEquals(7,root.getNbItems()); // 3 mappen + 2 bestanden + 1 link
+		assertEquals(7,root.getNbItems()); // 3 directories + 2 files + 1 link
 	}
 
 	@Test
 	public void testDirectoryStringBoolean_LegalCase(){
-		assertEquals("map1", directoryStringBoolean.getName());
+		assertEquals("dir1", directoryStringBoolean.getName());
 		assertTrue(directoryStringBoolean.isWritable());
 		assertNull(directoryStringBoolean.getModificationTime());
 		assertFalse(timeBeforeConstruction.after(directoryStringBoolean.getCreationTime()));
@@ -106,9 +106,9 @@ public class ItemTest {
 	@Test
 	public void testDirectoryStringBoolean_IllegalCase(){
 		timeBeforeConstruction = new Date();
-		directoryStringBoolean = new Directory("m.p1",false);
+		directoryStringBoolean = new Directory("d.r1",false);
 		timeAfterConstruction = new Date();
-		assertFalse(Directory.isValidName("m.p1"));
+		assertFalse(Directory.isValidName("d.r1"));
 		assertTrue(Directory.isValidName(directoryStringBoolean.getName()));
 		assertFalse(directoryStringBoolean.isWritable());
 		assertNull(directoryStringBoolean.getModificationTime());
@@ -120,7 +120,7 @@ public class ItemTest {
 
 	@Test
 	public void testDirectoryDirectoryStringBoolean_LegalCase(){
-		assertEquals("map2", directoryDirectoryStringBoolean.getName());
+		assertEquals("dir2", directoryDirectoryStringBoolean.getName());
 		assertTrue(directoryDirectoryStringBoolean.isWritable());
 		assertNull(directoryDirectoryStringBoolean.getModificationTime());
 		assertFalse(timeBeforeConstruction.after(directoryDirectoryStringBoolean.getCreationTime()));
@@ -132,9 +132,9 @@ public class ItemTest {
 	@Test
 	public void testDirectoryDirectoryStringBoolean_IllegalCase(){
 		timeBeforeConstruction = new Date();
-		directoryDirectoryStringBoolean = new Directory(root,"m.p2",false);
+		directoryDirectoryStringBoolean = new Directory(root,"d.r2",false);
 		timeAfterConstruction = new Date();
-		assertFalse(Directory.isValidName("m.p2"));
+		assertFalse(Directory.isValidName("d.r2"));
 		assertTrue(Directory.isValidName(directoryStringBoolean.getName()));
 		assertFalse(directoryDirectoryStringBoolean.isWritable());
 		assertNull(directoryDirectoryStringBoolean.getModificationTime());
@@ -147,7 +147,7 @@ public class ItemTest {
 
 	@Test
 	public void testDirectoryDirectoryString_LegalCase(){
-		assertEquals("map3", directoryDirectoryString.getName());
+		assertEquals("dir3", directoryDirectoryString.getName());
 		assertTrue(directoryDirectoryString.isWritable());
 		assertNull(directoryDirectoryString.getModificationTime());
 		assertFalse(timeBeforeConstruction.after(directoryDirectoryString.getCreationTime()));
@@ -159,9 +159,9 @@ public class ItemTest {
 	@Test
 	public void testDirectoryDirectoryString_IllegalCase(){
 		timeBeforeConstruction = new Date();
-		directoryDirectoryString = new Directory(root, "m.p3");
+		directoryDirectoryString = new Directory(root, "d.r3");
 		timeAfterConstruction = new Date();
-		assertFalse(Directory.isValidName("m.p3"));
+		assertFalse(Directory.isValidName("d.r3"));
 		assertTrue(Directory.isValidName(directoryStringBoolean.getName()));
 		assertTrue(directoryDirectoryString.isWritable());
 		assertNull(directoryDirectoryString.getModificationTime());
@@ -175,7 +175,7 @@ public class ItemTest {
 	// FILE CONSTRUCTOR TESTS
 	@Test
 	public void testFileDirectoryStringIntBooleanType_LegalCase() {
-		assertEquals("bestand1", fileDirectoryStringIntBooleanType.getName());
+		assertEquals("file1", fileDirectoryStringIntBooleanType.getName());
 		assertEquals(fileDirectoryStringIntBooleanType.getSize(),100);
 		assertTrue(fileDirectoryStringIntBooleanType.isWritable());
 		assertNull(fileDirectoryStringIntBooleanType.getModificationTime());
@@ -203,7 +203,7 @@ public class ItemTest {
 
 	@Test
 	public void testFileDirectoryStringType_LegalCase() {
-		assertEquals("bestand2", fileDirectoryStringType.getName());
+		assertEquals("file2", fileDirectoryStringType.getName());
 		assertEquals(0, fileDirectoryStringType.getSize());
 		assertTrue(fileDirectoryStringType.isWritable());
 		assertNull(fileDirectoryStringType.getModificationTime());
@@ -290,7 +290,7 @@ public class ItemTest {
 	@Test
 	public void testFileChangeName_IllegalName() {
 		fileDirectoryStringType.changeName("$IllegalName$");
-		assertEquals("bestand2", fileDirectoryStringType.getName());
+		assertEquals("file2", fileDirectoryStringType.getName());
 		assertNull(fileDirectoryStringType.getModificationTime());
 	}
 
@@ -361,7 +361,7 @@ public class ItemTest {
 
 	@Test
 	public void testEnlarge_LegalCase() {
-		File file = new File(root,"bestand.txt", File.getMaximumSize()-1,true,Type.PDF_FILE);
+		File file = new File(root,"file", File.getMaximumSize()-1,true,Type.PDF_FILE);
 		Date timeBeforeEnlarge = new Date();
 		file.enlarge(1);
 		Date timeAfterEnlarge = new Date();		
@@ -392,7 +392,7 @@ public class ItemTest {
 	}
 
 
-	// ITEM CREATIONTIME TESTS
+	// ITEM CREATION TIME TESTS
 	@Test
 	public void testIsValidCreationTime_LegalCase() {
 		Date now = new Date();
@@ -414,9 +414,9 @@ public class ItemTest {
 	}
 
 
-	// ITEM MODIFICATIONTIME TESTS
+	// ITEM MODIFICATION TIME TESTS
 	@Test
-	public void testcanHaveAsModificationTime_LegalCase() {
+	public void testCanHaveAsModificationTime_LegalCase() {
 		assertTrue(fileDirectoryStringType.canHaveAsModificationTime(null));
 		assertTrue(fileDirectoryStringType.canHaveAsModificationTime(new Date()));
 		assertTrue(root.canHaveAsModificationTime(null));
@@ -426,7 +426,7 @@ public class ItemTest {
 	}
 	
 	@Test
-	public void testcanHaveAsModificationTime_IllegalCase() {
+	public void testCanHaveAsModificationTime_IllegalCase() {
 		assertFalse(fileDirectoryStringType.canHaveAsModificationTime(new Date(timeAfterConstruction.getTime() - 1000*60*60)));
 		assertFalse(fileDirectoryStringType.canHaveAsModificationTime(new Date(System.currentTimeMillis() + 1000*60*60)));
 		assertFalse(root.canHaveAsModificationTime(new Date(timeAfterConstruction.getTime() - 1000*60*60)));
@@ -558,14 +558,14 @@ public class ItemTest {
 		assertFalse(one.hasOverlappingUsePeriod(other));
 
 		//2 Test one unmodified case
-		File file = new File(one,"bestand",Type.PDF_FILE);
+		File file = new File(one,"file1",Type.PDF_FILE);
 		assertFalse(one.hasOverlappingUsePeriod(other));
 
 		//3 Test other unmodified case
 		//so re-initialise the other file by first terminating existing other file and then recreating that file
 		other.deleteRecursiveRaw();
 		other = new Directory(root, "other");
-		File file2 = new File(one,"bestand2",Type.PDF_FILE);
+		File file2 = new File(one,"file2",Type.PDF_FILE);
 		assertFalse(one.hasOverlappingUsePeriod(other));
 
 	}
@@ -579,20 +579,20 @@ public class ItemTest {
 		other = new Directory(root,"other");
 
 		//1 Test one created and modified before other created and modified case
-		File file = new File(one,"bestand",Type.PDF_FILE);
+		File file = new File(one,"file1",Type.PDF_FILE);
 		sleep();
 		//re-initialise the other
 		other.deleteRecursively();
 		other = new Directory(root,"other");
-		File file2 = new File(other,"bestand2",Type.PDF_FILE);
+		File file2 = new File(other,"file2",Type.PDF_FILE);
 		assertFalse(one.hasOverlappingUsePeriod(other));
 
 		//2 Test other created and modified before one created and modified
-		File file3 = new File(other,"bestand3",Type.PDF_FILE);
+		File file3 = new File(other,"file3",Type.PDF_FILE);
 		sleep();
 		one.deleteRecursively();
 		one = new Directory(root,"one");
-		File file4 = new File(root,"bestand4",Type.PDF_FILE);
+		File file4 = new File(root,"file4",Type.PDF_FILE);
 		assertFalse(one.hasOverlappingUsePeriod(other));
 
 	}
@@ -606,9 +606,9 @@ public class ItemTest {
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
 		other = new Directory(root,"other");
 
-		File file = new File(one,"bestand",Type.PDF_FILE);
+		File file = new File(one,"file1",Type.PDF_FILE);
 		sleep();
-		File file2 = new File(other,"bestand2",Type.PDF_FILE);
+		File file2 = new File(other,"file2",Type.PDF_FILE);
 		assertTrue(one.hasOverlappingUsePeriod(other));
 	}
 
@@ -621,9 +621,9 @@ public class ItemTest {
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
 		other = new Directory(root,"other");
 
-		File file = new File(other,"bestand",Type.PDF_FILE);
+		File file = new File(other,"file1",Type.PDF_FILE);
 		sleep();
-		File file2 = new File(one,"bestand2",Type.PDF_FILE);
+		File file2 = new File(one,"file2",Type.PDF_FILE);
 		assertTrue(one.hasOverlappingUsePeriod(other));
 	}
 
@@ -636,9 +636,9 @@ public class ItemTest {
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
 		one = new Directory(root,"one");
 
-		File file = new File(other,"bestand",Type.PDF_FILE);
+		File file = new File(other,"file1",Type.PDF_FILE);
 		sleep();
-		File file2 = new File(one,"bestand2",Type.PDF_FILE);
+		File file2 = new File(one,"file2",Type.PDF_FILE);
 		assertTrue(one.hasOverlappingUsePeriod(other));
 	}
 
@@ -651,9 +651,9 @@ public class ItemTest {
 		sleep(); // sleep() to be sure that one.getCreationTime() != other.getCreationTime()
 		one = new Directory(root,"one");
 
-		File file = new File(one,"bestand",Type.PDF_FILE);
+		File file = new File(one,"file1",Type.PDF_FILE);
 		sleep();
-		File file2 = new File(other,"bestand2",Type.PDF_FILE);
+		File file2 = new File(other,"file2",Type.PDF_FILE);
 		assertTrue(one.hasOverlappingUsePeriod(other));
 	}
 
@@ -840,7 +840,7 @@ public class ItemTest {
 
 
 
-	// SLEEP FUNCTIE
+	// SLEEP METHOD
 	private void sleep() {
         try {
             Thread.sleep(50);
