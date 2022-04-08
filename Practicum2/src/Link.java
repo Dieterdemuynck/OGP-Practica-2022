@@ -80,11 +80,16 @@ public class Link extends Item {
      * @param  parentDirectory  The directory in to which the link will be moved or in which it will be created.
      */
     @Override
-    public void setParentDirectory(Directory parentDirectory) {
+    protected void setParentDirectory(Directory parentDirectory) {
         if (parentDirectory == null) {
-            throw new IllegalArgumentException("Parent directory of link may not be null.");
+            throw new IllegalArgumentException("Parent directory of File may not be null.");
         }
         super.setParentDirectory(parentDirectory);
+    }
+
+    @Override
+    public void changeParentDirectory(Directory parentDiretory){
+        setParentDirectory(parentDiretory);
     }
 
     public void terminate() {

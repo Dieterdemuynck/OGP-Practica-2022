@@ -278,11 +278,15 @@ public abstract class Item {
      * @throws IllegalArgumentException if the
      * @param  parentDirectory  The directory in to which the link will be moved or in which it will be created.
      */
-    public void setParentDirectory(Directory parentDirectory) {
+    protected void setParentDirectory(Directory parentDirectory) {
         this.parentDirectory = parentDirectory;
         if (parentDirectory != null) {
             parentDirectory.addToContents(this);
         }
+    }
+
+    public void changeParentDirectory(Directory parentDirectory) {
+        setParentDirectory(parentDirectory);
     }
 
 

@@ -326,11 +326,16 @@ public class Directory extends Item implements Writability {
 
 
     @Override
-    public void setParentDirectory(Directory parentDirectory) {
-        if (!this.isWritable()) {
+    protected void setParentDirectory(Directory parentDirectory) {
+        super.setParentDirectory(parentDirectory);
+    }
+
+    @Override
+    public void changeParentDirectory(Directory parentDiretory){
+        if (!this.isWritable()){
             throw new ItemNotWritableException(this);
         }
-        super.setParentDirectory(parentDirectory);
+        setParentDirectory(parentDiretory);
     }
 
     /* *********************************************************
