@@ -13,6 +13,7 @@ import static org.junit.Assert.*;
  * @author Team 2: Dieter Demuynck, Hannes Ingelaere en Ine Malfait
  *
  */
+// TODO splitsen en controleren of er nog gesplitst moeten worden
 public class ItemTest {
 
 	File fileDirectoryStringIntBooleanType;
@@ -52,7 +53,7 @@ public class ItemTest {
 		timeAfterConstructionNotWritable = new Date();
 	}
 
-	// DIRECTORY CONSTRUCTOR TEST
+	// DIRECTORY CONSTRUCTOR TEST---------------------------------------------------------------------------------------
 	@Test
 	public void testEmptyRoot_LegalCase(){
 		timeBeforeConstruction = new Date();
@@ -145,7 +146,6 @@ public class ItemTest {
 		assertEquals(0,directoryDirectoryStringBoolean.getNbItems());
 	}
 
-
 	@Test
 	public void testDirectoryDirectoryString_LegalCase(){
 		assertEquals("dir3", directoryDirectoryString.getName());
@@ -173,7 +173,7 @@ public class ItemTest {
 	}
 
 
-	// FILE CONSTRUCTOR TESTS
+	// FILE CONSTRUCTOR TESTS-------------------------------------------------------------------------------------------
 	@Test
 	public void testFileDirectoryStringIntBooleanType_LegalCase() {
 		assertEquals("file1", fileDirectoryStringIntBooleanType.getName());
@@ -185,7 +185,6 @@ public class ItemTest {
 		assertEquals(root, fileDirectoryStringIntBooleanType.getParentDirectory());
 		assertEquals(Type.PDF_FILE, fileDirectoryStringIntBooleanType.getType());
 	}
-
 
 	@Test
 	public void testFileStringIntBoolean_IllegalCase() {
@@ -229,7 +228,7 @@ public class ItemTest {
 		assertEquals(Type.PDF_FILE, fileDirectoryStringIntBooleanType.getType());
 	}
 
-	// LINK CONSTRUCTOR TEST
+	// LINK CONSTRUCTOR TEST--------------------------------------------------------------------------------------------
 	@Test
 	public void testLinkDirectoryStringItem_LegalCase(){
 		assertEquals("link", linkDirectoryStringItem.getName());
@@ -255,26 +254,17 @@ public class ItemTest {
 	}
 
 
-	// ITEM NAME TESTS
-	// TODO splitsen en controleren of er nog gesplitst moeten worden
+	// FILE NAME TESTS--------------------------------------------------------------------------------------------------
 	@Test
-	public void testIsValidName_LegalCase() {
+	public void testFileIsValidName_LegalCase() {
 		assertTrue(File.isValidName("abcDEF123-_."));
-		assertTrue(Directory.isValidName("abcDEF123-_"));
-		assertTrue(Link.isValidName("abcDEF123-_."));
 	}
 
 	@Test
-	public void testIsValidName_IllegalCase() {
+	public void testFileIsValidName_IllegalCase() {
 		assertFalse(File.isValidName(null));
 		assertFalse(File.isValidName(""));
 		assertFalse(File.isValidName("%illegalSymbol"));
-		assertFalse(Directory.isValidName(null));
-		assertFalse(Directory.isValidName(""));
-		assertFalse(Directory.isValidName("%illegalSymbol"));
-		assertFalse(Link.isValidName(null));
-		assertFalse(Link.isValidName(""));
-		assertFalse(Link.isValidName("%illegalSymbol"));
 	}
 
 	@Test
@@ -282,7 +272,7 @@ public class ItemTest {
 		Date timeBeforeSetName = new Date();
 		fileDirectoryStringType.changeName("NewLegalName");
 		Date timeAfterSetName = new Date();
-		
+
 		assertEquals("NewLegalName", fileDirectoryStringType.getName());
 		assertNotNull(fileDirectoryStringType.getModificationTime());
 		assertFalse(fileDirectoryStringType.getModificationTime().before(timeBeforeSetName));
@@ -299,6 +289,20 @@ public class ItemTest {
 	@Test (expected = ItemNotWritableException.class)
 	public void testFileChangeName_FileNotWritable() {
 		fileNotWritable.changeName("NewLegalName");
+	}
+
+
+	// DIRECTORY NAME TESTS---------------------------------------------------------------------------------------------
+	@Test
+	public void testDirectoryIsValidName_LegalCase() {
+		assertTrue(Directory.isValidName("abcDEF123-_"));
+	}
+
+	@Test
+	public void testDirectoryIsValidName_IllegalCase() {
+		assertFalse(Directory.isValidName(null));
+		assertFalse(Directory.isValidName(""));
+		assertFalse(Directory.isValidName("%illegalSymbol"));
 	}
 
 	@Test
@@ -321,8 +325,21 @@ public class ItemTest {
 	@Test
 	public void testDirectoryChangeName_IllegalName() {
 		directoryDirectoryString.changeName("$IllegalName$");
-		assertEquals("map3", directoryDirectoryString.getName());
+		assertEquals("dir3", directoryDirectoryString.getName());
 		assertNull(directoryDirectoryString.getModificationTime());
+	}
+
+	// LINK NAME TESTS--------------------------------------------------------------------------------------------------
+	@Test
+	public void testLinkIsValidName_LegalCase() {
+		assertTrue(Link.isValidName("abcDEF123-_."));
+	}
+
+	@Test
+	public void testLinkIsValidName_IllegalCase() {
+		assertFalse(Link.isValidName(null));
+		assertFalse(Link.isValidName(""));
+		assertFalse(Link.isValidName("%illegalSymbol"));
 	}
 
 	@Test
@@ -345,7 +362,7 @@ public class ItemTest {
 	}
 
 
-	// FILE SIZE TESTS
+	// FILE SIZE TESTS--------------------------------------------------------------------------------------------------
 	@Test
 	public void testIsValidSize_LegalCase() {
 		assertTrue(File.isValidSize(0));
@@ -394,49 +411,66 @@ public class ItemTest {
 	}
 
 
-	// ITEM CREATION TIME TESTS
+	// FILE CREATION TIME TESTS-----------------------------------------------------------------------------------------
 	@Test
-	public void testIsValidCreationTime_LegalCase() {
+	public void testFileIsValidCreationTime_LegalCase() {
 		Date now = new Date();
 		assertTrue(File.isValidCreationTime(now));
-		assertTrue(Directory.isValidCreationTime(now));
-		assertTrue(Link.isValidCreationTime(now));
 	}
 	
 	@Test
-	public void testIsValidCreationTime_IllegalCase() {
+	public void testFileIsValidCreationTime_IllegalCase() {
 		assertFalse(File.isValidCreationTime(null));
-		assertFalse(Directory.isValidCreationTime(null));
-		assertFalse(Link.isValidCreationTime(null));
 
 		Date inFuture = new Date(System.currentTimeMillis() + 1000*60*60);
 		assertFalse(File.isValidCreationTime(inFuture));
+	}
+
+
+	// DIRECTORY CREATION TIME TESTS------------------------------------------------------------------------------------
+	@Test
+	public void testDirectoryIsValidCreationTime_LegalCase() {
+		Date now = new Date();
+		assertTrue(Directory.isValidCreationTime(now));
+	}
+
+	@Test
+	public void testDirectoryIsValidCreationTime_IllegalCase() {
+		assertFalse(Directory.isValidCreationTime(null));
+
+		Date inFuture = new Date(System.currentTimeMillis() + 1000*60*60);
 		assertFalse(Directory.isValidCreationTime(inFuture));
+	}
+
+
+	// LINK CREATION TIME TESTS-----------------------------------------------------------------------------------------
+	@Test
+	public void testLinkIsValidCreationTime_LegalCase() {
+		Date now = new Date();
+		assertTrue(Link.isValidCreationTime(now));
+	}
+
+	@Test
+	public void testLinkIsValidCreationTime_IllegalCase() {
+		assertFalse(Link.isValidCreationTime(null));
+
+		Date inFuture = new Date(System.currentTimeMillis() + 1000*60*60);
 		assertFalse(Link.isValidCreationTime(inFuture));
 	}
 
 
-	// ITEM MODIFICATION TIME TESTS
+	// FILE MODIFICATION TIME TESTS-------------------------------------------------------------------------------------
 	@Test
-	public void testCanHaveAsModificationTime_LegalCase() {
+	public void testFileCanHaveAsModificationTime_LegalCase() {
 		assertTrue(fileDirectoryStringType.canHaveAsModificationTime(null));
 		assertTrue(fileDirectoryStringType.canHaveAsModificationTime(new Date()));
-		assertTrue(root.canHaveAsModificationTime(null));
-		assertTrue(root.canHaveAsModificationTime(new Date()));
-		assertTrue(linkDirectoryStringItem.canHaveAsModificationTime(null));
-		assertTrue(linkDirectoryStringItem.canHaveAsModificationTime(new Date()));
 	}
 	
 	@Test
-	public void testCanHaveAsModificationTime_IllegalCase() {
-		assertFalse(fileDirectoryStringType.canHaveAsModificationTime(new Date(timeAfterConstruction.getTime() - 1000*60*60)));
-		assertFalse(fileDirectoryStringType.canHaveAsModificationTime(new Date(System.currentTimeMillis() + 1000*60*60)));
-		assertFalse(root.canHaveAsModificationTime(new Date(timeAfterConstruction.getTime() - 1000*60*60)));
-		assertFalse(root.canHaveAsModificationTime(new Date(System.currentTimeMillis() + 1000*60*60)));
+	public void testFileCanHaveAsModificationTime_IllegalCase() {
 		assertFalse(linkDirectoryStringItem.canHaveAsModificationTime(new Date(timeAfterConstruction.getTime() - 1000*60*60)));
 		assertFalse(linkDirectoryStringItem.canHaveAsModificationTime(new Date(System.currentTimeMillis() + 1000*60*60)));
 	}
-
 
 	@Test
 	public void testFileHasOverlappingUsePeriod_UnmodifiedFiles() {
@@ -549,6 +583,19 @@ public class ItemTest {
 	}
 
 
+	// DIRECTORY MODIFICATION TIME TESTS--------------------------------------------------------------------------------
+	@Test
+	public void testDirectoryCanHaveAsModificationTime_LegalCase() {
+		assertTrue(root.canHaveAsModificationTime(null));
+		assertTrue(root.canHaveAsModificationTime(new Date()));
+	}
+
+	@Test
+	public void testDirectoryCanHaveAsModificationTime_IllegalCase() {
+		assertFalse(root.canHaveAsModificationTime(new Date(timeAfterConstruction.getTime() - 1000*60*60)));
+		assertFalse(root.canHaveAsModificationTime(new Date(System.currentTimeMillis() + 1000*60*60)));
+		}
+
 	@Test
 	public void testDirectoryHasOverlappingUsePeriod_UnmodifiedFiles() {
 		// one = implicit argument ; other = explicit argument
@@ -657,6 +704,19 @@ public class ItemTest {
 		sleep();
 		File file2 = new File(other,"file2",Type.PDF_FILE);
 		assertTrue(one.hasOverlappingUsePeriod(other));
+	}
+
+	// LINK MODIFICATION TIME TESTS-------------------------------------------------------------------------------------
+	@Test
+	public void testLinkCanHaveAsModificationTime_LegalCase() {
+		assertTrue(linkDirectoryStringItem.canHaveAsModificationTime(null));
+		assertTrue(linkDirectoryStringItem.canHaveAsModificationTime(new Date()));
+	}
+
+	@Test
+	public void testLinkCanHaveAsModificationTime_IllegalCase() {
+		assertFalse(linkDirectoryStringItem.canHaveAsModificationTime(new Date(timeAfterConstruction.getTime() - 1000*60*60)));
+		assertFalse(linkDirectoryStringItem.canHaveAsModificationTime(new Date(System.currentTimeMillis() + 1000*60*60)));
 	}
 
 	@Test
@@ -770,7 +830,8 @@ public class ItemTest {
 		assertTrue(one.hasOverlappingUsePeriod(other));
 	}
 
-	// ITEM DIRECTORY TESTS
+
+	// FILE PARENT DIRECTORY TESTS--------------------------------------------------------------------------------------
 	@Test
 	public void testFileParentDirectory(){
 		assertEquals(root,fileDirectoryStringType.getParentDirectory());
@@ -790,6 +851,8 @@ public class ItemTest {
 		fileNotWritable.changeParentDirectory(directoryStringBoolean);
 	}
 
+
+	// DIRECTORY PARENT DIRECTORY TESTS---------------------------------------------------------------------------------
 	@Test
 	public void testDirectoryParentDirectory(){
 		Directory newRoot = new Directory("new_root");
@@ -814,6 +877,8 @@ public class ItemTest {
 		directoryNotWritable.changeParentDirectory(newRoot);
 	}
 
+
+	// LINK PARENT DIRECTORY TESTS--------------------------------------------------------------------------------------
 	@Test
 	public void testLinkParentDirectory(){
 		assertEquals(root,linkDirectoryStringItem.getParentDirectory());
@@ -822,7 +887,7 @@ public class ItemTest {
 	}
 
 
-	// FILE & DIRECTORY WRITABLE TESTS
+	// FILE WRITABLE TESTS----------------------------------------------------------------------------------------------
 	@Test
 	public void testFileSetWritable() {
 		fileDirectoryStringType.setWritable(false);
@@ -831,6 +896,8 @@ public class ItemTest {
 		assertTrue(fileNotWritable.isWritable());
 	}
 
+
+	// DIRECTORY WRITABLE TESTS-----------------------------------------------------------------------------------------
 	@Test
 	public void testDirectorySetWritable() {
 		directoryDirectoryString.setWritable(false);
@@ -839,9 +906,10 @@ public class ItemTest {
 		assertTrue(directoryNotWritable.isWritable());
 	}
 
-	// FILE TYPE TEST
+
+	// FILE TYPE TEST---------------------------------------------------------------------------------------------------
 	@Test
-	public void testType(){
+	public void testFileType(){
 		File pdfFile = new File(root,"Pdf_file",Type.PDF_FILE);
 		File javaFile = new File(root,"Java_file",Type.JAVA_FILE);
 		File textFile = new File(root,"Text_file",Type.TEXT_FILE);
@@ -850,9 +918,10 @@ public class ItemTest {
 		assertEquals(Type.TEXT_FILE,textFile.getType());
 	}
 
-	// DIRECTORY CONTENTS TESTS
+
+	// DIRECTORY CONTENTS TESTS-----------------------------------------------------------------------------------------
 	@Test
-	public void testGetNbItem(){
+	public void testDirectoryGetNbItem(){
 		Directory root = new Directory("root");
 		assertEquals(0,root.getNbItems());
 		File file = new File(root,"file",Type.PDF_FILE);
@@ -862,7 +931,7 @@ public class ItemTest {
 	}
 
 	@Test
-	public void testGetItemAt(){
+	public void testDirectoryGetItemAt(){
 		Directory root = new Directory("root");
 		File file = new File(root,"file",Type.PDF_FILE);
 		Link link = new Link(root,"link",file);
@@ -871,7 +940,7 @@ public class ItemTest {
 	}
 
 	@Test
-	public void testGetItem(){
+	public void testDirectoryGetItem(){
 		Directory root = new Directory("root");
 		File file = new File(root,"file",Type.PDF_FILE);
 		Link link = new Link(root,"link",file);
@@ -880,7 +949,7 @@ public class ItemTest {
 	}
 
 	@Test
-	public void testContainsDiskItemWhitName(){
+	public void testDirectoryContainsDiskItemWhitName(){
 		Directory root = new Directory("root");
 		File file = new File(root,"file",Type.PDF_FILE);
 		assertTrue(root.containsDiskItemWithName("file"));
@@ -888,7 +957,7 @@ public class ItemTest {
 	}
 
 	@Test
-	public void testGetIndexOf(){
+	public void testDirectoryGetIndexOf(){
 		Directory root = new Directory("root");
 		File file = new File(root,"file",Type.PDF_FILE);
 		Link link = new Link(root,"link",file);
@@ -897,7 +966,7 @@ public class ItemTest {
 	}
 
 	@Test
-	public void testHasAsItem(){
+	public void testDirectoryHasAsItem(){
 		Directory root = new Directory("root");
 		File file = new File(root,"file",Type.PDF_FILE);
 		assertTrue(root.hasAsItem(file));
