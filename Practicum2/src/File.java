@@ -304,7 +304,7 @@ public class File extends Item implements Writability {
             return "/" + this.getName() + this.getExtension();
         } else {
             Directory dir = this.getParentDirectory();
-            return dir.getAbsolutePath() + "/" + this.getName() + this.getExtension();
+            return dir.getAbsolutePath() + "/" + this.getName() +"."+ this.getExtension();
         }
     }
 
