@@ -981,7 +981,7 @@ public class ItemTest {
 	}
 
 
-	// DIRECTORY MOVE TESTS---------------------------------------------------------------------------------------------
+	// FILE MOVE TESTS--------------------------------------------------------------------------------------------------
 	@Test
 	public void testFileMove_WritableRoots(){
 		Directory root1 = new Directory("root1");
@@ -1006,6 +1006,60 @@ public class ItemTest {
 		File file = new File(root1,"file",Type.TEXT_FILE);
 		assertEquals(root1, file.getParentDirectory());
 		file.move(root2);
+	}
+
+	// DIRECTORY MOVE TESTS---------------------------------------------------------------------------------------------
+	@Test
+	public void testDirectoryMove_WritableRoots(){
+		Directory root1 = new Directory("root1");
+		Directory root2 = new Directory("root2");
+		Directory dir = new Directory(root1,"dir");
+		assertEquals(root1, dir.getParentDirectory());
+		dir.move(root2);
+		assertEquals(root2,dir.getParentDirectory());
+	}
+
+	@Test (expected = ItemNotWritableException.class)
+	public void testDirectoryMove_NotWritableRoot1(){
+		Directory root1 = new Directory("root1",false);
+		Directory root2 = new Directory("root2");
+		Directory dir = new Directory(root1,"dir");
+	}
+
+	@Test (expected = ItemNotWritableException.class)
+	public void testDirectoryMove_NotWritableRoot2(){
+		Directory root1 = new Directory("root1",false);
+		Directory root2 = new Directory("root2");
+		Directory dir = new Directory(root1,"dir");
+		assertEquals(root1, dir.getParentDirectory());
+		dir.move(root2);
+	}
+
+	// LINK MOVE TESTS--------------------------------------------------------------------------------------------------
+	@Test
+	public void testLinkMove_WritableRoots(){
+		Directory root1 = new Directory("root1");
+		Directory root2 = new Directory("root2");
+		Link link = new Link(root1,"link",fileDirectoryStringIntBooleanType);
+		assertEquals(root1, link.getParentDirectory());
+		link.move(root2);
+		assertEquals(root2,link.getParentDirectory());
+	}
+
+	@Test (expected = ItemNotWritableException.class)
+	public void testLinkMove_NotWritableRoot1(){
+		Directory root1 = new Directory("root1",false);
+		Directory root2 = new Directory("root2");
+		Link link = new Link(root1,"link",fileDirectoryStringIntBooleanType);
+	}
+
+	@Test (expected = ItemNotWritableException.class)
+	public void testLinkMove_NotWritableRoot2(){
+		Directory root1 = new Directory("root1",false);
+		Directory root2 = new Directory("root2");
+		Link link = new Link(root1,"link",fileDirectoryStringIntBooleanType);
+		assertEquals(root1, link.getParentDirectory());
+		link.move(root2);
 	}
 
 
