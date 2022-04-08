@@ -837,6 +837,16 @@ public class ItemTest {
 		assertTrue(directoryNotWritable.isWritable());
 	}
 
+	// FILE TYPE TEST
+	@Test
+	public void test(){
+		File pdfFile = new File(root,"Pdf_file",Type.PDF_FILE);
+		File javaFile = new File(root,"Java_file",Type.JAVA_FILE);
+		File textFile = new File(root,"Text_file",Type.TEXT_FILE);
+		assertEquals(Type.PDF_FILE,pdfFile.getType());
+		assertEquals(Type.JAVA_FILE,javaFile.getType());
+		assertEquals(Type.TEXT_FILE,textFile.getType());
+	}
 
 
 
