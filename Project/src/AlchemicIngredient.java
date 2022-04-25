@@ -3,8 +3,8 @@ import java.lang.reflect.Array;
 public class AlchemicIngredient {
 
     static String name;
-    static String ingredientType;
-    static String state;
+    static IngredientType ingredientType;
+    static State state;
     static int quantity;
     static Array temperature;
 
@@ -16,19 +16,19 @@ public class AlchemicIngredient {
         AlchemicIngredient.name = name;
     }
 
-    public static String getIngredientType() {
+    public static IngredientType getIngredientType() {
         return ingredientType;
     }
 
-    public static void setIngredientType(String ingredientType) {
+    public static void setIngredientType(IngredientType ingredientType) {
         AlchemicIngredient.ingredientType = ingredientType;
     }
 
-    public static String getState() {
+    public static State getState() {
         return state;
     }
 
-    public static void setState(String state) {
+    public static void setState(State state) {
         AlchemicIngredient.state = state;
     }
 
