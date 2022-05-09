@@ -1,4 +1,4 @@
-public class CoolingBox extends AlchemicDevice{
+public class Oven extends AlchemicDevice { //why do they call it oven when you of in the cold food of out heat the food
 
     private long temperature;
 
@@ -7,7 +7,7 @@ public class CoolingBox extends AlchemicDevice{
     }
 
     public void setTemperature(long temperature) {
-        if (temperature < 0) {
+        if (temperature > 0) {
             this.temperature = temperature;}
     }
 
@@ -23,3 +23,4 @@ public class CoolingBox extends AlchemicDevice{
         getIngredient().setTemperature(ingredientTemp);
     }
 }
+
