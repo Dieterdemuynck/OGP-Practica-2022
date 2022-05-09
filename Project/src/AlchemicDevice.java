@@ -39,7 +39,7 @@ public abstract class AlchemicDevice {
         return container;
     }
 
-    private long asLong(long[] temperature){
+    protected static long asLong(long[] temperature){
         if (temperature[0] != 0){
             return -temperature[0];
         }
