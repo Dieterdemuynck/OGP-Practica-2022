@@ -1,21 +1,29 @@
-import java.lang.reflect.Array;
-
 public class AlchemicIngredient {
 
-    static String name;
     static IngredientType ingredientType;
     static State state;
     static int quantity;
-    static Array temperature;
+    static int temperature;
+    public static final int MAX_TEMPERATURE = 10000;
 
-    public static String getName() {
-        return name;
+
+    /* *********************************************************
+     * CONSTRUCTORS
+     * *********************************************************/
+    public AlchemicIngredient(int quantity, int[] standardTemperature, String name){
+        AlchemicIngredient.ingredientType = new IngredientType(name, standardTemperature);
+        setQuantity(quantity);
     }
 
-    public static void setName(String name) {
-        AlchemicIngredient.name = name;
+    public AlchemicIngredient(int quantity){
+        int[] standardTemperature = {0, 20};
+        AlchemicIngredient.ingredientType = new IngredientType("Water", standardTemperature);
+        setQuantity(quantity);
     }
 
+    /* *********************************************************
+     * INGREDIENT TYPE
+     * *********************************************************/
     public static IngredientType getIngredientType() {
         return ingredientType;
     }
@@ -24,6 +32,26 @@ public class AlchemicIngredient {
         AlchemicIngredient.ingredientType = ingredientType;
     }
 
+    public String getName(){
+        return ingredientType.getName();
+    }
+
+    public String getFullName(){
+        return ingredientType.getFullName();
+    }
+
+    public String getSpecialName(){
+        if (ingredientType.isMixedIngredient(this)){
+            return MixedIngredientType.getSpecialName();
+        }
+        else {
+            return null;
+        }
+    }
+
+    /* *********************************************************
+     * STATE
+     * *********************************************************/
     public static State getState() {
         return state;
     }
@@ -32,6 +60,9 @@ public class AlchemicIngredient {
         AlchemicIngredient.state = state;
     }
 
+    /* *********************************************************
+     * QUANTITY
+     * *********************************************************/
     public static int getQuantity() {
         return quantity;
     }
@@ -40,11 +71,53 @@ public class AlchemicIngredient {
         AlchemicIngredient.quantity = quantity;
     }
 
-    public static Array getTemperature() {
-        return temperature;
+    /* *********************************************************
+     * TEMPERATURE
+     * *********************************************************/
+    public static int[] getTemperature() {
+        int[] temp = new int[2];
+        if (AlchemicIngredient.temperature < 0) {
+            temp[0] = Math.abs(AlchemicIngredient.temperature);
+        } else {
+            temp[1] = AlchemicIngredient.temperature;
+        }
+        return temp;
     }
 
-    public static void setTemperature(Array temperature) {
+    public static void setTemperature(int[] temperature) throws IllegalTemperatureException { // input : array
+        if (!isValidTemperature(temperature)) {
+            throw new IllegalTemperatureException(temperature);
+        }
+        int temp = 0;
+        if (temperature[0] != 0) {
+            temp -= temperature[0];
+        } else {
+            temp = temperature[1];
+        }
+        AlchemicIngredient.temperature = temp;
+    }
+
+    private static void setTemperature(int temperature) { // input: int -> private
         AlchemicIngredient.temperature = temperature;
     }
+
+    private static boolean isValidTemperature(int[] temperature) {
+        if (temperature[0] != 0 && temperature.length == 2) {
+            return temperature[1] == 0 && temperature[0] <= MAX_TEMPERATURE;
+        } else
+            return temperature.length == 2 && temperature[1] <= MAX_TEMPERATURE; // dus temperature[0] == 0 -> array mag nog steeds maar 2 lang zijn en
+    }
+
+    public void heat(int temperature) {
+        if (AlchemicIngredient.temperature + temperature <= MAX_TEMPERATURE) {
+            AlchemicIngredient.temperature += temperature;
+        }
+    }
+
+    public void cool(int temperature) {
+        if (AlchemicIngredient.temperature - temperature >= -MAX_TEMPERATURE) {
+            AlchemicIngredient.temperature += temperature;
+        }
+    }
+
 }
