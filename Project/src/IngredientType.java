@@ -30,6 +30,9 @@ public class IngredientType {
     private static boolean isValidName(String name){
         return true; //TODO Dieter =)
     }
+    public boolean hasSpecialName(){
+        return false;
+    }
 
     /* *********************************************************
      * TEMPERATURE
@@ -61,7 +64,7 @@ public class IngredientType {
     /* *********************************************************
      * OTHER
      * *********************************************************/
-    public boolean isMixedIngredient(AlchemicIngredient alchemicIngredient) {
+    public boolean isMixedIngredient() {
         return false;
     }
 }

@@ -1,9 +1,9 @@
 public class AlchemicIngredient {
 
-    IngredientType ingredientType;
-    State state;
-    int quantity;
-    long temperature;
+    private final IngredientType ingredientType;
+    private State state;
+    private int quantity;
+    private long temperature;
     public static final int MAX_TEMPERATURE = 10000;
 
 
@@ -30,10 +30,6 @@ public class AlchemicIngredient {
         return ingredientType;
     }
 
-    public void setIngredientType(IngredientType ingredientType) {
-        this.ingredientType = ingredientType;
-    }
-
     /* ***************************
      * INGREDIENT TYPE - NAME
      * ***************************/
@@ -52,7 +48,17 @@ public class AlchemicIngredient {
         else {
             pre = "Heated ";
         }
-        return pre + ingredientType.getName();
+        if (!ingredientType.isMixedIngredient()){
+            return pre + ingredientType.getName();
+        }
+        else{
+            if (ingredientType.hasSpecialName()){
+                return getSpecialName() + " (" + pre + getName() + ")";
+            }
+            else{
+                return pre + ingredientType.getName();
+            }
+        }
     }
 
     private long getLong(long[] temperature){
@@ -65,7 +71,7 @@ public class AlchemicIngredient {
     }
 
     public String getSpecialName(){
-        if (ingredientType.isMixedIngredient(this)){
+        if (ingredientType.isMixedIngredient()){
             return MixedIngredientType.getSpecialName();
         }
         else {

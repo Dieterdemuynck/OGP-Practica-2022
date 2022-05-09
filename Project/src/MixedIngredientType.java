@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class MixedIngredientType extends IngredientType{
 
     private ArrayList<String> componentNames = new ArrayList<>();
-    private static String specialName;
+    private static String specialName = null;
 
     /* *********************************************************
      * CONSTRUCTORS
@@ -28,9 +28,13 @@ public class MixedIngredientType extends IngredientType{
     public static String getSpecialName(){
         return specialName;
     }
+    @Override
+    public boolean hasSpecialName(){
+        return specialName != null;
+    }
 
     @Override
-    public boolean isMixedIngredient(AlchemicIngredient alchemicIngredient) {
+    public boolean isMixedIngredient() {
         return true;
     }
 }
