@@ -1,38 +1,37 @@
 public class AlchemicIngredient {
 
-    static IngredientType ingredientType;
-    static State state;
-    static int quantity;
-    static long temperature;
+    IngredientType ingredientType;
+    State state;
+    int quantity;
+    long temperature;
     public static final int MAX_TEMPERATURE = 10000;
 
 
     /* *********************************************************
      * CONSTRUCTORS
      * *********************************************************/
-    public AlchemicIngredient(int quantity, long[] standardTemperature, String name, State state){
-        AlchemicIngredient.ingredientType = new IngredientType(name, standardTemperature, state);
+    public AlchemicIngredient(int quantity, long[] standardTemperature, String name, State standardState){
+        this.ingredientType = new IngredientType(name, standardTemperature, standardState);
         setQuantity(quantity);
-        //TODO klopt dit?
         setTemperature(standardTemperature);
-        changeState(state);
+        changeState(standardState);
     }
 
     public AlchemicIngredient(int quantity){
         long[] standardTemperature = {0, 20};
-        AlchemicIngredient.ingredientType = new IngredientType("Water", standardTemperature);
+        this.ingredientType = new IngredientType("Water", standardTemperature, State.Liquid);
         setQuantity(quantity);
     }
 
     /* *********************************************************
      * INGREDIENT TYPE
      * *********************************************************/
-    public static IngredientType getIngredientType() {
+    public IngredientType getIngredientType() {
         return ingredientType;
     }
 
-    public static void setIngredientType(IngredientType ingredientType) {
-        AlchemicIngredient.ingredientType = ingredientType;
+    public void setIngredientType(IngredientType ingredientType) {
+        this.ingredientType = ingredientType;
     }
 
     public String getName(){
@@ -58,43 +57,43 @@ public class AlchemicIngredient {
     /* *********************************************************
      * STATE
      * *********************************************************/
-    public static State getState() {
+    public State getState() {
         return state;
     }
 
-    private static void changeState(State state) { //mag enkel gebruikt worden in Transmogrifier
-        AlchemicIngredient.state = state;
+    private void changeState(State state) { //mag enkel gebruikt worden in Transmogrifier
+        this.state = state;
         //todo hoeveelheid wordt ook aangepast -> Dieter =)
     }
 
     /* *********************************************************
      * QUANTITY
      * *********************************************************/
-    public static int getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public static void setQuantity(int quantity) {
-        AlchemicIngredient.quantity = quantity;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     /* *********************************************************
      * TEMPERATURE
      * *********************************************************/
-    public static long[] getTemperature() {
+    public long[] getTemperature() {
         long[] temp = new long[2];
-        if (AlchemicIngredient.temperature < 0) {
-            temp[0] = Math.abs(AlchemicIngredient.temperature);
+        if (this.temperature < 0) {
+            temp[0] = Math.abs(this.temperature);
         } else {
-            temp[1] = AlchemicIngredient.temperature;
+            temp[1] = this.temperature;
         }
         return temp;
     }
-    public static long[] getStandardTemperature() {
+    public long[] getStandardTemperature() {
         return ingredientType.getStandardTemperature();
     }
 
-    public static void setTemperature(long[] temperature) throws IllegalTemperatureException { // input : array
+    public void setTemperature(long[] temperature) throws IllegalTemperatureException { // input : array
         if (!isValidTemperature(temperature)) {
             throw new IllegalTemperatureException(temperature);
         }
@@ -104,11 +103,11 @@ public class AlchemicIngredient {
         } else {
             temp = temperature[1];
         }
-        AlchemicIngredient.temperature = temp;
+        this.temperature = temp;
     }
 
-    private static void setTemperature(long temperature) { // input: int -> private
-        AlchemicIngredient.temperature = temperature;
+    private void setTemperature(long temperature) { // input: int -> private
+        this.temperature = temperature;
     }
 
     private static boolean isValidTemperature(long[] temperature) {
@@ -119,14 +118,14 @@ public class AlchemicIngredient {
     }
 
     public void heat(int temperature) {
-        if (AlchemicIngredient.temperature + temperature <= MAX_TEMPERATURE) {
-            AlchemicIngredient.temperature += temperature;
+        if (this.temperature + temperature <= MAX_TEMPERATURE) {
+            this.temperature += temperature;
         }
     }
 
     public void cool(int temperature) {
-        if (AlchemicIngredient.temperature - temperature >= -MAX_TEMPERATURE) {
-            AlchemicIngredient.temperature += temperature;
+        if (this.temperature - temperature >= -MAX_TEMPERATURE) {
+            this.temperature += temperature;
         }
     }
 
