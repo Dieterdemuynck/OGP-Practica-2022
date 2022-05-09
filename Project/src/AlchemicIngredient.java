@@ -6,7 +6,7 @@ public class AlchemicIngredient {
     static IngredientType ingredientType;
     static State state;
     static int quantity;
-    static Array temperature;
+    static int degree    ;
 
     public static String getName() {
         return name;
@@ -40,11 +40,31 @@ public class AlchemicIngredient {
         AlchemicIngredient.quantity = quantity;
     }
 
-    public static Array getTemperature() {
+    public static int[] degreeToTemp(int degree) {
+        int[] temperature = {0, 0};
+        if (degree < 0) {
+            temperature[0] = degree * -1;
+        } else {
+            temperature[1] = degree;
+        }
         return temperature;
     }
 
-    public static void setTemperature(Array temperature) {
-        AlchemicIngredient.temperature = temperature;
+    public static int getDegree() {
+        return degree;
+    }
+
+    public static void setDegree(int degree) {
+        AlchemicIngredient.degree = degree;
+    }
+
+    public static int[] getTemperature() {
+        int[] temperature = degreeToTemp(AlchemicIngredient.getDegree());
+        return temperature;
+    }
+
+    public static void setTemperature(int[] temperature) {
+        if (temperature[0] == 0) {setDegree(temperature[1]);}
+        else {setDegree(-temperature[0]);}
     }
 }
