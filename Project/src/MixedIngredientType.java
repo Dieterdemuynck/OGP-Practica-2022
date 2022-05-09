@@ -16,7 +16,7 @@ public class MixedIngredientType extends IngredientType{
      * COMPONENTS NAME
      * *********************************************************/
     @Override
-    public static String getName(){
+    public String getName(){
         return "iets nieuws"; //TODO -> Dieter =)
     }
 

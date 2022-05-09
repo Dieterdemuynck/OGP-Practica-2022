@@ -22,7 +22,7 @@ public class IngredientType {
     /* *********************************************************
      * NAME
      * *********************************************************/
-    public static String getName() {
+    public String getName() {
         return name;
     }
 
