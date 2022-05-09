@@ -40,8 +40,8 @@ public class AlchemicIngredient {
 
     public String getFullName(){
         String pre = null;
-        long temp = getLong(this.getTemperature());
-        long standtemp = getLong(this.getStandardTemperature());
+        long temp = asLong(this.getTemperature());
+        long standtemp = asLong(this.getStandardTemperature());
         if (temp < standtemp){
             pre = "Cooled ";
         }
@@ -61,7 +61,7 @@ public class AlchemicIngredient {
         }
     }
 
-    private long getLong(long[] temperature){
+    private static long asLong(long[] temperature){
         if (temperature[0] != 0){
             return -temperature[0];
         }
