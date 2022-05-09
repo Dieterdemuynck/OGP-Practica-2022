@@ -2,7 +2,7 @@ public class IngredientType {
 
     private static String name;
     private static long standardTemperature;
-    private State state;
+    private State standardState;
 
     /* *********************************************************
      * CONSTRUCTORS
@@ -12,12 +12,17 @@ public class IngredientType {
         setStandardTemperature(standardTemperature);
     }
 
+    public IngredientType(String name, long[] standardTemperature, State state){
+        setName(name);
+        setStandardTemperature(standardTemperature);
+    }
+
     //IK VIND HET VREEMD DAT ER GEEN STATE MEEGEGEVEN WORDT -> HOE WORDT DIT DAN INGEVULT?
 
     /* *********************************************************
      * NAME
      * *********************************************************/
-    public static String getName() {
+    public String getName() {
         return name;
     }
 

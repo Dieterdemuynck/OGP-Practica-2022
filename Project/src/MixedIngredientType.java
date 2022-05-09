@@ -8,7 +8,7 @@ public class MixedIngredientType extends IngredientType{
     /* *********************************************************
      * CONSTRUCTORS
      * *********************************************************/
-    public MixedIngredientType(String name, int[] standardTemperature) {
+    public MixedIngredientType(String name, long[] standardTemperature) {
         super(name, standardTemperature);
     }
 
@@ -16,7 +16,7 @@ public class MixedIngredientType extends IngredientType{
      * COMPONENTS NAME
      * *********************************************************/
     @Override
-    public static String getName(){
+    public String getName(){
         return "iets nieuws"; //TODO -> Dieter =)
     }
 
