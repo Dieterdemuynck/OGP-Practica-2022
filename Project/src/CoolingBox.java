@@ -12,13 +12,17 @@ public class CoolingBox extends AlchemicDevice{
 
     public void activate() {
         long tempTemp = getTemperature();
-        long[] ingredientTemp = getIngredient().getTemperature();
-        if (ingredientTemp[1] > 0) {
-            tempTemp -= ingredientTemp[1];
-            ingredientTemp[1] = 0;
-        }
-        ingredientTemp[0] -= tempTemp;
+        long[] tempIngredient = getIngredient().getTemperature();
+        long longTempIngredient = getLong(tempIngredient);
+        getIngredient().cool(Math.abs(longTempIngredient-tempTemp));
+    }
 
-        getIngredient().setTemperature(ingredientTemp);
+    private long getLong(long[] temperature){
+        if (temperature[0] != 0){
+            return -temperature[0];
+        }
+        else {
+            return temperature[1];
+        }
     }
 }

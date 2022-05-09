@@ -2,7 +2,7 @@ public class AlchemicIngredient {
 
     private final IngredientType ingredientType;
     private State state;
-    private int quantity;
+    private final int quantity;
     private long temperature;
     public static final int MAX_TEMPERATURE = 10000;
 
@@ -12,7 +12,7 @@ public class AlchemicIngredient {
      * *********************************************************/
     public AlchemicIngredient(int quantity, long[] standardTemperature, String name, State standardState){
         this.ingredientType = new IngredientType(name, standardTemperature, standardState);
-        setQuantity(quantity);
+        this.quantity = quantity;
         setTemperature(standardTemperature);
         changeState(standardState);
     }
@@ -20,7 +20,7 @@ public class AlchemicIngredient {
     public AlchemicIngredient(int quantity){
         long[] standardTemperature = {0, 20};
         this.ingredientType = new IngredientType("Water", standardTemperature, State.Liquid);
-        setQuantity(quantity);
+        this.quantity = quantity;
     }
 
     /* *********************************************************
@@ -112,10 +112,6 @@ public class AlchemicIngredient {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     /* *********************************************************
      * TEMPERATURE
      * *********************************************************/
@@ -128,7 +124,7 @@ public class AlchemicIngredient {
         }
         return temp;
     }
-    public void setTemperature(long[] temperature) throws IllegalTemperatureException { // input : array
+    private void setTemperature(long[] temperature) throws IllegalTemperatureException { // input : array
         if (!isValidTemperature(temperature)) {
             throw new IllegalTemperatureException(temperature);
         }
@@ -141,10 +137,6 @@ public class AlchemicIngredient {
         this.temperature = temp;
     }
 
-    private void setTemperature(long temperature) { // input: int -> private
-        this.temperature = temperature;
-    }
-
     private static boolean isValidTemperature(long[] temperature) {
         if (temperature[0] != 0 && temperature.length == 2) {
             return temperature[1] == 0 && temperature[0] <= MAX_TEMPERATURE;
@@ -152,13 +144,13 @@ public class AlchemicIngredient {
             return temperature.length == 2 && temperature[1] <= MAX_TEMPERATURE; // dus temperature[0] == 0 -> array mag nog steeds maar 2 lang zijn en
     }
 
-    public void heat(int temperature) {
+    public void heat(long temperature) {
         if (this.temperature + temperature <= MAX_TEMPERATURE) {
             this.temperature += temperature;
         }
     }
 
-    public void cool(int temperature) {
+    public void cool(long temperature) {
         if (this.temperature - temperature >= -MAX_TEMPERATURE) {
             this.temperature += temperature;
         }
