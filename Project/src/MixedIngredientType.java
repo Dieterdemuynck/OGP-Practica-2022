@@ -1,8 +1,9 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class MixedIngredientType extends IngredientType{
 
-    private ArrayList<String> componentNames = new ArrayList<>();
+    private List<String> componentNames = new ArrayList<>();
     private static String specialName = null;
 
     /* *********************************************************
