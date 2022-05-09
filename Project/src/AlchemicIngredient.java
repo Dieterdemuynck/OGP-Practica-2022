@@ -100,7 +100,7 @@ public class AlchemicIngredient {
         return state;
     }
 
-    private void changeState(State state) { //mag enkel gebruikt worden in Transmogrifier
+    public void changeState(State state) { //mag enkel gebruikt worden in Transmogrifier
         this.state = state;
         //todo hoeveelheid wordt ook aangepast -> Dieter =)
     }

@@ -35,7 +35,7 @@ public abstract class AlchemicDevice {
     public IngredientContainer retrieve(IngredientContainer container) {
         if (container.getContent().getQuantity() == 0) {
             container.insert(getIngredient()) ;
-        this.ingredient = null;}
+            setIngredient(null);}
         return container;
     }
 

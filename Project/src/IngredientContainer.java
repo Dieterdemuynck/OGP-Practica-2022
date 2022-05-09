@@ -16,7 +16,7 @@ public class IngredientContainer {
     }
 
     public void insert(AlchemicIngredient ingredient) {
-        if (capacity.getValue() >= ingredient.getQuantity()) {
+        if (capacity.getValue() >= ingredient.getQuantity() && getCapacity().getRespectiveState() == ingredient.getState()) {
             this.content = ingredient;}
     }
 }

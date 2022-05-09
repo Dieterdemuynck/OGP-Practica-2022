@@ -14,7 +14,7 @@ public enum Quantity {
     Barrel(1260, true, State.Liquid, "Barrel", "Barrels"),
 
     // Powder
-    Pinch((float)(1.0/6.0), false, State.Powder, "Pinch", "Pinches"),
+    Pinch(1.0/6.0, false, State.Powder, "Pinch", "Pinches"),
 
     Sachet(7, true, State.Powder, "Sachet", "Sachets"),
     Box(42, true, State.Powder, "Box", "Boxes"),
@@ -23,13 +23,13 @@ public enum Quantity {
     ;
 
     // Properties
-    private final float value;
+    private final double value;
     private final boolean canBeContainer;
     private final State respectiveState;
     private final String nameSingular;
     private final String namePlural;
 
-    Quantity(float value, boolean canBeContainer, State respectiveState, String nameSingular, String namePlural) {
+    Quantity(double value, boolean canBeContainer, State respectiveState, String nameSingular, String namePlural) {
         this.value = value;
         this.canBeContainer = canBeContainer;
         this.respectiveState = respectiveState;
@@ -38,7 +38,7 @@ public enum Quantity {
     }
 
     // Getters
-    public float getValue() {
+    public double getValue() {
         return value;
     }
 
@@ -85,26 +85,30 @@ public enum Quantity {
     }
 
     /**
-     * TODO: due to using floats, fractions will have horrible rounding errors during the runtime of this code,
-     * messing up the entire purpose of some of the lines here. Looking for a solution... This may require
-     * rewriting some of the base Quantity class' code.
+     * Finds the largest fit given a certain State and an amount in Spoons.
      *
-     * @param state
-     * @param amount
-     * @return
+     * @param state  The State we want the Quantity to represent.
+     * @param amount The amount of ingredient we try to find a fitting Quantity for.
+     * @return       The largest Quantity which fits the given amount.
      */
-    static public Quantity findLargestFit(State state, int amount) {
-        float largestFoundValue = -1;
+    static public Quantity findLargestFit(State state, double amount) {
+        double largestFoundValue = -1;
         Quantity largestQuantity = null;
 
         /* Checks *every* quantity, including quantities of other states. Possibly, horribly, inefficient.
          * T(n) = O(n) with n = amount of defined quantities.
-         * Any ideas to improve this are welcome. An ordered array per state perhaps?
-         * How do we link an array to a state?
+         * We could save a list or hashmap somewhere which links a state to an (ordered) list/array of Quantities,
+         * which could increase performance, if necessary.
          */
         for (Quantity quantity: EnumSet.allOf(Quantity.class)) {
             if (quantity.getRespectiveState() == state || quantity.getRespectiveState() == null) {
-                if (quantity.getValue() > largestFoundValue && amount % quantity.getValue() == 0) {  // % don't work
+                /* Messy workaround to fix rounding errors: Calculate modulus using doubles, convert to float,
+                 * then compare float quantities to float. After rounding, we have either 0 or the previous amount.
+                 * My foal is to write code so terribly awful I never have to work on conversion methods again.
+                 * I /could/ clean this up using BigDecimals, which I learnt about *after* writing this. Not happening.
+                 */
+                if (quantity.getValue() > largestFoundValue && ((float)(amount % quantity.getValue()) == (float)0
+                    || (float)(amount % quantity.getValue()) == (float)(quantity.getValue()))) {
                     largestFoundValue = quantity.getValue();
                     largestQuantity = quantity;
                 }
@@ -112,5 +116,31 @@ public enum Quantity {
         }
 
         return largestQuantity;
+    }
+
+    /**
+     * Finds the smallest container Quantity which can hold a given amount in Spoons in the respective State.
+     *
+     * @param state  The State we want the Quantity to represent.
+     * @param amount The amount of ingredient we try to find a container Quantity for.
+     * @return       The smallest container Quantity that can hold the given amount.
+     */
+    static public Quantity findSmallestFittingContainer(State state, double amount) {
+        double smallestFoundValue = -1;
+        Quantity smallestContainer = null;
+
+        // Same issue in terms of time complexity as with findLargestFit()
+        for (Quantity quantity: EnumSet.allOf(Quantity.class)) {
+            if (quantity.getRespectiveState() == state || quantity.getRespectiveState() == null) {
+                if (quantity.canBeContainer() && quantity.getValue() >= amount
+                        && quantity.getValue() < smallestFoundValue) {
+                    // Container Quantity found which is smaller and still fits the given amount.
+                    smallestFoundValue = quantity.getValue();
+                    smallestContainer = quantity;
+                }
+            }
+        }
+
+        return smallestContainer;
     }
 }
