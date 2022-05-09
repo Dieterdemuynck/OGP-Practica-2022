@@ -8,8 +8,8 @@ public class MixedIngredientType extends IngredientType{
     /* *********************************************************
      * CONSTRUCTORS
      * *********************************************************/
-    public MixedIngredientType(String name, long[] standardTemperature) {
-        super(name, standardTemperature);
+    public MixedIngredientType(String name, long[] standardTemperature,  State standardState) {
+        super(name, standardTemperature, standardState);
     }
 
     /* *********************************************************
