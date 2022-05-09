@@ -89,7 +89,7 @@ public enum Quantity {
      *
      * @param state  The State we want the Quantity to represent.
      * @param amount The amount of ingredient we try to find a fitting Quantity for.
-     * @return
+     * @return       The largest Quantity which fits the given amount.
      */
     static public Quantity findLargestFit(State state, double amount) {
         double largestFoundValue = -1;
@@ -118,6 +118,13 @@ public enum Quantity {
         return largestQuantity;
     }
 
+    /**
+     * Finds the smallest container Quantity which can hold a given amount in Spoons in the respective State.
+     *
+     * @param state  The State we want the Quantity to represent.
+     * @param amount The amount of ingredient we try to find a container Quantity for.
+     * @return       The smallest container Quantity that can hold the given amount.
+     */
     static public Quantity findSmallestFittingContainer(State state, double amount) {
         double smallestFoundValue = -1;
         Quantity smallestContainer = null;
