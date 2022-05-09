@@ -13,6 +13,8 @@ public class AlchemicIngredient {
     public AlchemicIngredient(int quantity, int[] standardTemperature, String name){
         AlchemicIngredient.ingredientType = new IngredientType(name, standardTemperature);
         setQuantity(quantity);
+        //TODO klopt dit?
+        setTemperature(standardTemperature);
     }
 
     public AlchemicIngredient(int quantity){
@@ -37,7 +39,10 @@ public class AlchemicIngredient {
     }
 
     public String getFullName(){
-        return ingredientType.getFullName();
+        //int temp = getInt(getTemperature());
+        //int standtemp = getInt(getStandardTemperature());
+
+        return ingredientType.getName();
     }
 
     public String getSpecialName(){
@@ -56,8 +61,9 @@ public class AlchemicIngredient {
         return state;
     }
 
-    public static void setState(State state) {
+    private static void changeState(State state) { //mag enkel gebruikt worden in Transmogrifier
         AlchemicIngredient.state = state;
+        //todo hoeveelheid wordt ook aangepast -> Dieter =)
     }
 
     /* *********************************************************
@@ -82,6 +88,9 @@ public class AlchemicIngredient {
             temp[1] = AlchemicIngredient.temperature;
         }
         return temp;
+    }
+    public static int[] getStandardTemperature() {
+        return ingredientType.getStandardTemperature();
     }
 
     public static void setTemperature(int[] temperature) throws IllegalTemperatureException { // input : array
