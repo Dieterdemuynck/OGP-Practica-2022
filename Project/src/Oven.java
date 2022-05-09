@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Oven extends AlchemicDevice { //why do they call it oven when you of in the cold food of out heat the food
 
     private long temperature;
@@ -12,15 +14,22 @@ public class Oven extends AlchemicDevice { //why do they call it oven when you o
     }
 
     public void activate() {
-        long tempTemp = getTemperature();
-        long[] ingredientTemp = getIngredient().getTemperature();
-        if (ingredientTemp[0] > 0) {
-            tempTemp -= ingredientTemp[0];
-            ingredientTemp[0] = 0;
-        }
-        ingredientTemp[1] += tempTemp;
-
-        getIngredient().setTemperature(ingredientTemp);
+        Random rand = new Random();
+        double deviation = rand.nextDouble(0.95,1.05);
+        long tempTemp = Math.round(getTemperature() * deviation);
+        long[] tempIngredient = getIngredient().getTemperature();
+        long longTempIngredient = getLong(tempIngredient);
+        getIngredient().heat(Math.abs(longTempIngredient - tempTemp));
     }
-}
+
+        private long getLong(long[] temperature){
+            if (temperature[0] != 0){
+                return -temperature[0];
+            }
+            else {
+                return temperature[1];
+            }
+        }
+    }
+
 
