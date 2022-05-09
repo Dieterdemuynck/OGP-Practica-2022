@@ -3,7 +3,7 @@ public class AlchemicIngredient {
     static IngredientType ingredientType;
     static State state;
     static int quantity;
-    static int temperature;
+    static long temperature;
     public static final int MAX_TEMPERATURE = 10000;
 
 
@@ -74,8 +74,8 @@ public class AlchemicIngredient {
     /* *********************************************************
      * TEMPERATURE
      * *********************************************************/
-    public static int[] getTemperature() {
-        int[] temp = new int[2];
+    public static long[] getTemperature() {
+        long[] temp = new long[2];
         if (AlchemicIngredient.temperature < 0) {
             temp[0] = Math.abs(AlchemicIngredient.temperature);
         } else {
@@ -84,11 +84,11 @@ public class AlchemicIngredient {
         return temp;
     }
 
-    public static void setTemperature(int[] temperature) throws IllegalTemperatureException { // input : array
+    public static void setTemperature(long[] temperature) throws IllegalTemperatureException { // input : array
         if (!isValidTemperature(temperature)) {
             throw new IllegalTemperatureException(temperature);
         }
-        int temp = 0;
+        long temp = 0;
         if (temperature[0] != 0) {
             temp -= temperature[0];
         } else {
@@ -97,11 +97,11 @@ public class AlchemicIngredient {
         AlchemicIngredient.temperature = temp;
     }
 
-    private static void setTemperature(int temperature) { // input: int -> private
+    private static void setTemperature(long temperature) { // input: int -> private
         AlchemicIngredient.temperature = temperature;
     }
 
-    private static boolean isValidTemperature(int[] temperature) {
+    private static boolean isValidTemperature(long[] temperature) {
         if (temperature[0] != 0 && temperature.length == 2) {
             return temperature[1] == 0 && temperature[0] <= MAX_TEMPERATURE;
         } else

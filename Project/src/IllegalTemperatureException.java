@@ -16,10 +16,10 @@ public class IllegalTemperatureException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
 
-    private final int[] temperature;
+    private final long[] temperature;
 
 
-    public IllegalTemperatureException(int[] temperature) {
+    public IllegalTemperatureException(long[] temperature) {
         this.temperature = temperature;
     }
 
@@ -28,7 +28,7 @@ public class IllegalTemperatureException extends RuntimeException {
      */
     //@Basic
     //@Immutable
-    public int[] getTemperature() {
+    public long[] getTemperature() {
         return temperature;
     }
 

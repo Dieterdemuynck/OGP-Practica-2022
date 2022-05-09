@@ -1,13 +1,13 @@
 public class IngredientType {
 
     private static String name;
-    private static int standardTemperature;
+    private static long standardTemperature;
     private State state;
 
     /* *********************************************************
      * CONSTRUCTORS
      * *********************************************************/
-    public IngredientType(String name, int[] standardTemperature){
+    public IngredientType(String name, long[] standardTemperature){
         setName(name);
         setStandardTemperature(standardTemperature);
 
@@ -32,8 +32,8 @@ public class IngredientType {
         return true; //TODO Dieter =)
     }
 
-    public static int[] getStandardTemperature() {
-        int[] temp = new int[2];
+    public static long[] getStandardTemperature() {
+        long[] temp = new long[2];
         if (IngredientType.standardTemperature < 0){
             temp[0] = Math.abs(IngredientType.standardTemperature);
         }
@@ -43,11 +43,11 @@ public class IngredientType {
         return temp;
     }
 
-    public static void setStandardTemperature(int[] standardTemperature) throws IllegalTemperatureException { // input : array
+    public static void setStandardTemperature(long[] standardTemperature) throws IllegalTemperatureException { // input : array
         if (!isValidTemperature(standardTemperature)) {
             throw new IllegalTemperatureException(standardTemperature);
         }
-        int temp = 0;
+        long temp = 0;
         if (standardTemperature[0] != 0) {
             temp -= standardTemperature[0];
         }
@@ -61,7 +61,7 @@ public class IngredientType {
         IngredientType.standardTemperature = temperature;
     }
 
-    private static boolean isValidTemperature(int[] standardTemperature) {
+    private static boolean isValidTemperature(long[] standardTemperature) {
         if (standardTemperature[0] != 0 && standardTemperature.length == 2){
             return standardTemperature[1] == 0 && standardTemperature[0] <= AlchemicIngredient.MAX_TEMPERATURE ;
         }
