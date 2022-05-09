@@ -10,15 +10,16 @@ public class AlchemicIngredient {
     /* *********************************************************
      * CONSTRUCTORS
      * *********************************************************/
-    public AlchemicIngredient(int quantity, int[] standardTemperature, String name){
-        AlchemicIngredient.ingredientType = new IngredientType(name, standardTemperature);
+    public AlchemicIngredient(int quantity, long[] standardTemperature, String name, State state){
+        AlchemicIngredient.ingredientType = new IngredientType(name, standardTemperature, state);
         setQuantity(quantity);
         //TODO klopt dit?
         setTemperature(standardTemperature);
+        changeState(state);
     }
 
     public AlchemicIngredient(int quantity){
-        int[] standardTemperature = {0, 20};
+        long[] standardTemperature = {0, 20};
         AlchemicIngredient.ingredientType = new IngredientType("Water", standardTemperature);
         setQuantity(quantity);
     }
@@ -89,7 +90,7 @@ public class AlchemicIngredient {
         }
         return temp;
     }
-    public static int[] getStandardTemperature() {
+    public static long[] getStandardTemperature() {
         return ingredientType.getStandardTemperature();
     }
 

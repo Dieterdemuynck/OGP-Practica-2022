@@ -2,12 +2,17 @@ public class IngredientType {
 
     private static String name;
     private static long standardTemperature;
-    private State state;
+    private State standardState;
 
     /* *********************************************************
      * CONSTRUCTORS
      * *********************************************************/
     public IngredientType(String name, long[] standardTemperature){
+        setName(name);
+        setStandardTemperature(standardTemperature);
+    }
+
+    public IngredientType(String name, long[] standardTemperature, State state){
         setName(name);
         setStandardTemperature(standardTemperature);
     }
