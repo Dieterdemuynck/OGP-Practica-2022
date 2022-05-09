@@ -18,7 +18,7 @@ public class CoolingBox extends AlchemicDevice{
             tempTemp -= ingredientTemp[1];
             ingredientTemp[1] = 0;
         }
-        ingredientTemp[0] -= tempTemp;
+        ingredientTemp[0] += tempTemp;
 
         getIngredient().setTemperature(ingredientTemp);
     }
