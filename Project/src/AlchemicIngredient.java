@@ -34,15 +34,34 @@ public class AlchemicIngredient {
         this.ingredientType = ingredientType;
     }
 
+    /* ***************************
+     * INGREDIENT TYPE - NAME
+     * ***************************/
+
     public String getName(){
         return ingredientType.getName();
     }
 
     public String getFullName(){
-        //int temp = getInt(getTemperature());
-        //int standtemp = getInt(getStandardTemperature());
+        String pre = null;
+        long temp = getLong(this.getTemperature());
+        long standtemp = getLong(this.getStandardTemperature());
+        if (temp < standtemp){
+            pre = "Cooled ";
+        }
+        else {
+            pre = "Heated ";
+        }
+        return pre + ingredientType.getName();
+    }
 
-        return ingredientType.getName();
+    private long getLong(long[] temperature){
+        if (temperature[0] != 0){
+            return -temperature[0];
+        }
+        else {
+            return temperature[1];
+        }
     }
 
     public String getSpecialName(){
@@ -52,6 +71,20 @@ public class AlchemicIngredient {
         else {
             return null;
         }
+    }
+
+    /* ***************************
+     * INGREDIENT TYPE - STANDARD TEMPERATURE
+     * ***************************/
+    public long[] getStandardTemperature(){
+        return ingredientType.getStandardTemperature();
+    }
+
+    /* ***************************
+     * INGREDIENT TYPE - STANDARD STATE
+     * ***************************/
+    public State getStandardState(){
+        return ingredientType.getStandardState();
     }
 
     /* *********************************************************
@@ -89,10 +122,6 @@ public class AlchemicIngredient {
         }
         return temp;
     }
-    public long[] getStandardTemperature() {
-        return ingredientType.getStandardTemperature();
-    }
-
     public void setTemperature(long[] temperature) throws IllegalTemperatureException { // input : array
         if (!isValidTemperature(temperature)) {
             throw new IllegalTemperatureException(temperature);
