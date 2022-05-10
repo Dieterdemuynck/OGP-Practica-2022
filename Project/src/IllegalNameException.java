@@ -1,4 +1,4 @@
-//import be.kuleuven.cs.som.annotate.*;
+import be.kuleuven.cs.som.annotate.*;
 
 
 //TODO: iemand die dit kan nakijken of dit goed genoeg is? Want ken nie zo veel van exceptions =)
@@ -26,8 +26,8 @@ public class IllegalNameException extends RuntimeException {
     /**
      * Return the item involved in this item not writable exception.
      */
-    //@Basic
-    //@Immutable
+    @Basic
+    @Immutable
     public String getName() {
         return name;
     }
