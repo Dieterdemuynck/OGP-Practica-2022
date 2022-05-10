@@ -14,15 +14,18 @@ public class IllegalNameException extends RuntimeException {
      *
      */
     private static final long serialVersionUID = 1L;
-
-
     private final String name;
 
-
+    /* *********************************************************
+     * CONSTRUCTOR
+     * *********************************************************/
     public IllegalNameException(String name) {
         this.name = name;
     }
 
+    /* *********************************************************
+     * NAME
+     * *********************************************************/
     /**
      *
      */

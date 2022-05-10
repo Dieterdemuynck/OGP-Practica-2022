@@ -14,7 +14,7 @@ public abstract class AlchemicDevice {//TODO In opgave staat er gwn Device? Kwn 
 
     public void setIngredient(AlchemicIngredient ingredient) {
         if (!isEmptyDevice() && ingredient != null){
-            throw new IngredientNotEmtpyException(this.ingredient, ingredient);
+            throw new IngredientNotEmptyException(this.ingredient, ingredient);
         }
         this.ingredient = ingredient;
     }
@@ -26,13 +26,14 @@ public abstract class AlchemicDevice {//TODO In opgave staat er gwn Device? Kwn 
      * ALCHEMIC INGREDIENT - INSERT
      * ***************************/
     public void insert(IngredientContainer ingredient) {
-        setIngredient(ingredient.getContent());
+        setIngredient(ingredient.getContent()); //todo Container waarin het zat, moet da nie getermineerd worden?
     }
 
     /* ***************************
      * ALCHEMIC INGREDIENT - RETRIEVE
      * ***************************/
     public IngredientContainer retrieve(IngredientContainer container) {
+        //TODO volgens mij heeft dit geen input nodig, je moet gwn een container teruggeven waarin dit ingredient kan, denkik.
         if (container.getContent().getQuantity() == 0) { //TODO ook nagaan of in container kan? Dieter da's me quantities =)
             container.insert(getIngredient()) ;
             setIngredient(null);}
@@ -49,7 +50,7 @@ public abstract class AlchemicDevice {//TODO In opgave staat er gwn Device? Kwn 
     }
 
     /* *********************************************************
-     * ID
+     * ID - Wat is hiervan het nut?
      * *********************************************************/
     public int getID() {
         return ID;

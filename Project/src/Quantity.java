@@ -37,23 +37,37 @@ public enum Quantity {
         this.namePlural = namePlural;
     }
 
-    // Getters
+    /* *********************************************************
+     * VALUE
+     * *********************************************************/
     public double getValue() {
         return value;
     }
 
+    /* *********************************************************
+     * CONTAINER
+     * *********************************************************/
     public boolean canBeContainer() {
         return canBeContainer;
     }
 
+    /* *********************************************************
+     * STATE
+     * *********************************************************/
     public State getRespectiveState() {
         return respectiveState;
     }
 
+    /* *********************************************************
+     * NAME SINGULAR
+     * *********************************************************/
     public String getNameSingular() {
         return nameSingular;
     }
 
+    /* *********************************************************
+     * NAME PLURAL
+     * *********************************************************/
     public String getNamePlural() {
         return namePlural;
     }

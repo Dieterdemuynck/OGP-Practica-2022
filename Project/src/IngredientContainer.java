@@ -3,6 +3,14 @@ public class IngredientContainer {
     private Quantity capacity;
     private AlchemicIngredient content;
 
+    /* *********************************************************
+     * CONSTRUCTOR
+     * *********************************************************/
+
+    /* *********************************************************
+     * CAPACITY
+     * *********************************************************/
+
     public Quantity getCapacity() {
         return capacity;
     }
@@ -11,12 +19,19 @@ public class IngredientContainer {
         this.capacity = capacity;
     }
 
+
+    /* *********************************************************
+     * ALCHEMIC INGREDIENT
+     * *********************************************************/
     public AlchemicIngredient getContent() {
         return content;
     }
 
     public void insert(AlchemicIngredient ingredient) {
-        if (capacity.getValue() >= ingredient.getQuantity() && getCapacity().getRespectiveState() == ingredient.getState()) {
-            this.content = ingredient;}
+        if (capacity.getValue() >= ingredient.getQuantity()
+                && getCapacity().getRespectiveState() == ingredient.getState()) {
+            this.content = ingredient;
+        }
     }
+
 }

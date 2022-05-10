@@ -14,15 +14,18 @@ public class IllegalTemperatureException extends RuntimeException {
      *
      */
     private static final long serialVersionUID = 1L;
-
-
     private final long[] temperature;
 
-
+    /* *********************************************************
+     * CONSTRUCTOR
+     * *********************************************************/
     public IllegalTemperatureException(long[] temperature) {
         this.temperature = temperature;
     }
 
+    /* *********************************************************
+     * TEMPERATURE
+     * *********************************************************/
     /**
      *
      */
