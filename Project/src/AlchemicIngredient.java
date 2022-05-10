@@ -39,6 +39,22 @@ public class AlchemicIngredient {
     }
 
     public String getFullName(){
+        String pre = getPreName();
+        String post = getPostName();
+        if (!ingredientType.isMixedIngredient()){
+            return pre + ingredientType.getName() + post;
+        }
+        else{
+            if (ingredientType.hasSpecialName()){
+                return getSpecialName() + " (" + pre + getName() + post + ")";
+            }
+            else{
+                return pre + ingredientType.getName() + post;
+            }
+        }
+    }
+
+    private String getPreName(){ //zodat uitbreiding makkelijker is
         String pre = null;
         long temp = asLong(this.getTemperature());
         long standtemp = asLong(this.getStandardTemperature());
@@ -48,17 +64,12 @@ public class AlchemicIngredient {
         else {
             pre = "Heated ";
         }
-        if (!ingredientType.isMixedIngredient()){
-            return pre + ingredientType.getName();
-        }
-        else{
-            if (ingredientType.hasSpecialName()){
-                return getSpecialName() + " (" + pre + getName() + ")";
-            }
-            else{
-                return pre + ingredientType.getName();
-            }
-        }
+        return pre;
+    }
+
+    private String getPostName(){ //zodat uitbreiding makkelijker is
+        String post = null;
+        return post;
     }
 
     private static long asLong(long[] temperature){
