@@ -11,7 +11,7 @@ import be.kuleuven.cs.som.annotate.*;
 public class IllegalNameException extends RuntimeException {
 
     /**
-     * Required because this class inherits from Exception
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -24,7 +24,7 @@ public class IllegalNameException extends RuntimeException {
     }
 
     /**
-     * Return the item involved in this item not writable exception.
+     *
      */
     @Basic
     @Immutable

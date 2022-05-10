@@ -4,6 +4,14 @@ public class Oven extends AlchemicDevice { //why do they call it oven when you o
 
     private long temperature;
 
+    /* *********************************************************
+     * CONSTRUCTOR TODO
+     * *********************************************************/
+
+
+    /* *********************************************************
+     * TEMPERATURE
+     * *********************************************************/
     public long getTemperature() {
         return temperature;
     }
@@ -13,23 +21,19 @@ public class Oven extends AlchemicDevice { //why do they call it oven when you o
             this.temperature = temperature;}
     }
 
+    /* *********************************************************
+     * ACTIVATE
+     * *********************************************************/
     public void activate() {
         Random rand = new Random();
         double deviation = rand.nextDouble(0.95,1.05);
         long tempTemp = Math.round(getTemperature() * deviation);
+        //todo Kvraag mij af als je dan lik 150°C neemt en die kiest als random waarde 1,05 -> dan heb je 157,5°C
+        // afgerond is da 158 ma das meer dan 5% afwijkend is da ok?
         long[] tempIngredient = getIngredient().getTemperature();
-        long longTempIngredient = getLong(tempIngredient);
+        long longTempIngredient = asLong(tempIngredient);
         getIngredient().heat(Math.abs(longTempIngredient - tempTemp));
     }
-
-        private long getLong(long[] temperature){
-            if (temperature[0] != 0){
-                return -temperature[0];
-            }
-            else {
-                return temperature[1];
-            }
-        }
-    }
+}
 
 

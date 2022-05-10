@@ -1,39 +1,39 @@
-public abstract class AlchemicDevice {
+public abstract class AlchemicDevice {//TODO In opgave staat er gwn Device? Kwn kzou lik de naam van de opdracht gebruiken nie?
 
-    private AlchemicIngredient ingredient;
+    private AlchemicIngredient ingredient = null;
     private int ID;
     private Laboratory laboratory;
+
+    /* *********************************************************
+     * ALCHEMIC INGREDIENT
+     * *********************************************************/
 
     public AlchemicIngredient getIngredient() {
         return ingredient;
     }
 
     public void setIngredient(AlchemicIngredient ingredient) {
+        if (!isEmptyDevice() && ingredient != null){
+            throw new IngredientNotEmtpyException(this.ingredient, ingredient);
+        }
         this.ingredient = ingredient;
     }
-
-    public int getID() {
-        return ID;
+    public boolean isEmptyDevice(){
+        return this.ingredient == null;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
-    }
-
-    public Laboratory getLaboratory() {
-        return laboratory;
-    }
-
-    public void setLaboratory(Laboratory laboratory) {
-        this.laboratory = laboratory;
-    }
-
+    /* ***************************
+     * ALCHEMIC INGREDIENT - INSERT
+     * ***************************/
     public void insert(IngredientContainer ingredient) {
-        this.ingredient = ingredient.getContent();
+        setIngredient(ingredient.getContent());
     }
 
+    /* ***************************
+     * ALCHEMIC INGREDIENT - RETRIEVE
+     * ***************************/
     public IngredientContainer retrieve(IngredientContainer container) {
-        if (container.getContent().getQuantity() == 0) {
+        if (container.getContent().getQuantity() == 0) { //TODO ook nagaan of in container kan? Dieter da's me quantities =)
             container.insert(getIngredient()) ;
             setIngredient(null);}
         return container;
@@ -46,6 +46,28 @@ public abstract class AlchemicDevice {
         else {
             return temperature[1];
         }
+    }
+
+    /* *********************************************************
+     * ID
+     * *********************************************************/
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    /* *********************************************************
+     * LABORATORY
+     * *********************************************************/
+    public Laboratory getLaboratory() {
+        return laboratory;
+    }
+
+    public void setLaboratory(Laboratory laboratory) {
+        this.laboratory = laboratory;
     }
 
 }

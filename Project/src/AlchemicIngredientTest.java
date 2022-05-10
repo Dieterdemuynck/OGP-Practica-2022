@@ -2,6 +2,15 @@ import be.kuleuven.cs.som.annotate.*;
 import org.junit.Before;
 import org.junit.Test;
 
+//TODO We moeten enkel testen gebruikt in Devices
+// -> constructoren?
+// -> heat & cool
+// -> getQuantity
+// -> getTemperature
+// -> getState
+// -> dingen voor Kettle
+// -> dingen vergeten?
+
 public class AlchemicIngredientTest {
     AlchemicIngredient water;
     AlchemicIngredient milk;
@@ -16,14 +25,7 @@ public class AlchemicIngredientTest {
         lizardsTail = new AlchemicIngredient(1, standardTemperatureMilk,"Lizard's Tail", State.Powder);
     }
 
-    // CONSTRUCTOR TEST-------------------------------------------------------------------------------------------------
 
-    // INGREDIENT TYPE TEST---------------------------------------------------------------------------------------------
-    // --- NAME TEST----------------------------------------------------------------------------------------------------
-
-    // --- STANDARD STATE TEST------------------------------------------------------------------------------------------
-
-    // --- STANDARD TEMPERATURE TEST------------------------------------------------------------------------------------
 
 }
 
