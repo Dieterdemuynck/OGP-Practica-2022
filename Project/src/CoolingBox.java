@@ -1,4 +1,4 @@
-public class CoolingBox extends AlchemicDevice{
+public class CoolingBox extends Device {
 
     private long temperature;
 

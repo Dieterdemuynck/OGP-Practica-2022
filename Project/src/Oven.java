@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class Oven extends AlchemicDevice { //why do they call it oven when you of in the cold food of out heat the food
+public class Oven extends Device { //why do they call it oven when you of in the cold food of out eat the food
 
     private long temperature;
 

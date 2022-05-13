@@ -1,4 +1,4 @@
-public class Transmogrifier extends AlchemicDevice{
+public class Transmogrifier extends Device {
 
     private State resultingState;
 
