@@ -36,5 +36,3 @@ public class Oven extends Device { //why do they call it oven when you of in the
         getIngredient().heat(Math.abs(longTempIngredient - tempTemperature));
     }
 }
-
-}
