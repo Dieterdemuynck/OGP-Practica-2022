@@ -1,7 +1,15 @@
-public class CoolingBox extends AlchemicDevice{
+public class CoolingBox extends Device {
 
     private long temperature;
 
+    /* *********************************************************
+     * CONSTRUCTOR TODO
+     * *********************************************************/
+
+
+    /* *********************************************************
+     * TEMPERATURE
+     * *********************************************************/
     public long getTemperature() {
         return temperature;
     }
@@ -10,6 +18,9 @@ public class CoolingBox extends AlchemicDevice{
         this.temperature = temperature;
     }
 
+    /* *********************************************************
+     * ACTIVATE
+     * *********************************************************/
     public void activate() {
         long tempTemp = getTemperature();
         long[] tempIngredient = getIngredient().getTemperature();

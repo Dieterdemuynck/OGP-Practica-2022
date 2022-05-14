@@ -1,4 +1,4 @@
-//import be.kuleuven.cs.som.annotate.*;
+import be.kuleuven.cs.som.annotate.*;
 
 
 //TODO: iemand die dit kan nakijken of dit goed genoeg is? Want ken nie zo veel van exceptions =)
@@ -11,23 +11,26 @@
 public class IllegalTemperatureException extends RuntimeException {
 
     /**
-     * Required because this class inherits from Exception
+     *
      */
     private static final long serialVersionUID = 1L;
-
-
     private final long[] temperature;
 
-
+    /* *********************************************************
+     * CONSTRUCTOR
+     * *********************************************************/
     public IllegalTemperatureException(long[] temperature) {
         this.temperature = temperature;
     }
 
+    /* *********************************************************
+     * TEMPERATURE
+     * *********************************************************/
     /**
-     * Return the item involved in this item not writable exception.
+     *
      */
-    //@Basic
-    //@Immutable
+    @Basic
+    @Immutable
     public long[] getTemperature() {
         return temperature;
     }

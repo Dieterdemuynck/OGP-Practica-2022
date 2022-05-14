@@ -3,6 +3,7 @@ public class AlchemicIngredient {
     private final IngredientType ingredientType;
     private State state;
     private final int quantity;
+    private final Unit unit;
     private long temperature;
     public static final int MAX_TEMPERATURE = 10000;
 
@@ -10,22 +11,38 @@ public class AlchemicIngredient {
     /* *********************************************************
      * CONSTRUCTORS
      * *********************************************************/
-    public AlchemicIngredient(int quantity, long[] standardTemperature, String name, State standardState){
+
+    public AlchemicIngredient(int quantity, Unit unit, long[] standardTemperature, String name, State standardState){
+        /* TODO: rather than create a new ingredient type, shouldn't we pass an already existing one?
+         * Currently, for the transmogrifier, we need to create a new ingredient with a different state from its
+         * standard state. This will be wonky or messy if we pass two states instead.
+         * Please fix, so I can work on the transmogrifier. - パリピディーター
+         */
         this.ingredientType = new IngredientType(name, standardTemperature, standardState);
         this.quantity = quantity;
+        this.unit = unit;
         setTemperature(standardTemperature);
         changeState(standardState);
     }
 
-    public AlchemicIngredient(int quantity){
-        long[] standardTemperature = {0, 20};
-        this.ingredientType = new IngredientType("Water", standardTemperature, State.Liquid);
-        this.quantity = quantity;
+    // Default unit: spoon
+    public AlchemicIngredient(int quantity, long[] standardTemperature, String name, State standardState) {
+        this(quantity, Unit.Spoon, standardTemperature, name, standardState);
+    }
+
+    public AlchemicIngredient(int quantity, Unit unit){
+        this(quantity, unit, new long[] {0, 20}, "Water", State.Liquid);
+    }
+
+    // Default unit: spoon
+    public AlchemicIngredient(int quantity) {
+        this(quantity, Unit.Spoon);
     }
 
     /* *********************************************************
      * INGREDIENT TYPE
      * *********************************************************/
+
     public IngredientType getIngredientType() {
         return ingredientType;
     }
@@ -39,26 +56,39 @@ public class AlchemicIngredient {
     }
 
     public String getFullName(){
-        String pre = null;
-        long temp = asLong(this.getTemperature());
-        long standtemp = asLong(this.getStandardTemperature());
-        if (temp < standtemp){
-            pre = "Cooled ";
-        }
-        else {
-            pre = "Heated ";
-        }
+        String pre = getPreName();
+        String post = getPostName();
         if (!ingredientType.isMixedIngredient()){
-            return pre + ingredientType.getName();
+            return pre + ingredientType.getName() + post;
         }
         else{
             if (ingredientType.hasSpecialName()){
-                return getSpecialName() + " (" + pre + getName() + ")";
+                return getSpecialName() + " (" + pre + getName() + post + ")";
             }
             else{
-                return pre + ingredientType.getName();
+                return pre + ingredientType.getName() + post;
             }
         }
+    }
+
+    private String getPreName(){ // to simplify expansion
+        // TODO: could be saved as a field and changed when the respective property has changed [OPTIONAL]
+        // If we decide not to do this, change to regular comment and remove the optional tag ^
+        String pre = "";
+        long temp = asLong(this.getTemperature());
+        long standardTemperature = asLong(this.getStandardTemperature());
+        if (temp < standardTemperature){
+            pre += "Cooled ";
+        }
+        else if (temp > standardTemperature) {  // Who's the silly goose who forgot that temperatures could be equal?
+            pre += "Heated ";
+        }
+        return pre;
+    }
+
+    private String getPostName(){ // to simplify expansion
+        String post = "";
+        return post;
     }
 
     private static long asLong(long[] temperature){
@@ -82,6 +112,7 @@ public class AlchemicIngredient {
     /* ***************************
      * INGREDIENT TYPE - STANDARD TEMPERATURE
      * ***************************/
+
     public long[] getStandardTemperature(){
         return ingredientType.getStandardTemperature();
     }
@@ -89,6 +120,7 @@ public class AlchemicIngredient {
     /* ***************************
      * INGREDIENT TYPE - STANDARD STATE
      * ***************************/
+
     public State getStandardState(){
         return ingredientType.getStandardState();
     }
@@ -100,21 +132,32 @@ public class AlchemicIngredient {
         return state;
     }
 
-    public void changeState(State state) { //mag enkel gebruikt worden in Transmogrifier
+    // TODO: redundant, as transmogrifier will simply create a new ingredient rather than change the state.
+    // This means state can be final! :) - Ya boi Dimme
+    public void changeState(State state) {
         this.state = state;
-        //todo hoeveelheid wordt ook aangepast -> Dieter =)
     }
 
     /* *********************************************************
-     * QUANTITY
+     * QUANTITY & UNIT
      * *********************************************************/
+
     public int getQuantity() {
         return quantity;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public double getQuantityInSpoons() {  // To simplify a common calculation
+        return quantity * unit.getValue();
     }
 
     /* *********************************************************
      * TEMPERATURE
      * *********************************************************/
+
     public long[] getTemperature() {
         long[] temp = new long[2];
         if (this.temperature < 0) {

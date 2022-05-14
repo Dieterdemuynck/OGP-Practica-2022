@@ -1,6 +1,15 @@
-public class Transmogrifier extends AlchemicDevice{
+public class Transmogrifier extends Device {
+
     private State resultingState;
 
+    /* *********************************************************
+     * CONSTRUCTOR TODO
+     * *********************************************************/
+
+
+    /* *********************************************************
+     * STATE
+     * *********************************************************/
     public State getState() {
         return resultingState;
     }
@@ -9,6 +18,9 @@ public class Transmogrifier extends AlchemicDevice{
         this.resultingState = state;
     }
 
+    /* *********************************************************
+     * ACTIVATE
+     * *********************************************************/
     public void activate() {
         getIngredient().changeState(resultingState);
     }
