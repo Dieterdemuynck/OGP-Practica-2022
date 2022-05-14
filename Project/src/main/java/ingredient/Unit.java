@@ -1,5 +1,8 @@
+package main.java.ingredient;
+
 import java.util.EnumSet;
 
+// TODO: Update this horrible mess to use the unit table (see json file) instead.
 public enum Unit {
     // State-independent
     Spoon(1, true, null, "Spoon", "Spoons"),
@@ -78,8 +81,8 @@ public enum Unit {
      *
      * @param originUnit    The Unit from which we want to convert
      * @param targetUnit    The Unit to which we want to convert
-     * @param amount            The amount of product, represented in the origin Unit.
-     * @return                  The amount of product, represented in the target Unit
+     * @param amount        The amount of product, represented in the origin Unit.
+     * @return              The amount of product, represented in the target Unit
      */
     static public int convertBetweenQuantities(Unit originUnit, Unit targetUnit, int amount) {
         // Will automatically round down:

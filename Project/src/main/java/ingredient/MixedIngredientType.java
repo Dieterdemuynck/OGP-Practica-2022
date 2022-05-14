@@ -1,3 +1,5 @@
+package main.java.ingredient;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,3 +1,5 @@
+package main.java.ingredient;
+
 public class AlchemicIngredient {
 
     private final IngredientType ingredientType;
@@ -151,7 +153,7 @@ public class AlchemicIngredient {
     }
 
     public double getQuantityInSpoons() {  // To simplify a common calculation
-        return quantity * unit.getValue();
+        return getQuantity() * getUnit().getValue();
     }
 
     /* *********************************************************
@@ -167,6 +169,7 @@ public class AlchemicIngredient {
         }
         return temp;
     }
+
     private void setTemperature(long[] temperature) throws IllegalTemperatureException { // input : array
         if (!isValidTemperature(temperature)) {
             throw new IllegalTemperatureException(temperature);

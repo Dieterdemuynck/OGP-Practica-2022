@@ -1,3 +1,5 @@
+package main.java.ingredient;
+
 public class IngredientContainer {
 
     private final Unit capacity;

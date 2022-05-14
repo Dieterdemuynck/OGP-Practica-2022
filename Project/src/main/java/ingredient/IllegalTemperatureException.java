@@ -1,3 +1,5 @@
+package main.java.ingredient;
+
 import be.kuleuven.cs.som.annotate.*;
 
 

@@ -1,6 +1,8 @@
-import be.kuleuven.cs.som.annotate.*;
+package test;
+
+import main.java.ingredient.AlchemicIngredient;
+import main.java.ingredient.State;
 import org.junit.Before;
-import org.junit.Test;
 
 //TODO We moeten enkel testen gebruikt in Devices
 // -> constructoren?

@@ -1,3 +1,10 @@
+package main.java.device;
+
+import main.java.ingredient.AlchemicIngredient;
+import main.java.ingredient.IngredientContainer;
+import main.java.ingredient.IngredientNotEmptyException;
+import main.java.Laboratory;
+
 public abstract class Device {
 
     private AlchemicIngredient ingredient = null;

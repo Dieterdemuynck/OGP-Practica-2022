@@ -1,3 +1,7 @@
+package main.java.device;
+
+import main.java.ingredient.State;
+
 public class Transmogrifier extends Device {
 
     private State resultingState;

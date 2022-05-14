@@ -1,3 +1,5 @@
+package main.java.ingredient;
+
 public class IngredientType {
 
     private final String name;
