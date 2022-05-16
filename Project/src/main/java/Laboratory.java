@@ -62,10 +62,15 @@ public class Laboratory {
 
     private void store(AlchemicIngredient ingredient) {
         int index = binarySearch(ingredient.getName(), 0, getStorage().size());
-        getStorage().add(index, ingredient);
+        if (getStorage().get(index) == ingredient) {
+            ingredient.
+        }
+        else {
+            getStorage().add(index, ingredient);
+        }
     }
 
-    
+
 
     private int binarySearch(String target, int first, int last) {
         int mid = (first + last) / 2;
