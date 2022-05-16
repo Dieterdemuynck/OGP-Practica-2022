@@ -29,9 +29,16 @@ public class IngredientType {
         return name;
     }
 
-    private static boolean isValidName(String name){
-        return true; //TODO Dieter =)
+    /**
+     * Returns whether the given name is a valid simple name (NOT MIXED!)
+     *
+     * @param name  The string representation of the new name of a new ingredient.
+     * @return      true if and only if name is a valid simple name, false otherwise.
+     */
+    public static boolean isValidName(String name){
+        return name.matches("([A-Z][a-z']+( [A-Z][a-z']+)+|[A-Z][a-z']{2,})"); //TODO Dieter =)
     }
+
     public boolean hasSpecialName(){
         return false;
     }

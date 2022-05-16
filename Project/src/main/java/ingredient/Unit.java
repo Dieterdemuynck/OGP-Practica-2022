@@ -2,8 +2,8 @@ package main.java.ingredient;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.EnumSet;
-import java.util.Scanner;
+import java.lang.reflect.Array;
+import java.util.*;
 
 // TODO: Update this horrible mess to use the unit table (see cnt file) instead.
 public enum Unit {
@@ -111,9 +111,9 @@ public enum Unit {
      * @param amount The amount of ingredient we try to find a fitting Unit for.
      * @return       The largest Unit which fits the given amount.
      */
-    static public Unit findLargestFit(State state, double amount) {
-        double largestFoundValue = -1;
-        Unit largestUnit = null;
+    static public Unit findLargestFit(State state, int amount, Unit previousUnit) {
+        double largestFoundValue = -1; // TODO: Fix
+        Unit largestUnit = previousUnit;
 
         /* Checks *every* quantity, including quantities of other states. Possibly, horribly, inefficient.
          * T(n) = O(n) with n = amount of defined quantities.
@@ -163,10 +163,5 @@ public enum Unit {
 
         return smallestContainer;
     }
-
-    private static Scanner getTableScanner() throws FileNotFoundException {
-        return new Scanner(new File(String.valueOf(Unit.class.getResource("alchemyUnits.cnt"))));
-    }
-
 
 }
