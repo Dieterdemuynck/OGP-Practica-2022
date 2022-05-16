@@ -15,6 +15,24 @@ public class AlchemicIngredient {
      * *********************************************************/
 
     public AlchemicIngredient(int quantity, Unit unit, long[] standardTemperature, String name, State standardState){
+        this.ingredientType = new IngredientType(name, standardTemperature, standardState);
+        this.quantity = quantity;
+        this.unit = unit; // TODO Controle ofdat state en unit overeen komen DIETER =)
+        setTemperature(standardTemperature);
+        changeState(standardState);
+    }
+
+    // voor transmogrifier -> standardState != current state
+    public AlchemicIngredient(int quantity, Unit unit, long[] standardTemperature, String name, State standardState, State currentState){
+        this.ingredientType = new IngredientType(name, standardTemperature, standardState);
+        this.quantity = quantity;
+        this.unit = unit; // TODO Controle ofdat state en unit overeen komen DIETER =)
+        setTemperature(standardTemperature);
+        changeState(currentState);
+    }
+
+    // voor transmogrifier -> standardState != currentState EN standardTemperature != currentTemperature
+    public AlchemicIngredient(int quantity, Unit unit, long[] standardTemperature, String name, State standardState, State currentState, long[] currentTemperature){
         /* TODO: rather than create a new ingredient type, shouldn't we pass an already existing one?
          * Currently, for the transmogrifier, we need to create a new ingredient with a different state from its
          * standard state. This will be wonky or messy if we pass two states instead.
@@ -22,9 +40,9 @@ public class AlchemicIngredient {
          */
         this.ingredientType = new IngredientType(name, standardTemperature, standardState);
         this.quantity = quantity;
-        this.unit = unit;
-        setTemperature(standardTemperature);
-        changeState(standardState);
+        this.unit = unit; // TODO Controle ofdat state en unit overeen komen DIETER =)
+        setTemperature(currentTemperature);
+        changeState(currentState);
     }
 
     // Default unit: spoon
@@ -82,7 +100,7 @@ public class AlchemicIngredient {
         if (temp < standardTemperature){
             pre += "Cooled ";
         }
-        else if (temp > standardTemperature) {  // Who's the silly goose who forgot that temperatures could be equal?
+        else if (temp > standardTemperature) {  // Who's the silly goose who forgot that temperatures could be equal? INE =) ma kheb er nu aan gedacht en kgingt aanpassen =)
             pre += "Heated ";
         }
         return pre;

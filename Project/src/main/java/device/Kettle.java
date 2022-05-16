@@ -1,7 +1,6 @@
 package main.java.device;
 
 import main.java.ingredient.AlchemicIngredient;
-
 import java.util.ArrayList;
 
 public class Kettle {  // How did we forget the most important device of them all? I don't have a good feeling about this.
@@ -12,6 +11,15 @@ public class Kettle {  // How did we forget the most important device of them al
         return addedIngredients;
     }
 
+    /* *********************************************************
+     * CONSTRUCTOR TODO
+     * *********************************************************/
+
+
+
+    /* *********************************************************
+     * ADDED INGREDIENTS
+     * *********************************************************/
     public void setAddedIngredients(ArrayList<AlchemicIngredient> addedIngredients) {
         this.addedIngredients = addedIngredients;
     }
@@ -20,6 +28,10 @@ public class Kettle {  // How did we forget the most important device of them al
         getAddedIngredients().add(ingredient);
     }
 
+
+    /* *********************************************************
+     * ACTIVATE TODO
+     * *********************************************************/
     public void activate() {
 
     }

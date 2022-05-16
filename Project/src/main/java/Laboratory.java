@@ -13,6 +13,8 @@ public class Laboratory {
     private ArrayList<AlchemicIngredient> storage;
     private ArrayList<Device> devices;
 
+
+
     public int getStoreroomCapacity() {
         return storeroomCapacity;
     }
