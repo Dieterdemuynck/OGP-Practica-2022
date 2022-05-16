@@ -1,7 +1,16 @@
 package main.java.ingredient;
 
 public enum State {
-    Liquid,
-    Powder,
-}
+    Powder(0),
+    Liquid(1),
+    ;
+    private final int ID;
 
+    State(int ID) {
+        this.ID = ID;
+    }
+
+    public int getID() {
+        return this.ID;
+    }
+}
