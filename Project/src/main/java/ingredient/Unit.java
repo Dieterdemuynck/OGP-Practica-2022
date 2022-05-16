@@ -28,6 +28,7 @@ public enum Unit {
     Chest(1260, true, State.Powder, "Chest", "Chests"),
     ;
 
+    // TODO: Delete all of the fields and getters etc.
     // Properties
     private final double value;
     private final boolean canBeContainer;
@@ -88,7 +89,7 @@ public enum Unit {
      * @return              The amount of product, represented in the target Unit
      */
     static public int convertBetweenQuantities(Unit originUnit, Unit targetUnit, int amount) {
-        // Will automatically round down:
+        // TODO
         return (int) (amount * originUnit.getValue() / targetUnit.getValue());
     }
 
@@ -101,67 +102,108 @@ public enum Unit {
      * @return              The amount of product, represented in the target Unit
      */
     public int convertTo(Unit targetUnit, int amount) {
+        // TODO
         return convertBetweenQuantities(this, targetUnit, amount);
     }
 
     /**
-     * Finds the largest fit given a certain State and an amount in Spoons.
+     * Finds the largest unit which will still hold the given amount as an integer, given its current unit and the
+     * required state. Will return a Quantity object holding both the resulting amount and Unit.
      *
-     * @param state  The State we want the Unit to represent.
-     * @param amount The amount of ingredient we try to find a fitting Unit for.
-     * @return       The largest Unit which fits the given amount.
+     * @pre     amount is not 0
+     *          | amount != 0
+     * @pre     previousUnit is not null
+     *          | previousUnit != null
+     * @pre     state is not null
+     *          | state != null
+     * @pre     The given unit is representative of the given state
+     *          | Arrays.asList(stateUnits).contains(previousUnit)
+     *
+     * @param   amount        The amount of ingredient we try to find a fitting Unit for.
+     * @param   previousUnit  The original unit the amount is in.
+     * @param   state         The state the final Unit must be in
+     * @return  The largest Unit which fits the given amount.
+     *          | result == TODO: formal specification (how even?)
      */
-    static public Unit findLargestFit(State state, int amount, Unit previousUnit) {
-        double largestFoundValue = -1; // TODO: Fix
-        Unit largestUnit = previousUnit;
+    static public Quantity findLargestFit(int amount, Unit previousUnit, State state){
 
-        /* Checks *every* quantity, including quantities of other states. Possibly, horribly, inefficient.
-         * T(n) = O(n) with n = amount of defined quantities.
-         * We could save a list or hashmap somewhere which links a state to an (ordered) list/array of Quantities,
-         * which could increase performance, if necessary.
-         */
-        for (Unit unit : EnumSet.allOf(Unit.class)) {
-            if (unit.getRespectiveState() == state || unit.getRespectiveState() == null) {
-                /* Messy workaround to fix rounding errors: Calculate modulus using doubles, convert to float,
-                 * then compare float quantities to float. After rounding, we have either 0 or the previous amount.
-                 * My foal is to write code so terribly awful I never have to work on conversion methods again.
-                 * I /could/ clean this up using BigDecimals, which I learnt about *after* writing this. Not happening.
-                 */
-                if (unit.getValue() > largestFoundValue && ((float)(amount % unit.getValue()) == (float)0
-                    || (float)(amount % unit.getValue()) == (float)(unit.getValue()))) {
-                    largestFoundValue = unit.getValue();
-                    largestUnit = unit;
-                }
-            }
+        // Get the arrays needed
+        Object[][] table = CNTParser.getTable(state);
+        Unit[] stateUnits = (Unit[]) table[0];
+        Integer[] stateValues = (Integer[]) table[1];
+
+        // We assume previousUnit is in fact in the array:
+        assert Arrays.asList(stateUnits).contains(previousUnit);
+
+        // Loop through units until previousUnit is found
+        int i = 0;
+        while (stateUnits[i] != previousUnit) {
+            i++;
         }
 
-        return largestUnit;
+        // Divide by next value until the amount does not fit
+        for( /* No statement */ ; amount % stateValues[i] == 0 && i < stateUnits.length; i++) {
+            amount /= stateValues[i];
+        }
+
+        return new Quantity(amount, stateUnits[i]);
     }
 
     /**
-     * Finds the smallest container Unit which can hold a given amount in Spoons in the respective State.
+     * Finds the smallest container Unit which can hold a given amount in Spoons in the respective State. If none is
+     * found, returns the largest container of the respective State.
      *
-     * @param state  The State we want the Unit to represent.
-     * @param amount The amount of ingredient we try to find a container Unit for.
-     * @return       The smallest container Unit that can hold the given amount.
+     * // TODO: pre conditions etc.
+     *
+     * @param   amount        The amount of ingredient we try to find a fitting container for.
+     * @param   containedUnit The unit of the amount that will be contained.
+     * @param   state         The state of the returned container unit.
+     * @return       The smallest container Unit that can hold the given amount, or the largest container unit if none
+     *               fit.
      */
-    static public Unit findSmallestFittingContainer(State state, double amount) {
-        double smallestFoundValue = -1;
-        Unit smallestContainer = null;
+    static public Unit findSmallestFittingContainer(int amount, Unit containedUnit, State state) {
 
-        // Same issue in terms of time complexity as with findLargestFit()
-        for (Unit unit : EnumSet.allOf(Unit.class)) {
-            if (unit.getRespectiveState() == state || unit.getRespectiveState() == null) {
-                if (unit.canBeContainer() && unit.getValue() >= amount
-                        && unit.getValue() < smallestFoundValue) {
-                    // Container Unit found which is smaller and still fits the given amount.
-                    smallestFoundValue = unit.getValue();
-                    smallestContainer = unit;
-                }
+        // Get the arrays needed
+        Object[][] table = CNTParser.getTable(state);
+        Unit[] stateUnits = (Unit[]) table[0];
+        Integer[] stateValues = (Integer[]) table[1];
+        Boolean[] stateContainers = (Boolean[]) table[2];
+
+        // We assume containedUnit is in fact in the array:
+        assert Arrays.asList(stateUnits).contains(containedUnit);
+
+        // Loop through units until containedUnit is found, while keeping track of the largest container Unit found
+        int i = 0;
+        Unit containerUnit = null;
+        while (stateUnits[i] != containedUnit) {
+            if (stateContainers[i])
+                containerUnit = stateUnits[i];
+            i++;
+        }
+
+        // containedUnit has been found, check if it is a container
+        if(stateContainers[i]) {
+            containerUnit = stateUnits[i];
+            // Check if amount already fits in the container
+            if (amount <= 1) {
+                // The contained Unit is returned
+                return containerUnit;
             }
         }
 
-        return smallestContainer;
+        /* If this code is reached, the contained Unit is not a container Unit, or the amount to store is larger than 1.
+         * The goal is to keep looking for a bigger container Unit until the amount fits, or until the largest Unit has
+         * been checked. If the latter is the case, this means the amount cannot fit into a container Unit, thus we
+         * return the largest found so far.
+         */
+        int sizeInContainedUnit = 1;
+        while (amount > sizeInContainedUnit && ++i < stateUnits.length) {
+            sizeInContainedUnit *= stateValues[i];
+            if (stateContainers[i])
+                containerUnit = stateUnits[i];
+        }
+
+        return containerUnit;
     }
 
 }

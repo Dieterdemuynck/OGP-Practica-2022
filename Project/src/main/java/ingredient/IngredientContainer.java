@@ -14,8 +14,7 @@ public class IngredientContainer {
     }
 
     public IngredientContainer(AlchemicIngredient ingredient) {
-        this(Unit.findSmallestFittingContainer(ingredient.getState(),
-                ingredient.getQuantityInSpoons()));
+        this(Unit.findSmallestFittingContainer(ingredient.getQuantity(), ingredient.getUnit(), ingredient.getState()));
         this.content = ingredient;
     }
 
