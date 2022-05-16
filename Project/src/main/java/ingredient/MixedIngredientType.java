@@ -6,7 +6,7 @@ import java.util.List;
 public class MixedIngredientType extends IngredientType{
 
     private List<String> componentNames = new ArrayList<>();
-    private static String specialName = null;
+    private String specialName = null;
 
     /* *********************************************************
      * CONSTRUCTORS
@@ -27,9 +27,19 @@ public class MixedIngredientType extends IngredientType{
     /* *********************************************************
      * SPECIAL NAME
      * *********************************************************/
+    public void setSpecialName(String specialName){
+        if (! isValidSpecialName(specialName)) {
+            throw new IllegalNameException(specialName);
+        }
+        this.specialName = specialName;
+    }
 
-    public static String getSpecialName(){
-        return specialName;
+    public static boolean isValidSpecialName(String specialName){
+        return true; //TODO DIETER =)
+    }
+
+    public String getSpecialName(){
+        return this.specialName;
     }
     @Override
     public boolean hasSpecialName(){

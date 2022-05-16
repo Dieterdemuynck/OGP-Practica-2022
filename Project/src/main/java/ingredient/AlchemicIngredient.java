@@ -104,7 +104,7 @@ public class AlchemicIngredient {
 
     public String getSpecialName(){
         if (ingredientType.isMixedIngredient()){
-            return MixedIngredientType.getSpecialName();
+            return this.getSpecialName();
         }
         else {
             return null;
