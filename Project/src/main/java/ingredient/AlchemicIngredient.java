@@ -153,7 +153,11 @@ public class AlchemicIngredient {
     }
 
     // TODO: redundant, as transmogrifier will simply create a new ingredient rather than change the state.
-    // This means state can be final! :) - Ya boi Dimme
+    // This means state can be final! :) - Ya boi
+
+    // Jah das dus fout: In transmogrifier wordt geen nieuw ingredient aangemaakt, gwn state veranderd zie opdracht...
+    // "Ingrediënten kunnen enkel op magische wijze van toestand veranderen." -> kan veranderen, gwn nie gemakkelijk
+    // "Wanneer ingrediënten van toestand veranderen, ..." -> kan veranderen
     public void changeState(State state) {
         this.state = state;
     }
@@ -216,7 +220,7 @@ public class AlchemicIngredient {
 
     public void cool(long temperature) {
         if (this.temperature - temperature >= -MAX_TEMPERATURE) {
-            this.temperature += temperature;
+            this.temperature -= temperature;
         }
     }
 

@@ -60,6 +60,8 @@ public class Laboratory {
     // Are we gonna store an ingredient object 5 times or something and suddenly have 5 times the previous amount out
     // of thin air?
 
+    /*
+    TODO DIT IS NIET AFGEWERKT EN ZORGT VOOR PROBLEMEN BIJ TESTS ALS NIET IN COMMENTAAR STAAT
     private void store(AlchemicIngredient ingredient) {
         int index = binarySearch(ingredient.getName(), 0, getStorage().size());
         if (getStorage().get(index) == ingredient) {
@@ -68,7 +70,7 @@ public class Laboratory {
         else {
             getStorage().add(index, ingredient);
         }
-    }
+    }*/
 
 
 

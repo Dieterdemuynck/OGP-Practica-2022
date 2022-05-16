@@ -24,12 +24,14 @@ public class AlchemicIngredientTest {
     public void setUpFixture() {
         water = new AlchemicIngredient(1);
         long[] standardTemperatureMilk = {0, 4};
-        milk = new AlchemicIngredient(1, standardTemperatureMilk, "Milk", State.Liquid);
-        long[] standardTemperatureLizardsTale = {0, 20};
-        lizardsTail = new AlchemicIngredient(1, standardTemperatureMilk, "Lizard's Tail", State.Powder);
+        milk = new AlchemicIngredient(1, Unit.Bottle, standardTemperatureMilk, "Milk", State.Liquid);
+        long[] standardTemperatureLizardsTale = {0, 1};
+        lizardsTail = new AlchemicIngredient(1, Unit.Sack, standardTemperatureLizardsTale, "Lizard's Tail", State.Powder);
     }
 
-    //TEST Constructor
+    /* *********************************************************
+     * CONSTRUCTOR TESTS - voor alle devices
+     * *********************************************************/
     @Test
     public void testConstructor_long_legalCase_oneWordName() {
         long[] standardTemperatureIngredient = {0, 15};
@@ -272,14 +274,73 @@ public class AlchemicIngredientTest {
     }
     */
 
-    //TEST changeState
+    /* *********************************************************
+     * CHANGE STATE TESTS - voor Transmogrifier
+     * *********************************************************/
+    @Test
+    public void testChangeState(){
+        assertEquals(State.Liquid, water.getState());
+        water.changeState(State.Powder);
+        assertEquals(State.Powder, water.getState());
+    }
 
-    //TEST getTemperature
+    /* *********************************************************
+     * TEMPERATURE TESTS - voor Coolbox en Oven4
+     * todo moet getTemperature ook getest worden? Want das half getest in constructors en ook nu half met heat en cool... Geen idee hoe het grondiger zou kunnen
+     * *********************************************************/
+    @Test
+    public void testHeat_temperatureAboveZero(){
+        assertEquals(0, water.getTemperature()[0]);
+        assertEquals(20, water.getTemperature()[1]);
+        water.heat(100);
+        assertEquals(0, water.getTemperature()[0]);
+        assertEquals(120, water.getTemperature()[1]);
+    }
 
-    //TEST heat
+    @Test
+    public void testHeat_temperatureBelowZero(){
+        //Hiervoor gaan we er vanuit dat de cool-methode werkt, de testen volgen hieronder.
+        lizardsTail.cool(20);
+        assertEquals(19, lizardsTail.getTemperature()[0]);
+        assertEquals(0, lizardsTail.getTemperature()[1]);
+        lizardsTail.heat(100);
+        assertEquals(0, lizardsTail.getTemperature()[0]);
+        assertEquals(81, lizardsTail.getTemperature()[1]);
+    }
 
-    //TEST cool
+    @Test
+    public void testHeat_illegalCase(){
+        water.heat(10000);
+        assertEquals(0, water.getTemperature()[0]);
+        assertEquals(20, water.getTemperature()[1]);
+    }
+
+    @Test
+    public void testCool_temperatureAboveZero(){
+        assertEquals(0, water.getTemperature()[0]);
+        assertEquals(20, water.getTemperature()[1]);
+        water.cool(100);
+        assertEquals(80, water.getTemperature()[0]);
+        assertEquals(0, water.getTemperature()[1]);
+    }
 
 
+    @Test //todo, das mss nie nuttig...
+    public void testCool_temperatureBelowZero(){
+        //Hiervoor gaan we er vanuit dat de cool-methode werkt om de temperatuur naar nul te krijgen.
+        water.cool(20);
+        assertEquals(0, water.getTemperature()[0]);
+        assertEquals(0, water.getTemperature()[1]);
+        water.cool(100);
+        assertEquals(100, water.getTemperature()[0]);
+        assertEquals(0, water.getTemperature()[1]);
+    }
+
+    @Test
+    public void testCool_illegalCase(){
+        water.cool(10100);
+        assertEquals(0, water.getTemperature()[0]);
+        assertEquals(20, water.getTemperature()[1]);
+    }
 }
 

@@ -26,6 +26,6 @@ public class Transmogrifier extends Device {
      * ACTIVATE
      * *********************************************************/
     public void activate() {
-        getIngredient().changeState(resultingState);
+        getIngredient().changeState(resultingState); // TODO unit enzo verandert DIETER =)
     }
 }
