@@ -15,6 +15,7 @@ public class IngredientContainer {
 
     public IngredientContainer(AlchemicIngredient ingredient) {
         this(Unit.findSmallestFittingContainer(ingredient.getQuantity(), ingredient.getUnit(), ingredient.getState()));
+        // TODO: ingredient.size could be larger than this.capacity... can we make a pre condition?
         this.content = ingredient;
     }
 

@@ -8,6 +8,8 @@ import java.util.Scanner;
 public class CNTParser {
 
     // Conversions under Non-metric Tabularization
+    // Extension: .cnt
+    // Yes. It's a backronym. Haha. Be glad I didn't make it ".cck" instead.
 
     public static Scanner getTableScanner() {
         try {

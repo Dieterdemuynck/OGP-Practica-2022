@@ -3,7 +3,7 @@ package main.java.ingredient;
 public class AlchemicIngredient {
 
     private final IngredientType ingredientType;
-    private State state;
+    private State state;  // TODO: why is this not final? Changing state would change quantity (unless with spoons ig)
     private final int quantity;
     private final Unit unit;
     private long temperature;
@@ -33,11 +33,6 @@ public class AlchemicIngredient {
 
     // voor transmogrifier -> standardState != currentState EN standardTemperature != currentTemperature
     public AlchemicIngredient(int quantity, Unit unit, long[] standardTemperature, String name, State standardState, State currentState, long[] currentTemperature){
-        /* TODO: rather than create a new ingredient type, shouldn't we pass an already existing one?
-         * Currently, for the transmogrifier, we need to create a new ingredient with a different state from its
-         * standard state. This will be wonky or messy if we pass two states instead.
-         * Please fix, so I can work on the transmogrifier. - パリピディーター
-         */
         this.ingredientType = new IngredientType(name, standardTemperature, standardState);
         this.quantity = quantity;
         this.unit = unit; // TODO Controle ofdat state en unit overeen komen DIETER =)
