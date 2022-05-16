@@ -1,8 +1,11 @@
 package main.java.ingredient;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.EnumSet;
+import java.util.Scanner;
 
-// TODO: Update this horrible mess to use the unit table (see json file) instead.
+// TODO: Update this horrible mess to use the unit table (see cnt file) instead.
 public enum Unit {
     // State-independent
     Spoon(1, true, null, "Spoon", "Spoons"),
@@ -160,4 +163,10 @@ public enum Unit {
 
         return smallestContainer;
     }
+
+    private static Scanner getTableScanner() throws FileNotFoundException {
+        return new Scanner(new File(String.valueOf(Unit.class.getResource("alchemyUnits.cnt"))));
+    }
+
+
 }
