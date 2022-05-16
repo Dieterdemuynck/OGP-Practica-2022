@@ -57,8 +57,31 @@ public class Laboratory {
     // containers? Why... Why containers? Why can we even store the same container multiple times?
     // Are we gonna store an ingredient object 5 times or something and suddenly have 5 times the previous amount out
     // of thin air?
-    public void store(AlchemicIngredient ingredient) {
 
+    private void store(AlchemicIngredient ingredient) {
+        int index = binarySearch(ingredient.getName(), 0, getStorage().size());
+        getStorage().add(index, ingredient);
     }
 
+    
+
+    private int binarySearch(String target, int first, int last) {
+        int mid = (first + last) / 2;
+        if (first > last) {
+            return first;
+        }
+        if (getStorage().size() == 0) {
+            return 0;
+        }
+        if (target.equals(getStorage().get(mid).getName())) {
+            return mid;
+        } else {
+            if (getStorage().get(mid).getName().compareTo(target) < 0) {
+                return binarySearch(target, mid+1,last);
+            }
+            else{
+                return binarySearch(target,first,mid-1);
+            }
+        }
+    }
 }
