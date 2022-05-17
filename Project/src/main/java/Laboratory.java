@@ -13,8 +13,14 @@ public class Laboratory {
     private ArrayList<AlchemicIngredient> storage;
     private ArrayList<Device> devices;
 
+    /* *********************************************************
+     * CONSTRUCTOR
+     * *********************************************************/
 
 
+    /* *********************************************************
+     * STOREROOM CAPACITY
+     * *********************************************************/
     public int getStoreroomCapacity() {
         return storeroomCapacity;
     }
@@ -23,29 +29,16 @@ public class Laboratory {
         this.storeroomCapacity = storeroomCapacity;
     }
 
+
+    /* *********************************************************
+     * STORAGE
+     * *********************************************************/
     public ArrayList<AlchemicIngredient> getStorage() {
         return storage;
     }
 
     public void setStorage(ArrayList<AlchemicIngredient> storage) {
         this.storage = storage;
-    }
-
-    public ArrayList<Device> getDevices() {
-        return devices;
-    }
-
-    public void setDevices(ArrayList<Device> devices) {
-        this.devices = devices;
-    }
-
-    public void addDevice(Device device) {
-        for (int i = 0; i == devices.size(); i++) {
-            if (devices.get(i) == device) {
-                break;
-            }
-        }
-        devices.add(device);
     }
 
    // public int getIndexofIngredient(AlchemicIngredient ingredient) {
@@ -92,5 +85,25 @@ public class Laboratory {
                 return binarySearch(target,first,mid-1);
             }
         }
+    }
+
+    /* *********************************************************
+     * DEVICES
+     * *********************************************************/
+    public ArrayList<Device> getDevices() {
+        return devices;
+    }
+
+    public void setDevices(ArrayList<Device> devices) {
+        this.devices = devices;
+    }
+
+    public void addDevice(Device device) {
+        for (int i = 0; i == devices.size(); i++) {
+            if (devices.get(i) == device) {
+                break;
+            }
+        }
+        devices.add(device);
     }
 }
