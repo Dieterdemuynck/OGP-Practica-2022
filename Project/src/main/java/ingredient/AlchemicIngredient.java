@@ -13,26 +13,8 @@ public class AlchemicIngredient {
     /* *********************************************************
      * CONSTRUCTORS
      * *********************************************************/
-
-    public AlchemicIngredient(int quantity, Unit unit, long[] standardTemperature, String name, State standardState){
-        this.ingredientType = new IngredientType(name, standardTemperature, standardState);
-        this.quantity = quantity;
-        this.unit = unit; // TODO Controle ofdat state en unit overeen komen DIETER =)
-        setTemperature(standardTemperature);
-        changeState(standardState);
-    }
-
-    // voor transmogrifier -> standardState != current state
-    public AlchemicIngredient(int quantity, Unit unit, long[] standardTemperature, String name, State standardState, State currentState){
-        this.ingredientType = new IngredientType(name, standardTemperature, standardState);
-        this.quantity = quantity;
-        this.unit = unit; // TODO Controle ofdat state en unit overeen komen DIETER =)
-        setTemperature(standardTemperature);
-        changeState(currentState);
-    }
-
-    // voor transmogrifier -> standardState != currentState EN standardTemperature != currentTemperature
-    public AlchemicIngredient(int quantity, Unit unit, long[] standardTemperature, String name, State standardState, State currentState, long[] currentTemperature){
+    // FOR IN TRANSMOGIFIER: CURRENT STATE AND TEMPERATURE
+    public AlchemicIngredient(int quantity, Unit unit, long[] standardTemperature, long[] currentTemperature, String name, State standardState, State currentState){
         this.ingredientType = new IngredientType(name, standardTemperature, standardState);
         this.quantity = quantity;
         this.unit = unit; // TODO Controle ofdat state en unit overeen komen DIETER =)
@@ -40,16 +22,27 @@ public class AlchemicIngredient {
         changeState(currentState);
     }
 
-    // Default unit: spoon
+    // FOR IN TRANSMOGIFIER: CURRENT STATE
+    public AlchemicIngredient(int quantity, Unit unit, long[] standardTemperature, String name, State standardState, State currentState){
+        this(quantity, unit, standardTemperature, standardTemperature, name, standardState, currentState);
+    }
+
+    // BASIC LONG CONSTRUCTOR
+    public AlchemicIngredient(int quantity, Unit unit, long[] standardTemperature, String name, State standardState){
+        this(quantity, unit, standardTemperature, standardTemperature, name, standardState, standardState);
+    }
+
+    // LONG CONSTRUCTOR WITHOUT UNIT - DEFAULT UNIT = SPOON
     public AlchemicIngredient(int quantity, long[] standardTemperature, String name, State standardState) {
         this(quantity, Unit.Spoon, standardTemperature, name, standardState);
     }
 
+    // BASIC SHORT CONSTRUCTOR
     public AlchemicIngredient(int quantity, Unit unit){
         this(quantity, unit, new long[] {0, 20}, "Water", State.Liquid);
     }
 
-    // Default unit: spoon
+    // SHORT CONSTRUCTOR WITHOUT UNIT - DEFAULT UNIT = SPOON
     public AlchemicIngredient(int quantity) {
         this(quantity, Unit.Spoon);
     }
