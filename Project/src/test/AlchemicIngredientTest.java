@@ -8,16 +8,10 @@ import static org.junit.Assert.assertEquals;
 
 public class AlchemicIngredientTest {
     AlchemicIngredient water;
-    AlchemicIngredient milk;
-    AlchemicIngredient lizardsTail;
 
     @Before
     public void setUpFixture() {
         water = new AlchemicIngredient(1);
-        long[] standardTemperatureMilk = {0, 4};
-        milk = new AlchemicIngredient(1, Unit.Bottle, standardTemperatureMilk, "Milk", State.Liquid);
-        long[] standardTemperatureLizardsTale = {0, 1};
-        lizardsTail = new AlchemicIngredient(1, Unit.Sack, standardTemperatureLizardsTale, "Lizard's Tail", State.Powder);
     }
 
     /* *********************************************************
@@ -1118,12 +1112,12 @@ public class AlchemicIngredientTest {
     @Test
     public void testHeat_temperatureBelowZero() {
         //Hiervoor gaan we er vanuit dat de cool-methode werkt, de testen volgen hieronder.
-        lizardsTail.cool(20);
-        assertEquals(19, lizardsTail.getTemperature()[0]);
-        assertEquals(0, lizardsTail.getTemperature()[1]);
-        lizardsTail.heat(100);
-        assertEquals(0, lizardsTail.getTemperature()[0]);
-        assertEquals(81, lizardsTail.getTemperature()[1]);
+        water.cool(30);
+        assertEquals(10, water.getTemperature()[0]);
+        assertEquals(0, water.getTemperature()[1]);
+        water.heat(100);
+        assertEquals(0, water.getTemperature()[0]);
+        assertEquals(90, water.getTemperature()[1]);
     }
 
     @Test
@@ -1143,7 +1137,7 @@ public class AlchemicIngredientTest {
     }
 
 
-    @Test //todo, das mss nie nuttig...
+    @Test //todo, dit mss nie nuttig...
     public void testCool_temperatureBelowZero() {
         //Hiervoor gaan we er vanuit dat de cool-methode werkt om de temperatuur naar nul te krijgen.
         water.cool(20);
