@@ -2,21 +2,22 @@ package main.java;
 
 import main.java.device.Device;
 import main.java.ingredient.AlchemicIngredient;
-import main.java.ingredient.IngredientContainer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Laboratory {
 
     private int storeroomCapacity;
     private ArrayList<AlchemicIngredient> storage;
     private ArrayList<Device> devices;
+    private RecipeBook recipeBook; //todo is dit nie ook nodig?
 
     /* *********************************************************
      * CONSTRUCTOR
      * *********************************************************/
-
+    public Laboratory(int storeroomCapacity){
+        setStoreroomCapacity(storeroomCapacity);
+    }
 
     /* *********************************************************
      * STOREROOM CAPACITY
@@ -105,5 +106,21 @@ public class Laboratory {
             }
         }
         devices.add(device);
+    }
+
+    /* *********************************************************
+     * RECIPE BOOK
+     * todo
+     * *********************************************************/
+    public void setRecipeBook(RecipeBook recipeBook){
+        this.recipeBook = recipeBook;
+    }
+
+    public RecipeBook getRecipeBook(){
+        return this.recipeBook;
+    }
+
+    public void execute(Recipe recipe, int factorIngredients){
+        recipe.execute(factorIngredients);
     }
 }
