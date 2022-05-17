@@ -53,23 +53,6 @@ public class AlchemicIngredientTest {
         assertEquals(State.Liquid, ingredient.getStandardState());
     }
 
-    /*
-    @Test
-    public void testConstructor_long_legalCase_nameWithBrackets() { //TODO DOESN'T WORK
-        long[] standardTemperatureIngredient = {0, 15};
-        AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Barrel, standardTemperatureIngredient,
-                "Something (Something)", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
-        assertEquals(Unit.Barrel, ingredient.getUnit());
-        assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
-        assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
-        assertEquals(standardTemperatureIngredient[0], ingredient.getStandardTemperature()[0]);
-        assertEquals(standardTemperatureIngredient[1], ingredient.getStandardTemperature()[1]);
-        assertEquals("Something (Something)", ingredient.getName());
-        assertEquals(State.Liquid, ingredient.getState());
-        assertEquals(State.Liquid, ingredient.getStandardState());
-    }*/
-
     @Test
     public void testConstructor_long_legalCase_nameWithApostrophe() {
         long[] standardTemperatureIngredient = {0, 15};
@@ -298,22 +281,6 @@ public class AlchemicIngredientTest {
         assertEquals(State.Powder, ingredient.getState());
         assertEquals(State.Liquid, ingredient.getStandardState());
     }
-/*
-    @Test
-    public void testConstructor_longWithCurrentState_legalCase_nameWithBrackets() { //TODO DOESN'T WORK
-        long[] standardTemperatureIngredient = {0, 15};
-        AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
-                "Something (Something)", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
-        assertEquals(Unit.Bottle, ingredient.getUnit());
-        assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
-        assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
-        assertEquals(standardTemperatureIngredient[0], ingredient.getStandardTemperature()[0]);
-        assertEquals(standardTemperatureIngredient[1], ingredient.getStandardTemperature()[1]);
-        assertEquals("Something (Something)", ingredient.getName());
-        assertEquals(State.Powder, ingredient.getState());
-        assertEquals(State.Liquid, ingredient.getStandardState());
-    }*/
 
     @Test
     public void testConstructor_longWithCurrentState_legalCase_nameWithApostrophe() {
@@ -546,23 +513,6 @@ public class AlchemicIngredientTest {
         assertEquals(State.Powder, ingredient.getState());
         assertEquals(State.Liquid, ingredient.getStandardState());
     }
-    /*
-    @Test
-    public void testConstructor_longWithCurrentStateAndCurrentTemperature_legalCase_nameWithBrackets() { //TODO DOESN'T WORK
-        long[] standardTemperatureIngredient = {0, 15};
-        long[] currentTemperatureIngredient = {0,0};
-        AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
-                currentTemperatureIngredient, "Something (Something)", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
-        assertEquals(Unit.Bottle, ingredient.getUnit());
-        assertEquals(currentTemperatureIngredient[0], ingredient.getTemperature()[0]);
-        assertEquals(currentTemperatureIngredient[1], ingredient.getTemperature()[1]);
-        assertEquals(standardTemperatureIngredient[0], ingredient.getStandardTemperature()[0]);
-        assertEquals(standardTemperatureIngredient[1], ingredient.getStandardTemperature()[1]);
-        assertEquals("Something (Something)", ingredient.getName());
-        assertEquals(State.Powder, ingredient.getState());
-        assertEquals(State.Liquid, ingredient.getStandardState());
-    }*/
 
     @Test
     public void testConstructor_longWithCurrentStateAndCurrentTemperature_legalCase_nameWithApostrophe() {
@@ -839,23 +789,6 @@ public class AlchemicIngredientTest {
         assertEquals(State.Liquid, ingredient.getState());
         assertEquals(State.Liquid, ingredient.getStandardState());
     }
-
-    /*
-    @Test
-    public void testConstructor_longWithoutUnit_legalCase_nameWithBrackets() { //TODO DOESN'T WORK
-        long[] standardTemperatureIngredient = {0, 15};
-        AlchemicIngredient ingredient = new AlchemicIngredient(15, standardTemperatureIngredient,
-                "Something (Something)", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
-        assertEquals(Unit.Spoon, ingredient.getUnit());
-        assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
-        assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
-        assertEquals(standardTemperatureIngredient[0], ingredient.getStandardTemperature()[0]);
-        assertEquals(standardTemperatureIngredient[1], ingredient.getStandardTemperature()[1]);
-        assertEquals("Something (Something)", ingredient.getName());
-        assertEquals(State.Liquid, ingredient.getState());
-        assertEquals(State.Liquid, ingredient.getStandardState());
-    }*/
 
     @Test
     public void testConstructor_longWithoutUnit_legalCase_nameWithApostrophe() {
