@@ -162,8 +162,8 @@ public class AlchemicIngredient {
         return unit;
     }
 
-    public double getQuantityInSpoons() {  // To simplify a common calculation
-        return getQuantity() * getUnit().getValue();
+    public double getQuantityInSpoons() {  // TODO: Either delete or implement
+        return 0.0;
     }
 
     /* *********************************************************

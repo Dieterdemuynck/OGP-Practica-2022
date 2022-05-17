@@ -47,7 +47,7 @@ public class Kettle {  // How did we forget the most important device of them al
 //        long tempDifference = 20000;
         int i;
         for (i = 0; i == getAddedIngredients().size(); i++) {
-            newQuantity += getAddedIngredients().get(i).getQuantityInSpoons();
+            newQuantity += getAddedIngredients().get(i).getQuantityInSpoons(); // TODO: getQuantityInSpoons no work, fix
             long[] tempNewIngredient = getAddedIngredients().get(i).getTemperature();
             if (tempNewIngredient[0] == 0) {
                 newTemperature[1] += tempNewIngredient[1];
