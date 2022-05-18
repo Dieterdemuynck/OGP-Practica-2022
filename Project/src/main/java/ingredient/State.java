@@ -223,6 +223,10 @@ public enum State {
         return findSmallestFittingContainer(0, getSmallestUnit()) != null;
     }
 
+    public boolean hasUnit(Unit unit) {
+        return this.contains(unit);
+    }
+
 
     /* *********************************************************\
      * CONVERSION METHODS
@@ -230,6 +234,10 @@ public enum State {
 
     public Quantity convertTo(int amount, Unit originUnit, State targetState) {
         return targetState.findLargestFit(targetState.fromSpoons(this.inSpoons(amount, originUnit)), Unit.Spoon);
+    }
+
+    public Quantity convertTo(AlchemicIngredient ingredient, State state) {
+        return convertTo(ingredient.getQuantity(), ingredient.getUnit(), state);
     }
 
     /**

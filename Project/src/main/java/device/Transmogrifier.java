@@ -1,6 +1,7 @@
 package main.java.device;
 
 import main.java.ingredient.AlchemicIngredient;
+import main.java.ingredient.Quantity;
 import main.java.ingredient.State;
 import main.java.ingredient.Unit;
 
@@ -27,8 +28,14 @@ public class Transmogrifier extends Device {
     /* *********************************************************
      * ACTIVATE
      * *********************************************************/
-    public void activate() {// TODO pls dubbelchecken
-        AlchemicIngredient newIngredient = new AlchemicIngredient((int) Math.round(getIngredient().getQuantityInSpoons()), Unit.Spoon, getIngredient().getStandardTemperature(), getIngredient().getTemperature(), getIngredient().getName(), getIngredient().getStandardState(),resultingState);
-        setIngredient(newIngredient);
+    public void activate() {
+        if(getIngredient().getState() != getState()) {
+            // TODO: transfer SpecialName to new Ingredient
+            // This is part of the reason why I wish I could just pass an ingredient type.
+            Quantity quantity = getIngredient().getState().convertTo(getIngredient(), getState());
+            setIngredient(new AlchemicIngredient(quantity.getAmount(), quantity.getUnit(),
+                    getIngredient().getStandardTemperature(), getIngredient().getTemperature(),
+                    getIngredient().getName(), getIngredient().getStandardState(), getState()));
+        }
     }
 }

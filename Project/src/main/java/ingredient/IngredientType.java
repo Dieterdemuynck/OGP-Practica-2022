@@ -46,6 +46,14 @@ public class IngredientType {
         return false;
     }
 
+    /* *********************************************************
+     * SPECIAL NAME
+     * *********************************************************/
+
+    public void setSpecialName(String specialName) {
+        throw new NonMixedSpecialNameException(this);
+    }
+
     public String getSpecialName(){
         return null;
     }

@@ -16,7 +16,7 @@ public class AlchemicIngredient {
     /**
      * Variable referencing the state of this alchemical ingredient
      */
-    final private State state;  // TODO: why is this not final? Changing state would change quantity (unless with spoons ig) ma alst me spoons is, ist dan fout om een nieuw AlchemicIngredient aan te maken
+    private final State state;
     /**
      * Variable registering the quantity of this alchemical ingredient
      */
@@ -79,7 +79,12 @@ public class AlchemicIngredient {
                               State standardState, State currentState) {
         this.ingredientType = new IngredientType(name, standardTemperature, standardState);
         this.quantity = quantity;
-        this.unit = unit; // TODO Controle ofdat state en unit overeen komen DIETER =)
+
+        // Only if the given unit is representative of a quantity in the given state
+        // can we allow an ingredient to be made
+        if (!currentState.hasUnit(unit))
+            throw new IllegalArgumentException();
+        this.unit = unit;
         setTemperature(currentTemperature);
         this.state = currentState;
     }
@@ -109,8 +114,8 @@ public class AlchemicIngredient {
      *          | this(quantity, unit, standardTemperature, standardTemperature, name, standardState, currentState)
      */
     @Raw
-    public AlchemicIngredient(int quantity, Unit unit, long[] standardTemperature, String name, State standardState,
-                              State currentState) {
+    public AlchemicIngredient(int quantity, Unit unit, long[] standardTemperature,
+                              String name, State standardState, State currentState) {
         this(quantity, unit, standardTemperature, standardTemperature, name, standardState, currentState);
     }
 
@@ -387,14 +392,6 @@ public class AlchemicIngredient {
         return unit != null;
     }
 
-    /**
-     *
-     * @return
-     */
-    public double getQuantityInSpoons() {  // TODO: Either delete or implement
-        return 0.0;
-    }
-
     /* *********************************************************
      * TEMPERATURE
      * TOTAAL
@@ -466,4 +463,5 @@ public class AlchemicIngredient {
         }
     }
 
+    // TODO: getName, getSpecialName, setSpecialName, etc.
 }

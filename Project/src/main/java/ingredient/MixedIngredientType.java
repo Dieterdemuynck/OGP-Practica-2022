@@ -27,6 +27,7 @@ public class MixedIngredientType extends IngredientType{
     /* *********************************************************
      * SPECIAL NAME
      * *********************************************************/
+    @Override
     public void setSpecialName(String specialName){
         if (! isValidSpecialName(specialName)) {
             throw new IllegalNameException(specialName);
