@@ -1,6 +1,8 @@
 package main.java.device;
 
+import main.java.ingredient.AlchemicIngredient;
 import main.java.ingredient.State;
+import main.java.ingredient.Unit;
 
 public class Transmogrifier extends Device {
 
@@ -25,7 +27,8 @@ public class Transmogrifier extends Device {
     /* *********************************************************
      * ACTIVATE
      * *********************************************************/
-    public void activate() {
-        getIngredient().changeState(resultingState); // TODO unit enzo verandert DIETER =)
+    public void activate() {// TODO pls dubbelchecken
+        AlchemicIngredient newIngredient = new AlchemicIngredient((int) Math.round(getIngredient().getQuantityInSpoons()), Unit.Spoon, getIngredient().getStandardTemperature(), getIngredient().getTemperature(), getIngredient().getName(), getIngredient().getStandardState(),resultingState);
+        setIngredient(newIngredient);
     }
 }

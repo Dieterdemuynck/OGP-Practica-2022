@@ -5,9 +5,6 @@ import main.java.ingredient.State;
 import main.java.ingredient.Unit;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class Kettle {  // How did we forget the most important device of them all? I don't have a good feeling about this.
 
@@ -36,7 +33,7 @@ public class Kettle {  // How did we forget the most important device of them al
 
 
     /* *********************************************************
-     * ACTIVATE TODO
+     * ACTIVATE TODO: the right name
      * *********************************************************/
     public void activate() {
         int newQuantity = 0;
