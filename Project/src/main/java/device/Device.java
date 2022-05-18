@@ -1,5 +1,6 @@
 package main.java.device;
 
+import be.kuleuven.cs.som.annotate.Basic;
 import main.java.ingredient.AlchemicIngredient;
 import main.java.ingredient.IngredientContainer;
 import main.java.ingredient.IngredientNotEmptyException;
@@ -66,23 +67,20 @@ public abstract class Device {
     }
 
     /* *********************************************************
-     * ID - Wat is hiervan het nut?
-     * TODO: Remove and create something else idk.
-     *  We still gotta be able to check if a device type is present in a lab. Abstract "getType()" with nested enum?
+     * DEVICE TYPE
      * *********************************************************/
 
-    public int getID() {
-        return ID;
+    public enum DeviceType{
+        CoolingBox, Oven, Kettle, Transmogrifier
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
-    }
+    public abstract DeviceType getDeviceType();
 
     /* *********************************************************
      * LABORATORY
      * *********************************************************/
 
+    @Basic
     public Laboratory getLaboratory() {
         return laboratory;
     }
@@ -91,5 +89,11 @@ public abstract class Device {
         // TODO: Do we allow ingredients to move between laboratories through devices?
         this.laboratory = laboratory;
     }
+
+    /* *********************************************************
+     * METHODS
+     * *********************************************************/
+
+    public abstract void activate();
 
 }

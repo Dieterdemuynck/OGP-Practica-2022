@@ -2,8 +2,6 @@ package main.java.ingredient;
 
 import be.kuleuven.cs.som.annotate.*;
 
-
-//TODO: iemand die dit kan nakijken of dit goed genoeg is? Want ken nie zo veel van exceptions =)
 /**
  *
  *
@@ -15,7 +13,7 @@ public class NonMixedSpecialNameException extends RuntimeException {
     /**
      *
      */
-    private static final long serialVersionUID = 3L;
+    private static final long serialVersionUID = 3L;  // I still have no idea what this is
     private final IngredientType ingredientType;
 
     /* *********************************************************

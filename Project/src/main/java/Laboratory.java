@@ -1,112 +1,148 @@
 package main.java;
 
 import main.java.device.Device;
+import main.java.device.DeviceTypeAlreadyPresentInLaboratoryException;
 import main.java.ingredient.AlchemicIngredient;
+import main.java.ingredient.IngredientContainer;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Laboratory {
 
     private int storeroomCapacity;
-    private ArrayList<AlchemicIngredient> storage;
-    private ArrayList<Device> devices;
+    private Map<String, AlchemicIngredient> storage = new HashMap<>();
+    private Map<Device.DeviceType, Device> devices = new HashMap<>();  // Downside: allows null keys
 
-    /* *********************************************************
+    /* *********************************************************\
      * CONSTRUCTOR
-     * *********************************************************/
+    \* *********************************************************/
     public Laboratory(int storeroomCapacity){
         setStoreroomCapacity(storeroomCapacity);
     }
 
-    /* *********************************************************
+    /* *********************************************************\
      * STOREROOM CAPACITY
-     * *********************************************************/
+    \* *********************************************************/
+
     public int getStoreroomCapacity() {
         return storeroomCapacity;
     }
 
     public void setStoreroomCapacity(int storeroomCapacity) {
+        if (storeroomCapacity < 0)
+            throw new IllegalArgumentException(
+                    "laboratory storeroom capacity (" + storeroomCapacity + ") must be non negative.");
+        // TODO: what if current ingredient storage exceeds newly set capacity?
+        //  Should we make storeroom capacity final?
         this.storeroomCapacity = storeroomCapacity;
     }
 
 
-    /* *********************************************************
+    /* *********************************************************\
      * STORAGE
-     * *********************************************************/
-    public ArrayList<AlchemicIngredient> getStorage() {
+    \* *********************************************************/
+    public Map<String, AlchemicIngredient> getStorage() {
+        // TODO: should we really allow this mutable field's getter to be public?
         return storage;
     }
 
-    public void setStorage(ArrayList<AlchemicIngredient> storage) {
+    public void setStorage(Map<String, AlchemicIngredient> storage) {
+        // TODO: should we really allow a set method?
         this.storage = storage;
     }
 
-   // public int getIndexofIngredient(AlchemicIngredient ingredient) {
-        //int index = storage.size()/2;
-        //storage.get(index)
+    /**
+     *
+     * @pre     container is not null
+     * @pre     ingredient inside container is not null
+     * @param container
+     */
+    public void store(IngredientContainer container) {
+        store(container.getContent());
+    }
 
-    //}
-
-    //Hier moet er nog rekening worden gehouden met het feit dat verschillende containers verschillend zijn
-    // Dimme here: Instead of storing alchemical ingredients, or even just ingredient types, we're storing entire
-    // containers? Why... Why containers? Why can we even store the same container multiple times?
-    // Are we gonna store an ingredient object 5 times or something and suddenly have 5 times the previous amount out
-    // of thin air?
-
-    /*
-    TODO DIT IS NIET AFGEWERKT EN ZORGT VOOR PROBLEMEN BIJ TESTS ALS NIET IN COMMENTAAR STAAT
+    /**
+     *
+     * @pre     ingredient is not null
+     * @param ingredient
+     */
     private void store(AlchemicIngredient ingredient) {
-        int index = binarySearch(ingredient.getName(), 0, getStorage().size());
-        if (getStorage().get(index) == ingredient) {
-            ingredient.
-        }
+        if (getStorage().get(ingredient.getName()) == null)
+            getStorage().put(ingredient.getName(), ingredient);
         else {
-            getStorage().add(index, ingredient);
-        }
-    }*/
-
-
-
-    private int binarySearch(String target, int first, int last) {
-        int mid = (first + last) / 2;
-        if (first > last) {
-            return first;
-        }
-        if (getStorage().size() == 0) {
-            return 0;
-        }
-        if (target.equals(getStorage().get(mid).getName())) {
-            return mid;
-        } else {
-            if (getStorage().get(mid).getName().compareTo(target) < 0) {
-                return binarySearch(target, mid+1,last);
-            }
-            else{
-                return binarySearch(target,first,mid-1);
-            }
+            // TODO: Mix
         }
     }
 
-    /* *********************************************************
+
+
+    // TODO: either delete or reuse this binary search
+//    private int binarySearch(String target, int first, int last) {
+//        int mid = (first + last) / 2;
+//        if (first > last) {
+//            return first;
+//        }
+//        if (getStorage().size() == 0) {
+//            return 0;
+//        }
+//        if (target.equals(getStorage().get(mid).getName())) {
+//            return mid;
+//        } else {
+//            if (getStorage().get(mid).getName().compareTo(target) < 0) {
+//                return binarySearch(target, mid+1,last);
+//            }
+//            else{
+//                return binarySearch(target,first,mid-1);
+//            }
+//        }
+//    }
+
+    /* *********************************************************\
      * DEVICES
-     * *********************************************************/
-    public ArrayList<Device> getDevices() {
+    \* *********************************************************/
+
+    private Map<Device.DeviceType, Device> getDevices() {
         return devices;
     }
 
-    public void setDevices(ArrayList<Device> devices) {
+    public void setDevices(Map<Device.DeviceType, Device> devices) {
+        // Do we even need this function?
         this.devices = devices;
     }
 
-    public void addDevice(Device device) {
-        for (int i = 0; i == devices.size(); i++) {
-            if (devices.get(i) == device) {
-                break;
-            }
+    // TODO: Specification
+    public void addDevice(Device device) throws DeviceTypeAlreadyPresentInLaboratoryException {
+        if (device.getLaboratory() != null) {
+            throw new IllegalArgumentException(
+                    "Device to be added to laboratory may not already be linked to a Laboratory.");
         }
-        devices.add(device);
+        if (devices.get(device.getDeviceType()) != null) {
+            throw new DeviceTypeAlreadyPresentInLaboratoryException(device.getDeviceType(), this);
+        }
+        getDevices().put(device.getDeviceType(), device);
+    }
+
+    /* *********************************************************\
+     * DEVICE METHODS
+     * TODO: Add method bodies + Additional arguments.
+     *  Add "storeInDevice" methods, perhaps?
+     *  Perhaps a better idea: no arguments -> device.activate ; some arguments -> enter ingredient and activate
+    \* *********************************************************/
+
+    public void mix() {
+
+    }
+
+    public void cool() {
+
+    }
+
+    public void heat() {
+
+    }
+
+    public void transmogrify() {
+
     }
 
     /* *********************************************************\
@@ -115,6 +151,7 @@ public class Laboratory {
 
     public void execute(Recipe recipe, int factorIngredients){ // Todo: staat in commentaar, implementatie moet nog gebeuren maar daarvoor moet rest eerst af zijn =(
         // IDEE: elke if-clause schrijven als een aparte functie, want je moet op einde ook nog eens mixen...
+        // Dimme here: even better idea: combine that idea with the use switch statements instead of 100 if-clauses.
 
         List<AlchemicIngredient> ingredientsRecipe = new LinkedList<>();
         List<AlchemicIngredient> ingredientList = recipe.getIngredientsList();
@@ -123,6 +160,9 @@ public class Laboratory {
         int indexIngredients = 0;
         while (indexIngredients < ingredientList.size() && indexOperations < operationList.size()){
             Operation operation = operationList.get(indexOperations);
+
+            // TODO: use switch instead. Remember to add "break" to each end!
+            //  https://www.w3schools.com/java/java_switch.asp
             if (operation == Operation.Add){
                 // Zoeken naar ingr = ingredientList.get(indexIngredients).getName()
                 // Controleren dat ingr.getCapacity() => ingredientList.get(indexIngredients).getCapacity() * factorIngredients
@@ -154,7 +194,7 @@ public class Laboratory {
 
                 // kettle niet aanwezig -> break
             }
-            else {break; } // is dit nodig?
+            else {break; } // TODO: not needed, pls delete :)
             indexOperations +=1;
         }
         // mix nog eens alles volgens mixdinges

@@ -1021,13 +1021,14 @@ public class AlchemicIngredientTest {
 
     /* *********************************************************
      * CHANGE STATE TESTS - for Transmogrifier
+     * TODO: Delete or change to use Transmogrifier
      * *********************************************************/
-    @Test
-    public void testChangeState() {
-        assertEquals(State.Liquid, water.getState());
-        water.changeState(State.Powder);
-        assertEquals(State.Powder, water.getState());
-    }
+//    @Test
+//    public void testChangeState() {
+//        assertEquals(State.Liquid, water.getState());
+//        water.changeState(State.Powder);
+//        assertEquals(State.Powder, water.getState());
+//    }
 
     /* *********************************************************
      * TEMPERATURE TESTS - for Coolbox en Oven

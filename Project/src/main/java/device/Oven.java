@@ -7,6 +7,15 @@ public class Oven extends Device {  // why do they call it oven when you of in t
     private long temperature;
 
     /* *********************************************************
+     * DEVICE TYPE
+     * *********************************************************/
+
+    @Override
+    public DeviceType getDeviceType() {
+        return DeviceType.Oven;
+    }
+
+    /* *********************************************************
      * CONSTRUCTOR TODO
      * *********************************************************/
 

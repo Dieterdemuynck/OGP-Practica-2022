@@ -6,12 +6,21 @@ import main.java.ingredient.Unit;
 
 import java.util.ArrayList;
 
-public class Kettle {  // How did we forget the most important device of them all? I don't have a good feeling about this.
+public class Kettle extends Device {  // How did we forget the most important device of them all? I don't have a good feeling about this.
 
     private ArrayList<AlchemicIngredient> addedIngredients;
 
     public ArrayList<AlchemicIngredient> getAddedIngredients() {
         return addedIngredients;
+    }
+
+    /* *********************************************************
+     * DEVICE TYPE
+     * *********************************************************/
+
+    @Override
+    public Device.DeviceType getDeviceType() {
+        return DeviceType.Kettle;
     }
 
     /* *********************************************************
@@ -33,8 +42,10 @@ public class Kettle {  // How did we forget the most important device of them al
 
 
     /* *********************************************************
-     * ACTIVATE TODO: the right name
+     * ACTIVATE
      * *********************************************************/
+    // TODO:
+    //  Mate, start encapsulating more. Please.
     public void activate() {
         int newQuantity = 0;
         long[] newTemperature = {0,0};
@@ -44,7 +55,8 @@ public class Kettle {  // How did we forget the most important device of them al
         long tempDifference = 20000;
         int i;
         for (i = 0; i == getAddedIngredients().size(); i++) {
-            newQuantity += getAddedIngredients().get(i).getQuantityInSpoons(); // TODO: getQuantityInSpoons no work, fix
+            // TODO: getQuantityInSpoons no longer exists, fix
+            // newQuantity += getAddedIngredients().get(i).getQuantityInSpoons();
             long[] tempNewIngredient = getAddedIngredients().get(i).getTemperature();
             if (tempNewIngredient[0] == 0) {
                 newTemperature[1] += tempNewIngredient[1];}
@@ -61,8 +73,9 @@ public class Kettle {  // How did we forget the most important device of them al
                 }
             }
         }
-        newTemperature[0] /= newQuantity;
-        newTemperature[1] /= newQuantity;
+        // TODO: was division by zero. after fix, please uncomment, thx :)
+        // newTemperature[0] /= newQuantity;
+        // newTemperature[1] /= newQuantity;
         if (newTemperature[0] < newTemperature[1]) {newTemperature[1] -= newTemperature[0]; newTemperature[0] = 0;}
 
         else if (newTemperature[1] < newTemperature[0]) {newTemperature[0] -= newTemperature[1]; newTemperature[1] = 0;}

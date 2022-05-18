@@ -15,7 +15,9 @@ public class LaboratoryTest {
     public void constructorTest(){
         Laboratory laboratory = new Laboratory(10);
         assertEquals(10, laboratory.getStoreroomCapacity());
-        assertNull(laboratory.getStorage());
-        assertNull(laboratory.getDevices());
+        // TODO: I think it's obvious that you should also instantiate ingredient and device storage on laboratory
+        //  instantiation... Why the "assertNull(...)"?
+        // assertNull(laboratory.getStorage());
+        // assertNull(laboratory.getDevices());
     }
 }
