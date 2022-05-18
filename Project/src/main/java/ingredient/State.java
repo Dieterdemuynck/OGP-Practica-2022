@@ -61,6 +61,12 @@ public enum State {
      *          | units != null
      * @pre     value array is not null
      *          | values != null
+     * @pre     There is a Spoon unit in the units array
+     *          | TODO: formal specification
+     * @pre     There is a Storeroom unit in the units array
+     *          | TODO: formal specification
+     * @pre     The value of a Storeroom must be 6300 times the value of a Spoon
+     *          | TODO: formal specification
      * @pre     the first value must be 1
      *          | values[0] == 1
      * @pre     the value for Unit.Storeroom must eventually result in 6300 times the value for Unit.Spoon
