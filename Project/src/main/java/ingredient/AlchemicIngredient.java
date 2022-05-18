@@ -207,8 +207,7 @@ public class AlchemicIngredient {
      * *********************************************************/
 
     /**
-     *
-     * @return
+     * Returns the ingredient type of this alchemical ingredient.
      */
     public IngredientType getIngredientType() {
         return ingredientType;
@@ -220,52 +219,59 @@ public class AlchemicIngredient {
      * ***************************/
 
     /**
-     *
-     * @return
+     * Returns the name of this alchemical ingredient. The name is part of the ingredient type.
+     * @return  The name of the alchemical ingredient.
+     *          | ingredientType.getName()
      */
     public String getName() {
         return ingredientType.getName();
     }
 
     /**
+     * Returns the full name of this alchemical ingredient.
      *
-     * @return
+     * @return  If this is a mixed ingredient with a special name, the special name is returned preceded with a '(', the
+     *          pre name, the name, the post name and a ')', otherwise the pre name is returned preceded with the name
+     *          and the post name.
+     *          | if (!ingredientType.isMixedIngredient() || !ingredientType.hasSpecialName())
+     *          | then result.equals( getPreName() + ingredientType.getName() + getPostName())
+     *          | else result.equals(getSpecialName() + " (" + getPreName() + getName() + getPostName() + ")")
      */
     public String getFullName() {
         String pre = getPreName();
         String post = getPostName();
-        if (!ingredientType.isMixedIngredient()) {
+        if (!ingredientType.isMixedIngredient() || !ingredientType.hasSpecialName()) {
             return pre + ingredientType.getName() + post;
         } else {
-            if (ingredientType.hasSpecialName()) {
-                return getSpecialName() + " (" + pre + getName() + post + ")";
-            } else {
-                return pre + ingredientType.getName() + post;
-            }
+            return getSpecialName() + " (" + pre + getName() + post + ")";
         }
     }
 
     /**
+     * Returns the pre name.
      *
-     * @return
+     * @return  If the alchemical ingredient is cooled then "Cooled" is returned, otherwise is the alchemical ingredient
+     *          is heated then "Heated" is returned
+     *          | if (temperature < standardTemperature)
+     *          | then result.equals("Cooled")
+     *          | else result.equals("Heated")
      */
     private String getPreName() { // to simplify expansion
         // TODO: could be saved as a field and changed when the respective property has changed [OPTIONAL]
         // If we decide not to do this, change to regular comment and remove the optional tag ^
         String pre = "";
-        long temp = asLong(this.getTemperature());
+        long temperature = asLong(this.getTemperature());
         long standardTemperature = asLong(this.getStandardTemperature());
-        if (temp < standardTemperature) {
+        if (temperature < standardTemperature) {
             pre += "Cooled ";
-        } else if (temp > standardTemperature) {  // Who's the silly goose who forgot that temperatures could be equal? INE =) ma kheb er nu aan gedacht en kgingt aanpassen =)
+        } else if (temperature > standardTemperature) {  // Who's the silly goose who forgot that temperatures could be equal? INE =) ma kheb er nu aan gedacht en kgingt aanpassen =)
             pre += "Heated ";
         }
         return pre;
     }
 
     /**
-     *
-     * @return
+     * Returns the post name. Right now this is always an empty string.
      */
     private String getPostName() { // to simplify expansion
         String post = "";
@@ -273,9 +279,9 @@ public class AlchemicIngredient {
     }
 
     /**
-     *
-     * @param temperature
-     * @return
+     * Returns the temperature as a long integer.
+     * @param   temperature
+     *          The temperature as an array.
      */
     private static long asLong(long[] temperature) {
         if (temperature[0] != 0) {
@@ -286,12 +292,14 @@ public class AlchemicIngredient {
     }
 
     /**
-     *
-     * @return
+     * Returns the special name of a mixed alchemic ingredient.
+     * @return  if the alchemical ingredient is mixed returns the special name.
+     *          | if (ingredientType.isMixedIngredient())
+     *          | result.equals(ingredientType.getSpecialName())
      */
     public String getSpecialName() {
         if (ingredientType.isMixedIngredient()) {
-            return this.getSpecialName();
+            return ingredientType.getSpecialName();
         } else {
             return null;
         }

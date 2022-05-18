@@ -34,12 +34,13 @@ public class MixedIngredientType extends IngredientType{
         this.specialName = specialName;
     }
 
-    public static boolean isValidSpecialName(String specialName){
-        return true; //TODO DIETER =)
-    }
-
+    @Override
     public String getSpecialName(){
         return this.specialName;
+    }
+
+    public static boolean isValidSpecialName(String specialName){
+        return true; //TODO DIETER =)
     }
     @Override
     public boolean hasSpecialName(){

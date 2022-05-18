@@ -46,6 +46,10 @@ public class IngredientType {
         return false;
     }
 
+    public String getSpecialName(){
+        return null;
+    }
+
     /* *********************************************************
      * TEMPERATURE
      * TOTAAL
