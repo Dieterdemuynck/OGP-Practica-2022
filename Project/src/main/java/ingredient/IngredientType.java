@@ -14,16 +14,19 @@ public class IngredientType {
             throw new IllegalNameException(name);
         }
         this.name = name;
-        if (!isValidStandardTemperature(standardTemperature)) {
-            throw new IllegalTemperatureException(standardTemperature);
+        if (!isValidStandardTemperature(standardTemperature)) { //MOET TOTAAL ZIJN, dus geen exceptions
+            this.standardTemperature = 20;
         }
-        this.standardTemperature = standardTemperature[1];
+        else {
+            this.standardTemperature = standardTemperature[1];
+        }
         this.standardState = standardState;
     }
 
 
     /* *********************************************************
      * NAME
+     * DEFENSIEF
      * *********************************************************/
     public String getName() {
         return name;
@@ -45,6 +48,7 @@ public class IngredientType {
 
     /* *********************************************************
      * TEMPERATURE
+     * TOTAAL
      * *********************************************************/
 
     public long[] getStandardTemperature() {
@@ -65,6 +69,7 @@ public class IngredientType {
 
     /* *********************************************************
      * STANDARD STATE
+     * ?
      * *********************************************************/
 
     public State getStandardState() {
@@ -72,6 +77,7 @@ public class IngredientType {
     }
     /* *********************************************************
      * OTHER
+     * ?
      * *********************************************************/
     public boolean isMixedIngredient() {
         return false;
