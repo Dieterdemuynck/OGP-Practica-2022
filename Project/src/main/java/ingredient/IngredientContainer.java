@@ -16,7 +16,7 @@ public class IngredientContainer {
     /**
      *
      * @pre     There is at least one container unit which can fit all the given ingredient.
-     *          | TODO: formal specification
+     *          | ingredient.getState().hasContainer()
      * @param   ingredient
      */
     public IngredientContainer(AlchemicIngredient ingredient) {

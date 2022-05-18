@@ -12,7 +12,6 @@ public class Laboratory {
     private int storeroomCapacity;
     private ArrayList<AlchemicIngredient> storage;
     private ArrayList<Device> devices;
-    private RecipeBook recipeBook; //todo is dit nie ook nodig?
 
     /* *********************************************************
      * CONSTRUCTOR
@@ -110,17 +109,9 @@ public class Laboratory {
         devices.add(device);
     }
 
-    /* *********************************************************
-     * RECIPE BOOK
-     * todo
-     * *********************************************************/
-    public void setRecipeBook(RecipeBook recipeBook){
-        this.recipeBook = recipeBook;
-    }
-
-    public RecipeBook getRecipeBook(){
-        return this.recipeBook;
-    }
+    /* *********************************************************\
+     * RECIPE
+    \* *********************************************************/
 
     public void execute(Recipe recipe, int factorIngredients){ // Todo: staat in commentaar, implementatie moet nog gebeuren maar daarvoor moet rest eerst af zijn =(
         // IDEE: elke if-clause schrijven als een aparte functie, want je moet op einde ook nog eens mixen...
