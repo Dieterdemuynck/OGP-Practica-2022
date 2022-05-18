@@ -17,6 +17,5 @@ public class LaboratoryTest {
         assertEquals(10, laboratory.getStoreroomCapacity());
         assertNull(laboratory.getStorage());
         assertNull(laboratory.getDevices());
-        assertNull(laboratory.getRecipeBook());
     }
 }

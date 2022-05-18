@@ -1,11 +1,5 @@
 package main.java.ingredient;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
-import java.util.*;
-
-// TODO: Update this horrible mess to use the unit table (see cnt file) instead.
 public enum Unit {
     // State-independent
     Spoon(true),
@@ -28,9 +22,9 @@ public enum Unit {
     Chest(true),
     ;
 
-    // TODO: Delete all of the fields and getters etc.
-    // Properties
-    private final boolean canBeContainer;
+    /* *********************************************************
+     * CONSTRUCTOR
+     * *********************************************************/
 
     Unit(boolean canBeContainer) {
         this.canBeContainer = canBeContainer;
@@ -39,6 +33,9 @@ public enum Unit {
     /* *********************************************************
      * CONTAINER
      * *********************************************************/
+
+    private final boolean canBeContainer;
+
     public boolean canBeContainer() {
         return canBeContainer;
     }
