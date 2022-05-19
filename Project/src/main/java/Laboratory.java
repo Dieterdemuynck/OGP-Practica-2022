@@ -1,6 +1,7 @@
 package main.java;
 
 import main.java.device.Device;
+import main.java.device.exception.DeviceTypeAlreadyPresentInLaboratoryException;
 import main.java.ingredient.AlchemicIngredient;
 import main.java.ingredient.IngredientContainer;
 
@@ -110,7 +111,7 @@ public class Laboratory {
     }
 
     /**
-     * 
+     *
      * @param device
      */
     public void addDevice(Device device) {

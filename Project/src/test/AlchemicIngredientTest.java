@@ -1,6 +1,7 @@
 package test;
 
 import main.java.ingredient.*;
+import main.java.ingredient.exception.IllegalNameException;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,5 +1,7 @@
 package main.java.ingredient;
 
+import main.java.ingredient.exception.IllegalNameException;
+
 import java.util.ArrayList;
 import java.util.List;
 

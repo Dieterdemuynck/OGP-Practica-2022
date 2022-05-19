@@ -3,7 +3,7 @@ package main.java.device;
 import be.kuleuven.cs.som.annotate.Basic;
 import main.java.ingredient.AlchemicIngredient;
 import main.java.ingredient.IngredientContainer;
-import main.java.ingredient.IngredientNotEmptyException;
+import main.java.device.exception.DeviceNotEmptyException;
 import main.java.Laboratory;
 
 public abstract class Device {
@@ -24,7 +24,7 @@ public abstract class Device {
 
     public void setIngredient(AlchemicIngredient ingredient) {
         if (!isEmptyDevice() && ingredient != null){
-            throw new IngredientNotEmptyException(this.ingredient, ingredient);
+            throw new DeviceNotEmptyException(this.ingredient, ingredient);
         }
         this.ingredient = ingredient;
     }

@@ -2,6 +2,8 @@ package main.java.ingredient;
 
 import be.kuleuven.cs.som.annotate.Model;
 import be.kuleuven.cs.som.annotate.Raw;
+import main.java.ingredient.exception.IllegalNameException;
+import main.java.ingredient.exception.NonMixedSpecialNameException;
 
 /**
  * A class of alchemical ingredients
@@ -323,11 +325,11 @@ public class AlchemicIngredient {
      * Set the special name of the (mixed) alchemical ingredient.
      * @param   specialName
      *          the special name of this (mixed) alchemical ingredient.
-     * @throws  NonMixedSpecialNameException(this.ingredientType)
+     * @throws NonMixedSpecialNameException(this.ingredientType)
      *          The alchemical ingredient is not a mixed ingredient
      *          | !ingredientType.isMixedIngredient()
      */
-    public void setSpecialName(String specialName) throws NonMixedSpecialNameException, IllegalNameException{
+    public void setSpecialName(String specialName) throws NonMixedSpecialNameException, IllegalNameException {
         if (!ingredientType.isMixedIngredient()){
             throw new NonMixedSpecialNameException(ingredientType);
         }

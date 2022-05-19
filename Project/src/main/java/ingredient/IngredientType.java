@@ -1,5 +1,8 @@
 package main.java.ingredient;
 
+import main.java.ingredient.exception.IllegalNameException;
+import main.java.ingredient.exception.NonMixedSpecialNameException;
+
 /**
  * A class of ingredient types, can only be summoned by alchemicIngredient
  * @author Dieter Demuynck, Hannes Ingelaere and Ine Malfait
@@ -98,7 +101,7 @@ public class IngredientType {
      * Doesn't set the special name to the given special name, because ingredient type is not mixed
      * @param   specialName
      *          The special name
-     * @throws  NonMixedSpecialNameException(this)
+     * @throws NonMixedSpecialNameException(this)
      *          The ingredient type is not a mixed one.
      */
     public void setSpecialName(String specialName) {
