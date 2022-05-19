@@ -85,9 +85,12 @@ public class CoolingBox extends Device {
      * Lowers the temperature of the ingredient in the coolbox to the temperature the coolbox has been set to.
      */
     public void activate() {
-        long[] tempIngredient = getIngredient().getTemperature();
-        long longTempIngredient = asLong(tempIngredient);
-        getIngredient().cool(Math.max(0, longTempIngredient-getTemperatureAsLong()));
+        // A device may only be activated if it is in a laboratory
+        if (getLaboratory() != null) {
+            long[] tempIngredient = getIngredient().getTemperature();
+            long longTempIngredient = asLong(tempIngredient);
+            getIngredient().cool(Math.max(0, longTempIngredient - getTemperatureAsLong()));
+        }
     }
 
     /* *********************************************************

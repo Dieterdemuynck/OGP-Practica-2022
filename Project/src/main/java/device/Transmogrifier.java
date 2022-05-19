@@ -94,17 +94,20 @@ public class Transmogrifier extends Device {
      */
     @Model
     public void activate() {
-        // Only if there is ingredient present and the State differs do we want to do any computation at all:
-        if(getIngredient() != null && getIngredient().getState() != getState()) {
-            // Step 1: Find the Quantity of the new ingredient
-            Quantity quantity = State.convertTo(getIngredient(), getState());
+        // A device may only be activated if it is in a laboratory
+        if (getLaboratory() != null) {
+            // Only if there is ingredient present and the State differs do we want to do any computation at all:
+            if (getIngredient() != null && getIngredient().getState() != getState()) {
+                // Step 1: Find the Quantity of the new ingredient
+                Quantity quantity = State.convertTo(getIngredient(), getState());
 
-            // Step 2: Make a copy of the old ingredient, but with different quantity-values and state
-            AlchemicIngredient newIngredient = getIngredient().copyAllValsExcept(
-                    quantity.getAmount(), quantity.getUnit(), getState());
+                // Step 2: Make a copy of the old ingredient, but with different quantity-values and state
+                AlchemicIngredient newIngredient = getIngredient().copyAllValsExcept(
+                        quantity.getAmount(), quantity.getUnit(), getState());
 
-            // Step 3: Set the present ingredient to the new ingredient
-            setIngredient(newIngredient);
+                // Step 3: Set the present ingredient to the new ingredient
+                setIngredient(newIngredient);
+            }
         }
     }
 }

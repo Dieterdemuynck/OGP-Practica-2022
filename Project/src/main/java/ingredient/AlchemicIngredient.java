@@ -332,7 +332,7 @@ public class AlchemicIngredient {
      *
      * @return
      */
-    private boolean hasSpecialName(){
+    public boolean hasSpecialName(){
         return ingredientType.hasSpecialName();
     }
 

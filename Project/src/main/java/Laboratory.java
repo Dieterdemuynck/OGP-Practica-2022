@@ -2,10 +2,9 @@ package main.java;
 
 import be.kuleuven.cs.som.annotate.Model;
 import main.java.device.Device;
-import main.java.ingredient.AlchemicIngredient;
-import main.java.ingredient.IngredientContainer;
-import main.java.ingredient.Quantity;
-import main.java.ingredient.Unit;
+import main.java.device.exception.DeviceNotEmptyException;
+import main.java.exception.DeviceNotPresentException;
+import main.java.ingredient.*;
 import main.java.ingredient.exception.IncompatibleUnitException;
 import main.java.ingredient.exception.IngredientNotPresentException;
 import main.java.ingredient.exception.NotEnoughIngredientException;
@@ -17,17 +16,18 @@ public class Laboratory {
     private int storeroomCapacity;
     private Map<String, AlchemicIngredient> storage = new HashMap<>();
     private Map<Device.DeviceType, Device> devices = new HashMap<>();  // Downside: allows null keys
+    private Map<String, String> specialToSimple = new HashMap<>();
 
-    /* *********************************************************\
+    /* *********************************************************
      * CONSTRUCTOR
-    \* *********************************************************/
+     * *********************************************************/
     public Laboratory(int storeroomCapacity){
         setStoreroomCapacity(storeroomCapacity);
     }
 
-    /* *********************************************************\
+    /* *********************************************************
      * STOREROOM CAPACITY
-    \* *********************************************************/
+     * *********************************************************/
 
     public int getStoreroomCapacity() {
         return storeroomCapacity;
@@ -43,9 +43,9 @@ public class Laboratory {
     }
 
 
-    /* *********************************************************\
+    /* *********************************************************
      * STORAGE
-    \* *********************************************************/
+     * *********************************************************/
     public Map<String, AlchemicIngredient> getStorage() {
         // TODO: should we really allow this mutable field's getter to be public?
         return storage;
@@ -72,8 +72,12 @@ public class Laboratory {
      * @param ingredient
      */
     private void store(AlchemicIngredient ingredient) {
-        if (getStorage().get(ingredient.getName()) == null)
+        if (getStorage().get(ingredient.getName()) == null) {
             getStorage().put(ingredient.getName(), ingredient);
+            if (ingredient.hasSpecialName()) {
+                specialToSimple.put(ingredient.getSpecialName(), ingredient.getName());
+            }
+        }
         else {
             // TODO: Mix
         }
@@ -173,9 +177,9 @@ public class Laboratory {
 //        }
 //    }
 
-    /* *********************************************************\
+    /* *********************************************************
      * DEVICES
-    \* *********************************************************/
+     * *********************************************************/
 
     private Map<Device.DeviceType, Device> getDevices() {
         return devices;
@@ -200,32 +204,75 @@ public class Laboratory {
         }
     }
 
-    /* *********************************************************\
+    /* *********************************************************
      * DEVICE METHODS
      * TODO: Add method bodies + Additional arguments.
-     *  Add "storeInDevice" methods, perhaps?
-     *  Perhaps a better idea: no arguments -> device.activate ; some arguments -> enter ingredient and activate
-    \* *********************************************************/
+     * *********************************************************/
 
-    public void mix() {
-
+    /**
+     * QoL Device method, returns the device that is inside the laboratory
+     * @param deviceType
+     * @return
+     * @throws DeviceNotPresentException
+     */
+    private Device getDevice(Device.DeviceType deviceType)
+            throws DeviceNotPresentException {
+        if (getDevices().get(deviceType) == null)
+            throw new DeviceNotPresentException(this, deviceType);
+        return getDevices().get(deviceType);
     }
 
-    public void cool() {
-
+    /**
+     * adds ingredient to a device in the laboratory
+     * @param deviceType
+     * @param container
+     * @throws DeviceNotEmptyException
+     * @throws DeviceNotPresentException
+     */
+    private void addToDevice(Device.DeviceType deviceType, IngredientContainer container)
+            throws DeviceNotEmptyException, DeviceNotPresentException {
+        getDevice(deviceType).insert(container);
     }
 
-    public void heat() {
-
+    /**
+     * activates a device in the laboratory
+     * @param deviceType
+     * @throws DeviceNotPresentException
+     */
+    private void activateDevice(Device.DeviceType deviceType)
+            throws DeviceNotPresentException {
+        getDevice(deviceType).activate();
     }
 
-    public void transmogrify() {
-
+    /**
+     * Returns an ingredient container which either fits the ingredient in the device or, if no container fits,
+     * returns the largest possible container with the ingredient.
+     * @param deviceType
+     * @return
+     * @throws DeviceNotPresentException
+     */
+    private IngredientContainer retrieveFromDevice(Device.DeviceType deviceType)
+            throws DeviceNotPresentException {
+        return getDevice(deviceType).retrieve(getDevice(deviceType).getLargestFittingContainerForContents());
     }
 
-    /* *********************************************************\
+    /**
+     * Allows a client to use a device in the laboratory with a given container of ingredient.
+     * @param deviceType
+     * @param input
+     * @return
+     * @throws DeviceNotPresentException
+     */
+    public IngredientContainer useOnDevice(Device.DeviceType deviceType, IngredientContainer input)
+            throws DeviceNotPresentException {
+        addToDevice(deviceType, input);
+        activateDevice(deviceType);
+        return retrieveFromDevice(deviceType);
+    }
+
+    /* *********************************************************
      * RECIPE
-    \* *********************************************************/
+     * *********************************************************/
 
     public void execute(Recipe recipe, int factorIngredients){ // Todo: staat in commentaar, implementatie moet nog gebeuren maar daarvoor moet rest eerst af zijn =(
         // IDEE: elke if-clause schrijven als een aparte functie, want je moet op einde ook nog eens mixen...

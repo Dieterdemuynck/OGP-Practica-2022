@@ -15,11 +15,17 @@ public abstract class Device {
      * ALCHEMIC INGREDIENT
      * *********************************************************/
 
-    public AlchemicIngredient getIngredient() {
+    protected AlchemicIngredient getIngredient() {
         return ingredient;
     }
 
-    public void setIngredient(AlchemicIngredient ingredient) {
+    public IngredientContainer getLargestFittingContainerForContents() {
+        return new IngredientContainer(                                   // Create a container with...
+                getIngredient().getState().findSmallestFittingContainer(  // the best fit container unit for...
+                getIngredient().getAmount(), getIngredient().getUnit())); // this amount of ingredient
+    }
+
+    public void setIngredient(AlchemicIngredient ingredient) throws DeviceNotEmptyException {
         if (!isEmptyDevice() && ingredient != null){
             throw new DeviceNotEmptyException(this.ingredient, ingredient);
         }
@@ -32,7 +38,8 @@ public abstract class Device {
     /* ***************************
      * ALCHEMIC INGREDIENT - INSERT
      * ***************************/
-    public void insert(IngredientContainer ingredientContainer) {
+
+    public void insert(IngredientContainer ingredientContainer) throws DeviceNotEmptyException {
         setIngredient(ingredientContainer.extract());
         /* There's nothing referencing the container, so there's nothing to "terminate". All we can do is empty its
          * contents

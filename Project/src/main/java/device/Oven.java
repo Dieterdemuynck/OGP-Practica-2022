@@ -76,13 +76,16 @@ public class Oven extends Device {  // why do they call it oven when you of in t
      * A random deviation will be added to the requested temperature.
      */
     public void activate() {
-        Random rand = new Random();
-        double deviation = rand.nextDouble(0.95, 1.05);
-        long tempTemperature = Math.round(getTemperature() * deviation);
-        // afgerond is da 158 ma das meer dan 5% afwijkend is da ok?
-        //todo Kvraag mij af als je dan lik 150°C neemt en die kiest als random waarde 1,05 -> dan heb je 157,5°C
-        long[] tempIngredient = getIngredient().getTemperature();
-        long longTempIngredient = asLong(tempIngredient);
-        getIngredient().heat(Math.abs(longTempIngredient - tempTemperature));
+        // A device may only be activated if it is in a laboratory
+        if (getLaboratory() != null) {
+            Random rand = new Random();
+            double deviation = rand.nextDouble(0.95, 1.05);
+            long tempTemperature = Math.round(getTemperature() * deviation);
+            // afgerond is da 158 ma das meer dan 5% afwijkend is da ok?
+            //todo Kvraag mij af als je dan lik 150°C neemt en die kiest als random waarde 1,05 -> dan heb je 157,5°C
+            long[] tempIngredient = getIngredient().getTemperature();
+            long longTempIngredient = asLong(tempIngredient);
+            getIngredient().heat(Math.abs(longTempIngredient - tempTemperature));
+        }
     }
 }
