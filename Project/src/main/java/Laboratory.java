@@ -1,8 +1,14 @@
 package main.java;
 
+import be.kuleuven.cs.som.annotate.Model;
 import main.java.device.Device;
 import main.java.ingredient.AlchemicIngredient;
 import main.java.ingredient.IngredientContainer;
+import main.java.ingredient.Quantity;
+import main.java.ingredient.Unit;
+import main.java.ingredient.exception.IncompatibleUnitException;
+import main.java.ingredient.exception.IngredientNotPresentException;
+import main.java.ingredient.exception.NotEnoughIngredientException;
 
 import java.util.*;
 
@@ -71,6 +77,77 @@ public class Laboratory {
         else {
             // TODO: Mix
         }
+    }
+
+    /**
+     * Retrieves an ingredient from the laboratory's storage, and stores the rest of the ingredient back into storage.
+     *
+     * @post    After the ingredient is retrieved, the difference will be stored back into storage.
+     *          | new.getStorage().get(name) == bulk.copyAllValsExcept(amount, unit)
+     * @param name
+     *        The name of the ingredient we want to retrieve.
+     * @param amount
+     *        The amount of ingredient, represented in the given unit, we want to retrieve.
+     * @param unit
+     *        The unit representation of the amount of the ingredient we want to retrieve.
+     * @return  An AlchemicIngredient instance with the given quantity-values and name.
+     *          | result == getStorage().get(name).copyAllValsExcept(amount, unit);
+     * @throws IngredientNotPresentException
+     *         No ingredient with given name is present.
+     *         | getStorage().get(name) == null
+     * @throws IncompatibleUnitException
+     *         The state of the ingredient with the given name has no such Unit.
+     *         | !getStorage().get(name).getState().hasUnit(unit)
+     * @throws NotEnoughIngredientException
+     *         The amount of ingredient requested is larger than the amount stored.
+     *         | AlchemicIngredient ingredient = getStorage().get(name);
+     *         | ingredient.getState().compareInSameState(ingredient.getAmount(), ingredient.getUnit(), amount, unit)
+     *         |    < 0
+     */
+    @Model
+    private AlchemicIngredient retrieveIngredient(String name, int amount, Unit unit) throws IngredientNotPresentException,
+            IncompatibleUnitException, NotEnoughIngredientException {
+        // This is rather inefficient, as we create 2 new alchemicIngredients instead of just changing a value or 2
+        // Better than nothing :)
+        AlchemicIngredient bulk = getStoredIngredient(name);
+
+        // Possible exceptions:
+        if (bulk == null) {
+            // The ingredient must be present in order to take some out
+            throw new IngredientNotPresentException(name, this);
+        }
+        if (!bulk.getState().hasUnit(unit)) {
+            throw new IncompatibleUnitException(bulk, unit);
+        }
+        if (bulk.getState().compareInSameState(bulk.getAmount(), bulk.getUnit(), amount, unit) < 0) {
+            throw new NotEnoughIngredientException(bulk, amount, unit, this);
+        }
+
+        // Calculate the difference between the two units
+        Quantity quantity = bulk.getState().subtract(bulk.getAmount(), bulk.getUnit(), amount, unit);
+
+        // Store the rest of the ingredient back into the laboratory's storage
+        AlchemicIngredient newBulk = bulk.copyAllValsExcept(quantity.getAmount(), quantity.getUnit());
+        getStorage().put(newBulk.getName(), newBulk);
+
+        // Return the retrieved ingredient, which is a copy of the previous ingredient with a lower quantity
+        return bulk.copyAllValsExcept(amount, unit);
+    }
+
+    /**
+     * TODO: specification (reference retrieveIngredient using @effect)
+     * @param name
+     * @param amount
+     * @param unit
+     * @return
+     */
+    public IngredientContainer retrieve(String name, int amount, Unit unit){
+        // This might do double calculation for "find largest fit" but whatever, I guess?
+        return new IngredientContainer(retrieveIngredient(name, amount, unit));
+    }
+    
+    private AlchemicIngredient getStoredIngredient(String name) {
+        return getStorage().get(name);
     }
 
 

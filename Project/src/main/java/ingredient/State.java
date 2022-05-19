@@ -110,7 +110,7 @@ public enum State {
 
     /* ******************************************************** *\
      * QoL METHODS
-     * LEVEL 1 (PRIVATE)
+     * LEVEL 1: PRIVATE
     \* ******************************************************** */
 
     private int getIndexOf(Unit unit) {
@@ -211,9 +211,20 @@ public enum State {
         return amount;
     }
 
-    /* *********************************************************\
+    /* *********************************************************
+     * SUBTRACTION
+     * *********************************************************/
+
+    public Quantity subtract(int amount1, Unit unit1, int amount2, Unit unit2) {
+        return findLargestFit(
+                (amount1 * getValueOf(unit1) - amount2 * getValueOf(unit2)),
+                getSmallestUnit()
+        );
+    }
+
+    /* *********************************************************
      * CHECKERS
-    \* *********************************************************/
+     * *********************************************************/
 
     @Immutable
     public boolean hasContainer() {
