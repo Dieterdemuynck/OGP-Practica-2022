@@ -1,5 +1,8 @@
 package main.java.ingredient;
 
+/**
+ * mag alleen opgeroepen worden door AlchemicIngredient
+ */
 public class IngredientType {
 
     private final String name;

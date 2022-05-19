@@ -1,5 +1,6 @@
 package main.java.ingredient;
 
+import be.kuleuven.cs.som.annotate.Model;
 import be.kuleuven.cs.som.annotate.Raw;
 
 /**
@@ -74,7 +75,7 @@ public class AlchemicIngredient {
      * @post    The state of this new alchemical ingredient is set to the given currentState
      *          | new.getState() == currentState
      */
-    @Raw
+    @Raw @Model
     public AlchemicIngredient(int amount, Unit unit, long[] standardTemperature, long[] currentTemperature, String name,
                               State standardState, State currentState) {
         this.ingredientType = new IngredientType(name, standardTemperature, standardState);
@@ -140,7 +141,7 @@ public class AlchemicIngredient {
      *          the new alchemical ingerdient has the standard temperature as temperature and standard state as state
      *          | this(amount, unit, standardTemperature, standardTemperature, name, standardState, standardState)
      */
-    @Raw
+    @Raw @Model
     public AlchemicIngredient(int amount, Unit unit, long[] standardTemperature, String name, State standardState) {
         this(amount, unit, standardTemperature, standardTemperature, name, standardState, standardState);
     }
@@ -183,7 +184,7 @@ public class AlchemicIngredient {
      *          and the standard state (and state) is State.Liquid.
      *          | this(amount, unit, new long[]{0, 20}, "Water", State.Liquid)
      */
-    @Raw
+    @Raw @Model
     public AlchemicIngredient(int amount, Unit unit) {
         this(amount, unit, new long[]{0, 20}, "Water", State.Liquid);
     }
@@ -297,7 +298,7 @@ public class AlchemicIngredient {
     }
 
     /**
-     * Returns the special name of a mixed alchemic ingredient.
+     * Returns the special name of a mixed alchemical ingredient.
      * @return  if the alchemical ingredient is mixed returns the special name.
      *          | if (ingredientType.isMixedIngredient())
      *          | result.equals(ingredientType.getSpecialName())
@@ -310,14 +311,38 @@ public class AlchemicIngredient {
         }
     }
 
+    /**
+     *
+     * @return
+     */
+    private boolean hasSpecialName(){
+        return ingredientType.hasSpecialName();
+    }
+
+    /**
+     * Set the special name of the (mixed) alchemical ingredient.
+     * @param   specialName
+     *          the special name of this (mixed) alchemical ingredient.
+     * @throws  NonMixedSpecialNameException(this.ingredientType) [must]
+     *          The alchemical ingredient is not a mixed ingredient
+     *          | !ingredientType.isMixedIngredient()
+     */
+    public void setSpecialName(String specialName) throws NonMixedSpecialNameException, IllegalNameException{
+        if (!ingredientType.isMixedIngredient()){
+            throw new NonMixedSpecialNameException(ingredientType);
+        }
+        else {
+            ingredientType.setSpecialName(specialName);
+        }
+    }
+
     /* ***************************
      * INGREDIENT TYPE - STANDARD TEMPERATURE
      * TOTAAL
      * ***************************/
 
     /**
-     *
-     * @return
+     * Return the standard temperature of this alchemical ingredient
      */
     public long[] getStandardTemperature() {
         return ingredientType.getStandardTemperature();
@@ -329,8 +354,7 @@ public class AlchemicIngredient {
      * ***************************/
 
     /**
-     *
-     * @return
+     * Return the standard state of this alchemical ingredient.
      */
     public State getStandardState() {
         return ingredientType.getStandardState();
@@ -342,8 +366,7 @@ public class AlchemicIngredient {
      * *********************************************************/
 
     /**
-     *
-     * @return
+     * Return the (current) state of this alchemical ingredient.
      */
     public State getState() {
         return state;
@@ -366,15 +389,14 @@ public class AlchemicIngredient {
      * *********************************************************/
 
     /**
-     *
-     * @return
+     * Return the amount of this alchemical ingredient.
      */
     public int getAmount() {
         return amount;
     }
 
     /**
-     * @return
+     * Return the unit of this alchemical ingredient.
      */
     public Unit getUnit() {
         return unit;
@@ -398,8 +420,7 @@ public class AlchemicIngredient {
     \* *********************************************************/
 
     /**
-     *
-     * @return
+     * Return the (current) temperature of this alchemical ingredient.
      */
     public long[] getTemperature() {
         long[] temp = new long[2];
@@ -411,12 +432,18 @@ public class AlchemicIngredient {
         return temp;
     }
 
-
-    // MOET TOTAAL ZIJN, dus geen exceptions
-
     /**
+     * Set the (current) temperature of this alchemical ingredient.
      *
-     * @param temperature
+     * @param   temperature
+     *          The new (current) temperature
+     *
+     * @post    If the new temperature is valid, the new temperature is set as the temperature of this alchemical
+     *          ingredient, otherwise the temperature of this alchemical ingredient is set to the long representation
+     *          of {0,20}
+     *          | if (!isValidTemperature(temperature))
+     *          | new.getTemperature() == {0,20}
+     *          | else new.getTemperature() == temperature
      */
     private void setTemperature(long[] temperature) { // input : array
         if (!isValidTemperature(temperature)) {
@@ -434,9 +461,14 @@ public class AlchemicIngredient {
     }
 
     /**
+     * Checks whether te given temperature is a valid temperature
+     * @param   temperature
+     *          The temperature to check
      *
-     * @param temperature
-     * @return
+     * @return  True if and only if the temperature is not both cooled and heated and neither exceed the maximum
+     *          temperature
+     *          | result == ( (temperature[0] and temperature[1]) >= 0
+     *          |               or (temperature[0] or temperature[1]) <= MAX_TEMPERATURE)
      */
     private static boolean isValidTemperature(long[] temperature) {
         if (temperature[0] != 0 && temperature.length == 2) {
@@ -446,22 +478,24 @@ public class AlchemicIngredient {
     }
 
     /**
-     *
-     * @param temperature
+     * Changes this temperature to a higher temperature.
+     * @param   temperatureDifference
+     *          the amount at which the temperature is raised
      */
-    public void heat(long temperature) {
-        if (this.temperature + temperature <= MAX_TEMPERATURE) {
-            this.temperature += temperature;
+    public void heat(long temperatureDifference) {
+        if (this.temperature + temperatureDifference <= MAX_TEMPERATURE) {
+            this.temperature += temperatureDifference;
         }
     }
 
     /**
-     *
-     * @param temperature
+     * Changes this temperature to a lower temperature.
+     * @param   temperatureDifference
+     *          the amount at which the temperature is lowered
      */
-    public void cool(long temperature) {
-        if (this.temperature - temperature >= -MAX_TEMPERATURE) {
-            this.temperature -= temperature;
+    public void cool(long temperatureDifference) {
+        if (this.temperature - temperatureDifference >= -MAX_TEMPERATURE) {
+            this.temperature -= temperatureDifference;
         }
     }
 
@@ -472,13 +506,32 @@ public class AlchemicIngredient {
      * everything the same
     \* *********************************************************/
 
+    /** todo is dit ok?
+     * Makes a new alchemical ingredient based on an existing alchemical ingredient but with a different amount, unit
+     * and current state.
+     * @param   amount
+     *          the new amount for the new alchemical ingredient
+     * @param   unit
+     *          the new unit for the new alchemical ingredient
+     * @param   currentState
+     *          the new (current) state for the new alchemical ingredient
+     */
     public AlchemicIngredient copyAllValsExcept(int amount, Unit unit, State currentState) {
         AlchemicIngredient newIngredient = new AlchemicIngredient(amount, unit, getStandardTemperature(),
                 getTemperature(), getName(), getStandardState(), currentState);
-        // TODO: Copy SpecialName
+        if (hasSpecialName()){
+            newIngredient.setSpecialName(this.getSpecialName());
+        }
         return newIngredient;
     }
 
+    /** todo is dit ok?
+     * Makes a new alchemical ingredient based on an existing alchemical ingredient but with a different amount and unit.
+     * @param   amount
+     *          the new amount for the new alchemical ingredient
+     * @param   unit
+     *          the new unit for the new alchemical ingredient$
+     */
     public AlchemicIngredient copyAllValsExcept(int amount, Unit unit) {
         return copyAllValsExcept(amount, unit, getState());
     }
