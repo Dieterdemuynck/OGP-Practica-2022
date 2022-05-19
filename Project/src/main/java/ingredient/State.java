@@ -166,11 +166,11 @@ public enum State {
     \* *********************************************************/
 
     public static double inSpoons(AlchemicIngredient ingredient) {
-        return ingredient.getState().inSpoons(ingredient.getQuantity(), ingredient.getUnit());
+        return ingredient.getState().inSpoons(ingredient.getAmount(), ingredient.getUnit());
     }
 
     public static double inStorerooms(AlchemicIngredient ingredient) {
-        return ingredient.getState().inStorerooms(ingredient.getQuantity(), ingredient.getUnit());
+        return ingredient.getState().inStorerooms(ingredient.getAmount(), ingredient.getUnit());
     }
 
     /**
@@ -262,7 +262,7 @@ public enum State {
 
     public static Quantity convertTo(AlchemicIngredient ingredient, State state) {
         return ingredient.getState().convertTo(
-                ingredient.getQuantity(), ingredient.getUnit(), state
+                ingredient.getAmount(), ingredient.getUnit(), state
         );
     }
 

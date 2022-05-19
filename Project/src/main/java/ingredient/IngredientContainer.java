@@ -15,12 +15,13 @@ public class IngredientContainer {
 
     /**
      *
+     *
      * @pre     There is at least one container unit which can fit all the given ingredient.
      *          | ingredient.getState().hasContainer()
      * @param   ingredient
      */
     public IngredientContainer(AlchemicIngredient ingredient) {
-        this(ingredient.getState().findSmallestFittingContainer(ingredient.getQuantity(), ingredient.getUnit()));
+        this(ingredient.getState().findSmallestFittingContainer(ingredient.getAmount(), ingredient.getUnit()));
         insert(ingredient);
     }
 
@@ -51,23 +52,25 @@ public class IngredientContainer {
     }
 
     /**
-     * Inserts an alchemical ingredient into the container, if it does not exceed the container's capacity and the
-     * ingredient's state can be held by the container.
+     * Inserts an alchemical ingredient into the container. If the ingredient does not fit, it will shave off any excess
+     * ingredient by creating a new alchemicIngredient object which fills the container.
      *
-     * @pre     The inserted ingredient can fit in the container.
-     *          | this.getCapacity() >= alchemicIngredient.getAmount() * alchemicIngredient.getUnit() TODO: fix
-     * @post    The contents of this container is set to the given alchemical ingredient if it does not exceed
-     *          the capacity.
-     *          | if (doesNotExceedCapacity(alchemicIngredient) && capacity.getState() == alchemicIngredient.getState())
-     *          |     new.getContents() == alchemicIngredient;
-     * @param   alchemicIngredient  The alchemical ingredient to store inside the container
+     * @post    The contents of this container is set to the given alchemical ingredient. If the alchemical ingredient
+     *          does not fit inside the container, a new alchemicIngredient object is made with its quantity (amount
+     *          and unit) set to 1 times the capacity of the container.
+     *          | if (ingredient.getState().compareInSameState(1, getCapacity(), ingredient.getAmount(), ingredient.getUnit())
+     *          |      < 0)
+     *          |     new.getContents() == ingredient.copyAllValsExcept(1, getCapacity());
+     *          | else
+     *          |     new.getContents() == ingredient;
+     * @param   ingredient  The alchemical ingredient to store inside the container
      */
-    public void insert(AlchemicIngredient alchemicIngredient) {
-        /* Since quantities are supposed to be nominally programmed, we don't test anything.
-         * It kind of makes me sad, since I've made a nice function which allows us to do this totally in a somewhat
-         * neat way... Please... I want total programming.... Let me just shave off some excess ingredient :(
-         */
-        setContent(alchemicIngredient);
+    public void insert(AlchemicIngredient ingredient) {
+        if (ingredient.getState().compareInSameState(1, getCapacity(), ingredient.getAmount(), ingredient.getUnit())
+                < 0) {
+            ingredient = ingredient.copyAllValsExcept(1, getCapacity());
+        }
+        setContent(ingredient);
     }
 
     /**

@@ -26,7 +26,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Barrel, standardTemperatureIngredient,
                 "Som", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Barrel, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -42,7 +42,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Barrel, standardTemperatureIngredient,
                 "So So", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Barrel, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -58,7 +58,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Barrel, standardTemperatureIngredient,
                 "Something's", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Barrel, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -74,7 +74,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 "Something", State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
         assertEquals(standardTemperatureIngredient[0], ingredient.getStandardTemperature()[0]);
@@ -87,7 +87,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {15, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Barrel, standardTemperatureIngredient,
                 "Something", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Barrel, ingredient.getUnit());
         assertEquals(0, ingredient.getTemperature()[0]);
         assertEquals(20, ingredient.getTemperature()[1]);
@@ -103,7 +103,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 10001};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Barrel, standardTemperatureIngredient,
                 "Something", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Barrel, ingredient.getUnit());
         assertEquals("Something", ingredient.getName());
         assertEquals(State.Liquid, ingredient.getState());
@@ -116,7 +116,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Barrel, standardTemperatureIngredient,
                 "So", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Barrel, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -131,7 +131,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Barrel, standardTemperatureIngredient,
                 "So S", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Barrel, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -147,7 +147,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Barrel, standardTemperatureIngredient,
                 "something", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Barrel, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -162,7 +162,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Barrel, standardTemperatureIngredient,
                 "Something something", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Barrel, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -177,7 +177,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Barrel, standardTemperatureIngredient,
                 "SomeThing", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Barrel, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -192,7 +192,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Barrel, standardTemperatureIngredient,
                 "Something SomeThing", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Barrel, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -207,7 +207,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Barrel, standardTemperatureIngredient,
                 "Something1", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Barrel, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -222,7 +222,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Barrel, standardTemperatureIngredient,
                 "Something!", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Barrel, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -237,7 +237,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Barrel, standardTemperatureIngredient,
                 "Something@", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Barrel, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -255,7 +255,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Box, standardTemperatureIngredient,
                 "Som", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Box, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -271,7 +271,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Box, standardTemperatureIngredient,
                 "So So", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Box, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -287,7 +287,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Box, standardTemperatureIngredient,
                 "Something's", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Box, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -320,7 +320,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {15, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Box, standardTemperatureIngredient,
                 "Something", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Box, ingredient.getUnit());
         assertEquals(0, ingredient.getTemperature()[0]);
         assertEquals(20, ingredient.getTemperature()[1]);
@@ -336,7 +336,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 10001};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Box, standardTemperatureIngredient,
                 "Something", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Box, ingredient.getUnit());
         assertEquals(0, ingredient.getTemperature()[0]);
         assertEquals(20, ingredient.getTemperature()[1]);
@@ -353,7 +353,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 "So", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -368,7 +368,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 "So S", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -384,7 +384,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 "something", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -399,7 +399,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 "Something something", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -414,7 +414,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 "SomeThing", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -429,7 +429,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 "Something SomeThing", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -444,7 +444,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 "Something1", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -459,7 +459,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 "Something!", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -474,7 +474,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 "Something@", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -495,7 +495,7 @@ public class AlchemicIngredientTest {
         long[] currentTemperatureIngredient = {0, 0};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Box, standardTemperatureIngredient,
                 currentTemperatureIngredient, "Som", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Box, ingredient.getUnit());
         assertEquals(currentTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(currentTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -512,7 +512,7 @@ public class AlchemicIngredientTest {
         long[] currentTemperatureIngredient = {0, 0};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Box, standardTemperatureIngredient,
                 currentTemperatureIngredient, "So So", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Box, ingredient.getUnit());
         assertEquals(currentTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(currentTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -529,7 +529,7 @@ public class AlchemicIngredientTest {
         long[] currentTemperatureIngredient = {0, 0};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Box, standardTemperatureIngredient,
                 currentTemperatureIngredient, "Something's", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Box, ingredient.getUnit());
         assertEquals(currentTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(currentTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -546,7 +546,7 @@ public class AlchemicIngredientTest {
         long[] currentTemperatureIngredient = {0, 0};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 currentTemperatureIngredient, "Something", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(currentTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(currentTemperatureIngredient[1], ingredient.getTemperature()[1]);
         assertEquals(standardTemperatureIngredient[0], ingredient.getStandardTemperature()[0]);
@@ -561,7 +561,7 @@ public class AlchemicIngredientTest {
         long[] currentTemperatureIngredient = {0, 0};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Box, standardTemperatureIngredient,
                 currentTemperatureIngredient, "Something", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Box, ingredient.getUnit());
         assertEquals(0, ingredient.getStandardTemperature()[0]);
         assertEquals(20, ingredient.getStandardTemperature()[1]);
@@ -578,7 +578,7 @@ public class AlchemicIngredientTest {
         long[] currentTemperatureIngredient = {0, 0};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Box, standardTemperatureIngredient,
                 currentTemperatureIngredient, "Something", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Box, ingredient.getUnit());
         assertEquals(currentTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(currentTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -595,7 +595,7 @@ public class AlchemicIngredientTest {
         long[] currentTemperatureIngredient = {10, 10};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Box, standardTemperatureIngredient,
                 currentTemperatureIngredient, "Something", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Box, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getStandardTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getStandardTemperature()[1]);
@@ -612,7 +612,7 @@ public class AlchemicIngredientTest {
         long[] currentTemperatureIngredient = {0, 10001};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Box, standardTemperatureIngredient,
                 currentTemperatureIngredient, "Something", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Box, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getStandardTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getStandardTemperature()[1]);
@@ -629,7 +629,7 @@ public class AlchemicIngredientTest {
         long[] currentTemperatureIngredient = {0, 0};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 currentTemperatureIngredient, "So", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(currentTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(currentTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -645,7 +645,7 @@ public class AlchemicIngredientTest {
         long[] currentTemperatureIngredient = {0, 0};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 currentTemperatureIngredient, "So S", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(currentTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(currentTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -662,7 +662,7 @@ public class AlchemicIngredientTest {
         long[] currentTemperatureIngredient = {0, 0};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 currentTemperatureIngredient, "something", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(currentTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(currentTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -678,7 +678,7 @@ public class AlchemicIngredientTest {
         long[] currentTemperatureIngredient = {0, 0};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 currentTemperatureIngredient, "Something something", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(currentTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(currentTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -694,7 +694,7 @@ public class AlchemicIngredientTest {
         long[] currentTemperatureIngredient = {0, 0};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 currentTemperatureIngredient, "SomeThing", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(currentTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(currentTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -710,7 +710,7 @@ public class AlchemicIngredientTest {
         long[] currentTemperatureIngredient = {0, 0};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 currentTemperatureIngredient, "Something SomeThing", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(currentTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(currentTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -726,7 +726,7 @@ public class AlchemicIngredientTest {
         long[] currentTemperatureIngredient = {0, 0};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 currentTemperatureIngredient, "Something1", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(currentTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(currentTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -742,7 +742,7 @@ public class AlchemicIngredientTest {
         long[] currentTemperatureIngredient = {0, 0};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 currentTemperatureIngredient, "Something!", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(currentTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(currentTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -758,7 +758,7 @@ public class AlchemicIngredientTest {
         long[] currentTemperatureIngredient = {0, 0};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle, standardTemperatureIngredient,
                 currentTemperatureIngredient, "Something@", State.Liquid, State.Powder);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(currentTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(currentTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -776,7 +776,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, standardTemperatureIngredient, "Som",
                 State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Spoon, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -792,7 +792,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, standardTemperatureIngredient, "So So",
                 State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Spoon, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -808,7 +808,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, standardTemperatureIngredient,
                 "Something's", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Spoon, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -824,7 +824,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {15, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, standardTemperatureIngredient,
                 "Something", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Spoon, ingredient.getUnit());
         assertEquals(0, ingredient.getTemperature()[0]);
         assertEquals(20, ingredient.getTemperature()[1]);
@@ -840,7 +840,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 10001};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, standardTemperatureIngredient,
                 "Something", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Spoon, ingredient.getUnit());
         assertEquals(0, ingredient.getTemperature()[0]);
         assertEquals(20, ingredient.getTemperature()[1]);
@@ -857,7 +857,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, standardTemperatureIngredient, "So",
                 State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Spoon, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -872,7 +872,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, standardTemperatureIngredient, "So S",
                 State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Spoon, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -888,7 +888,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, standardTemperatureIngredient,
                 "something", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Spoon, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -903,7 +903,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, standardTemperatureIngredient,
                 "Something something", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Spoon, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -918,7 +918,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, standardTemperatureIngredient,
                 "SomeThing", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Spoon, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -933,7 +933,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, standardTemperatureIngredient,
                 "Something SomeThing", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Spoon, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -948,7 +948,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, standardTemperatureIngredient,
                 "Something1", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Spoon, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -963,7 +963,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, standardTemperatureIngredient,
                 "Something!", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Spoon, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -978,7 +978,7 @@ public class AlchemicIngredientTest {
         long[] standardTemperatureIngredient = {0, 15};
         AlchemicIngredient ingredient = new AlchemicIngredient(15, standardTemperatureIngredient,
                 "Something@", State.Liquid);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Spoon, ingredient.getUnit());
         assertEquals(standardTemperatureIngredient[0], ingredient.getTemperature()[0]);
         assertEquals(standardTemperatureIngredient[1], ingredient.getTemperature()[1]);
@@ -995,7 +995,7 @@ public class AlchemicIngredientTest {
     @Test
     public void testConstructor_short_legalCase() {
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Bottle);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Bottle, ingredient.getUnit());
         assertEquals(0, ingredient.getTemperature()[0]);
         assertEquals(20, ingredient.getTemperature()[1]);
@@ -1009,7 +1009,7 @@ public class AlchemicIngredientTest {
     @Test (expected = IllegalArgumentException.class)
     public void testConstructor_short_illegalCase() {
         AlchemicIngredient ingredient = new AlchemicIngredient(15, Unit.Box);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(0, ingredient.getTemperature()[0]);
         assertEquals(20, ingredient.getTemperature()[1]);
         assertEquals(0, ingredient.getStandardTemperature()[0]);
@@ -1024,7 +1024,7 @@ public class AlchemicIngredientTest {
     @Test
     public void testConstructor_shortWithoutUnit() {
         AlchemicIngredient ingredient = new AlchemicIngredient(15);
-        assertEquals(15, ingredient.getQuantity());
+        assertEquals(15, ingredient.getAmount());
         assertEquals(Unit.Spoon, ingredient.getUnit());
         assertEquals(0, ingredient.getTemperature()[0]);
         assertEquals(20, ingredient.getTemperature()[1]);

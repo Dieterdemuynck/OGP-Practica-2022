@@ -18,9 +18,9 @@ public class AlchemicIngredient {
      */
     private final State state;
     /**
-     * Variable registering the quantity of this alchemical ingredient
+     * Variable registering the amount of this alchemical ingredient
      */
-    private final int quantity;
+    private final int amount;
     /**
      * Variable referencing the unit of this alchemical ingredient
      */
@@ -40,11 +40,11 @@ public class AlchemicIngredient {
      * *********************************************************/
     // FOR IN TRANSMOGIFIER: CURRENT STATE AND TEMPERATURE
     /** todo controleren pls
-     * Initialize a new alchemical ingredient with given quantity, unit, standard temperature, current temperature, name,
+     * Initialize a new alchemical ingredient with given amount, unit, standard temperature, current temperature, name,
      * standard type and current type.
      *
-     * @param   quantity
-     *          The quantity of the new alchemical ingredient
+     * @param   amount
+     *          The amount of the new alchemical ingredient
      * @param   unit
      *          The unit of the new alchemical ingredient
      * @param   standardTemperature
@@ -75,12 +75,12 @@ public class AlchemicIngredient {
      *          | new.getState() == currentState
      */
     @Raw
-    public AlchemicIngredient(int quantity, Unit unit, long[] standardTemperature, long[] currentTemperature, String name,
+    public AlchemicIngredient(int amount, Unit unit, long[] standardTemperature, long[] currentTemperature, String name,
                               State standardState, State currentState) {
         this.ingredientType = new IngredientType(name, standardTemperature, standardState);
-        this.quantity = quantity;
+        this.amount = amount;
 
-        // Only if the given unit is representative of a quantity in the given state
+        // Only if the given unit is representative of a amount in the given state
         // can we allow an ingredient to be made
         if (!currentState.hasUnit(unit))
             throw new IllegalArgumentException();
@@ -92,11 +92,11 @@ public class AlchemicIngredient {
     // FOR IN TRANSMOGIFIER: CURRENT STATE
 
     /**
-     * Initialize a new alchemical ingredient with given quantity, unit, standard temperature, name, standard type and
+     * Initialize a new alchemical ingredient with given amount, unit, standard temperature, name, standard type and
      * current type.
      *
-     * @param   quantity
-     *          The quantity of the new alchemical ingredient
+     * @param   amount
+     *          The amount of the new alchemical ingredient
      * @param   unit
      *          The unit of the new alchemical ingredient
      * @param   standardTemperature
@@ -108,24 +108,24 @@ public class AlchemicIngredient {
      * @param   currentState
      *          The current state of the new alchemical ingredient
      *
-     * @effect  This new alchemical ingredient is initialized with the given quantity, unit, standard temperature,
+     * @effect  This new alchemical ingredient is initialized with the given amount, unit, standard temperature,
      *          name, standard type and current type.
      *          the new alchemical ingerdient has the standard temperature as temperature
-     *          | this(quantity, unit, standardTemperature, standardTemperature, name, standardState, currentState)
+     *          | this(amount, unit, standardTemperature, standardTemperature, name, standardState, currentState)
      */
     @Raw
-    public AlchemicIngredient(int quantity, Unit unit, long[] standardTemperature,
+    public AlchemicIngredient(int amount, Unit unit, long[] standardTemperature,
                               String name, State standardState, State currentState) {
-        this(quantity, unit, standardTemperature, standardTemperature, name, standardState, currentState);
+        this(amount, unit, standardTemperature, standardTemperature, name, standardState, currentState);
     }
 
     // BASIC LONG CONSTRUCTOR
 
     /**
-     * Initialize a new alchemical ingredient with given quantity, unit, standard temperature, name and standard type.
+     * Initialize a new alchemical ingredient with given amount, unit, standard temperature, name and standard type.
      *
-     * @param   quantity
-     *          The quantity of the new alchemical ingredient
+     * @param   amount
+     *          The amount of the new alchemical ingredient
      * @param   unit
      *          The unit of the new alchemical ingredient
      * @param   standardTemperature
@@ -135,22 +135,22 @@ public class AlchemicIngredient {
      * @param   standardState
      *          The standard state of the new alchemical ingredient
      *
-     * @effect  This new alchemical ingredient is initialized with the given quantity, unit, standard temperature,
+     * @effect  This new alchemical ingredient is initialized with the given amount, unit, standard temperature,
      *          name and standard type.
      *          the new alchemical ingerdient has the standard temperature as temperature and standard state as state
-     *          | this(quantity, unit, standardTemperature, standardTemperature, name, standardState, standardState)
+     *          | this(amount, unit, standardTemperature, standardTemperature, name, standardState, standardState)
      */
     @Raw
-    public AlchemicIngredient(int quantity, Unit unit, long[] standardTemperature, String name, State standardState) {
-        this(quantity, unit, standardTemperature, standardTemperature, name, standardState, standardState);
+    public AlchemicIngredient(int amount, Unit unit, long[] standardTemperature, String name, State standardState) {
+        this(amount, unit, standardTemperature, standardTemperature, name, standardState, standardState);
     }
 
     // LONG CONSTRUCTOR WITHOUT UNIT - DEFAULT UNIT = SPOON
 
     /**
-     * Initialize a new alchemical ingredient with given quantity, standard temperature, name and standard type.
-     * @param   quantity
-     *          The quantity of the new alchemical ingredient
+     * Initialize a new alchemical ingredient with given amount, standard temperature, name and standard type.
+     * @param   amount
+     *          The amount of the new alchemical ingredient
      * @param   standardTemperature
      *          The standard temperature of the new alchemical ingredient
      * @param   name
@@ -158,52 +158,52 @@ public class AlchemicIngredient {
      * @param   standardState
      *          The standard state of the new alchemical ingredient
      *
-     * @effect  This new alchemical ingredient is initialized with the given quantity, standard temperature, name and
+     * @effect  This new alchemical ingredient is initialized with the given amount, standard temperature, name and
      *          standard type.
      *          the new alchemical ingerdient has the standard temperature as temperature, standard state as state and
      *          Unit.Spoon as unit.
-     *          | this(quantity, Unit.Spoon, standardTemperature, name, standardState)
+     *          | this(amount, Unit.Spoon, standardTemperature, name, standardState)
      */
     @Raw
-    public AlchemicIngredient(int quantity, long[] standardTemperature, String name, State standardState) {
-        this(quantity, Unit.Spoon, standardTemperature, name, standardState);
+    public AlchemicIngredient(int amount, long[] standardTemperature, String name, State standardState) {
+        this(amount, Unit.Spoon, standardTemperature, name, standardState);
     }
 
     // BASIC SHORT CONSTRUCTOR
 
     /**
-     * Initialize a new alchemical ingredient with given quantity and unit.
-     * @param   quantity
-     *          The quantity of the new alchemical ingredient
+     * Initialize a new alchemical ingredient with given amount and unit.
+     * @param   amount
+     *          The amount of the new alchemical ingredient
      * @param   unit
      *          The unit of the new alchemical ingredient
      *
-     * @effect  This new alchemical ingredient is initialized with the given quantity and unit.
+     * @effect  This new alchemical ingredient is initialized with the given amount and unit.
      *          the alchemic ingredient has the name "Water" and has a standard temperature (and temperature) of {0,20}
      *          and the standard state (and state) is State.Liquid.
-     *          | this(quantity, unit, new long[]{0, 20}, "Water", State.Liquid)
+     *          | this(amount, unit, new long[]{0, 20}, "Water", State.Liquid)
      */
     @Raw
-    public AlchemicIngredient(int quantity, Unit unit) {
-        this(quantity, unit, new long[]{0, 20}, "Water", State.Liquid);
+    public AlchemicIngredient(int amount, Unit unit) {
+        this(amount, unit, new long[]{0, 20}, "Water", State.Liquid);
     }
 
     // SHORT CONSTRUCTOR WITHOUT UNIT - DEFAULT UNIT = SPOON
 
     /**
-     * Initialize a new alchemical ingredient with given quantity.
-     * @param   quantity
-     *          The quantity of the new alchemical ingredient
+     * Initialize a new alchemical ingredient with given amount.
+     * @param   amount
+     *          The amount of the new alchemical ingredient
      *
      *
-     * @effect  This new alchemical ingredient is initialized with the given quantity.
+     * @effect  This new alchemical ingredient is initialized with the given amount.
      *          the alchemic ingredient has the name "Water" and has a standard temperature (and temperature) of {0,20},
      *          the standard state (and state) is State.Liquid and Unit.Spoon as unit
-     *          | this(quantity, unit, new long[]{0, 20}, "Water", State.Liquid)
+     *          | this(amount, unit, new long[]{0, 20}, "Water", State.Liquid)
      */
     @Raw
-    public AlchemicIngredient(int quantity) {
-        this(quantity, Unit.Spoon);
+    public AlchemicIngredient(int amount) {
+        this(amount, Unit.Spoon);
     }
 
     /* *********************************************************
@@ -361,7 +361,7 @@ public class AlchemicIngredient {
         return state != null;
     }
     /* *********************************************************
-     * QUANTITY & UNIT
+     * AMOUNT & UNIT
      * NOMINAAL
      * *********************************************************/
 
@@ -369,8 +369,8 @@ public class AlchemicIngredient {
      *
      * @return
      */
-    public int getQuantity() {
-        return quantity;
+    public int getAmount() {
+        return amount;
     }
 
     /**
@@ -392,10 +392,10 @@ public class AlchemicIngredient {
         return unit != null;
     }
 
-    /* *********************************************************
+    /* *********************************************************\
      * TEMPERATURE
      * TOTAAL
-     * *********************************************************/
+    \* *********************************************************/
 
     /**
      *
@@ -463,6 +463,24 @@ public class AlchemicIngredient {
         if (this.temperature - temperature >= -MAX_TEMPERATURE) {
             this.temperature -= temperature;
         }
+    }
+
+
+    /* *********************************************************\
+     * COPY METHODS:
+     * When you have to make a new ingredient with practically
+     * everything the same
+    \* *********************************************************/
+
+    public AlchemicIngredient copyAllValsExcept(int amount, Unit unit, State currentState) {
+        AlchemicIngredient newIngredient = new AlchemicIngredient(amount, unit, getStandardTemperature(),
+                getTemperature(), getName(), getStandardState(), currentState);
+        // TODO: Copy SpecialName
+        return newIngredient;
+    }
+
+    public AlchemicIngredient copyAllValsExcept(int amount, Unit unit) {
+        return copyAllValsExcept(amount, unit, getState());
     }
 
     // TODO: getName, getSpecialName, setSpecialName, etc.
