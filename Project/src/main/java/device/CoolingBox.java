@@ -58,7 +58,7 @@ public class CoolingBox extends Device {
     }
 
     /**
-     * Sets the CoolingBox' temperature to the given temperature array. If the gi
+     * Sets the CoolingBox's temperature to the given temperature array. If the given temperature is invalid, it will be set to [0,20]
      *
      * @param temperature
      */
@@ -82,7 +82,7 @@ public class CoolingBox extends Device {
      * *********************************************************/
 
     /**
-     *
+     * Lowers the temperature of the ingredient in the coolbox to the temperature the coolbox has been set to.
      */
     public void activate() {
         long[] tempIngredient = getIngredient().getTemperature();
