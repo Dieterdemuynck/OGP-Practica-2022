@@ -9,9 +9,6 @@ import main.java.Laboratory;
 public abstract class Device {
 
     private AlchemicIngredient ingredient = null;
-    private int ID;  // TODO: My idea of an ID representing the index in a list is bad. Revision needed (@Hannes)
-    // As for the revision, perhaps just have a bunch of if-else statements checking "instanceof DeviceX"?
-    // Seems bad/inefficient, any way to optimize that?
     private Laboratory laboratory;
 
     /* *********************************************************
