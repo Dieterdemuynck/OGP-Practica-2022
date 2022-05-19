@@ -10,6 +10,7 @@ public class Oven extends Device {  // why do they call it oven when you of in t
      * DEVICE TYPE
      * *********************************************************/
 
+    // Specification done in Device
     @Override
     public DeviceType getDeviceType() {
         return DeviceType.Oven;
@@ -23,6 +24,7 @@ public class Oven extends Device {  // why do they call it oven when you of in t
     /* *********************************************************
      * TEMPERATURE
      * *********************************************************/
+
     public long getTemperature() {
         return temperature;
     }

@@ -74,6 +74,10 @@ public abstract class Device {
         CoolingBox, Oven, Kettle, Transmogrifier
     }
 
+    /**
+     * Returns the DeviceType of this device.
+     * @return The DeviceType of this device.
+     */
     public abstract DeviceType getDeviceType();
 
     /* *********************************************************

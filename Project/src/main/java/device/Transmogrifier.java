@@ -1,19 +1,32 @@
 package main.java.device;
 
+import be.kuleuven.cs.som.annotate.Model;
 import main.java.ingredient.AlchemicIngredient;
 import main.java.ingredient.Quantity;
 import main.java.ingredient.State;
 
-// TODO:
-//  Should be nearly finished. All that's left is testing and specification. :)
+/**
+ * The Transmogrifier is an implementation of the abstract class Device. This device has the DeviceType
+ * "DeviceType.Transmogrifier".
+ * It can hold a single AlchemicIngredient instance, which upon activation of this device,
+ * will change the State (and recalculates its quantity-values to the largest fitting representing Unit of
+ * the resulting State) to the Transmogrifier's State.
+ *
+ * @invar   The Transmogrifier's State is never null
+ *          | getState() != null
+ */
 public class Transmogrifier extends Device {
 
+    /**
+     * Variable referencing the resulting State the present alchemical ingredient will have after activation.
+     */
     private State resultingState;
 
     /* *********************************************************
      * DEVICE TYPE
      * *********************************************************/
 
+    // Specification done in Device
     @Override
     public DeviceType getDeviceType() {
         return DeviceType.Transmogrifier;
@@ -37,6 +50,11 @@ public class Transmogrifier extends Device {
     /* *********************************************************
      * STATE
      * *********************************************************/
+
+    /**
+     * Returns the State the Transmogrifier is set to.
+     * @return The State the Transmogrifier is set to.
+     */
     public State getState() {
         return resultingState;
     }
@@ -58,15 +76,35 @@ public class Transmogrifier extends Device {
      * ACTIVATE
      * *********************************************************/
 
+    /**
+     * Activates the Transmogrifier and converts the present Ingredient to the Transmogrifier's current State.
+     *
+     * @effect  If there is ingredient inside the device and
+     *          the Transmogrifier's State differs from the present AlchemicIngredient's State,
+     *          the present AlchemicIngredient's State will be set to the Transmogrifier's State, and its
+     *          Unit and amount will be adjusted accordingly to have the largest fitting Unit and to lose as
+     *          little ingredient as possible.
+     *          | if (this.getIngredient() != null && this.getIngredient().getState() != this.getState())
+     *          |   new.getIngredient() ==
+     *          |     this.getIngredient().copyAllValsExcept(
+     *          |       State.covertTo(this.getIngredient, this.getState()).getAmount(),
+     *          |       State.covertTo(this.getIngredient, this.getState()).getUnit(),
+     *          |       this.getState()
+     *          |     );
+     */
+    @Model
     public void activate() {
-        if(getIngredient().getState() != getState()) {
-            // TODO: transfer SpecialName to new Ingredient
+        // Only if there is ingredient present and the State differs do we want to do any computation at all:
+        if(getIngredient() != null && getIngredient().getState() != getState()) {
+            // Step 1: Find the Quantity of the new ingredient
             Quantity quantity = State.convertTo(getIngredient(), getState());
 
-            // This is *the* reason why I wish I could just pass an ingredient type.
-            setIngredient(new AlchemicIngredient(quantity.getAmount(), quantity.getUnit(),
-                    getIngredient().getStandardTemperature(), getIngredient().getTemperature(),
-                    getIngredient().getName(), getIngredient().getStandardState(), getState()));
+            // Step 2: Make a copy of the old ingredient, but with different quantity-values and state
+            AlchemicIngredient newIngredient = getIngredient().copyAllValsExcept(
+                    quantity.getAmount(), quantity.getUnit(), getState());
+
+            // Step 3: Set the present ingredient to the new ingredient
+            setIngredient(newIngredient);
         }
     }
 }

@@ -18,6 +18,7 @@ public class Kettle extends Device {  // How did we forget the most important de
      * DEVICE TYPE
      * *********************************************************/
 
+    // Specification done in Device
     @Override
     public Device.DeviceType getDeviceType() {
         return DeviceType.Kettle;
@@ -32,6 +33,7 @@ public class Kettle extends Device {  // How did we forget the most important de
     /* *********************************************************
      * ADDED INGREDIENTS
      * *********************************************************/
+
     public void setAddedIngredients(ArrayList<AlchemicIngredient> addedIngredients) {
         this.addedIngredients = addedIngredients;
     }

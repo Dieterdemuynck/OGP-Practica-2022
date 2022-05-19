@@ -1,7 +1,6 @@
 package main.java;
 
 import main.java.device.Device;
-import main.java.device.DeviceTypeAlreadyPresentInLaboratoryException;
 import main.java.ingredient.AlchemicIngredient;
 import main.java.ingredient.IngredientContainer;
 
@@ -110,16 +109,18 @@ public class Laboratory {
         this.devices = devices;
     }
 
-    // TODO: Specification
-    public void addDevice(Device device) throws DeviceTypeAlreadyPresentInLaboratoryException {
+    /**
+     * 
+     * @param device
+     */
+    public void addDevice(Device device) {
         if (device.getLaboratory() != null) {
             throw new IllegalArgumentException(
                     "Device to be added to laboratory may not already be linked to a Laboratory.");
         }
-        if (devices.get(device.getDeviceType()) != null) {
-            throw new DeviceTypeAlreadyPresentInLaboratoryException(device.getDeviceType(), this);
+        if (devices.get(device.getDeviceType()) == null) {
+            getDevices().put(device.getDeviceType(), device);
         }
-        getDevices().put(device.getDeviceType(), device);
     }
 
     /* *********************************************************\

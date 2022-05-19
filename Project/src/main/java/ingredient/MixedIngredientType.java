@@ -11,6 +11,7 @@ public class MixedIngredientType extends IngredientType{
     /* *********************************************************
      * CONSTRUCTORS
      * *********************************************************/
+
     public MixedIngredientType(String name, long[] standardTemperature,  State standardState) {
         super(name, standardTemperature, standardState);
     }
@@ -18,6 +19,7 @@ public class MixedIngredientType extends IngredientType{
     /* *********************************************************
      * COMPONENTS NAME
      * *********************************************************/
+
     @Override
     public String getName(){
         return "iets nieuws"; //TODO -> Dieter =)
@@ -27,6 +29,7 @@ public class MixedIngredientType extends IngredientType{
     /* *********************************************************
      * SPECIAL NAME
      * *********************************************************/
+
     @Override
     public void setSpecialName(String specialName){
         if (! isValidSpecialName(specialName)) {

@@ -1,5 +1,7 @@
 package main.java.device;
 
+import main.java.ingredient.AlchemicIngredient;
+
 /**
  * A class of cooling boxes
  * @author Dieter Demuynck, Hannes Ingelaere and Ine Malfait
@@ -16,21 +18,21 @@ public class CoolingBox extends Device {
      * DEVICE TYPE
      * *********************************************************/
 
-    /**
-     *
-     * @return
-     */
+    // Specification done in Device
     @Override
     public DeviceType getDeviceType() {
         return DeviceType.CoolingBox;
     }
 
     /* *********************************************************
-     * CONSTRUCTOR TODO
+     * CONSTRUCTOR
      * *********************************************************/
 
     /**
+     * Constructs a new CoolingBox device with its temperature set to {0, 20}.
      *
+     * @post    the CoolingBox will have its temperature set to {0, 20}
+     *          | new.getTemperature() == new long[]{0, 20};
      */
     public CoolingBox(){
         this.temperature = 20;
@@ -40,22 +42,28 @@ public class CoolingBox extends Device {
      * TEMPERATURE
      * *********************************************************/
 
-    /**
-     *
-     * @return
-     */
-    public long getTemperature() {
-        // TODO: should return long[] instead
-        return temperature;
+    private long getTemperatureAsLong() {
+        return this.temperature;
     }
 
     /**
+     * Returns the temperature array that the CoolingBox is set to.
+     *
+     * @return The long[] array representing the temperature the CoolingBox is set to.
+     */
+    public long[] getTemperature() {
+        if (getTemperatureAsLong() < 0)
+            return new long[]{-getTemperatureAsLong(), 0};
+        return new long[]{0, getTemperatureAsLong()};
+    }
+
+    /**
+     * Sets the CoolingBox' temperature to the given temperature array. If the gi
      *
      * @param temperature
      */
     public void setTemperature(long[] temperature) {
-        // TODO: should get a long[]
-        if (temperature == null) {
+        if (AlchemicIngredient.isValidTemperature(temperature)) {
             this.temperature = 20; //DEFAULT
         }
         else {
@@ -77,11 +85,14 @@ public class CoolingBox extends Device {
      *
      */
     public void activate() {
-        long tempTemp = getTemperature();
         long[] tempIngredient = getIngredient().getTemperature();
         long longTempIngredient = asLong(tempIngredient);
-        getIngredient().cool(Math.abs(longTempIngredient-tempTemp));
+        getIngredient().cool(Math.max(0, longTempIngredient-getTemperatureAsLong()));
     }
+
+    /* *********************************************************
+     * CHECKERS
+     * *********************************************************/
 
 
 }

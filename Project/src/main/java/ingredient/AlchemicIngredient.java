@@ -421,6 +421,7 @@ public class AlchemicIngredient {
 
     /**
      * Return the (current) temperature of this alchemical ingredient.
+     * @retun  TODO
      */
     public long[] getTemperature() {
         long[] temp = new long[2];
@@ -467,14 +468,18 @@ public class AlchemicIngredient {
      *
      * @return  True if and only if the temperature is not both cooled and heated and neither exceed the maximum
      *          temperature
-     *          | result == ( (temperature[0] and temperature[1]) >= 0
-     *          |               or (temperature[0] or temperature[1]) <= MAX_TEMPERATURE)
+     *          | result == (temperature != null
+     *          |               && temperature.length == 2
+     *          |               && (temperature[0] == 0 || temperature[1] == 0)
+     *          |               && temperature[0] <= AlchemicIngredient.MAX_TEMPERATURE
+     *          |               && temperature[1] <= AlchemicIngredient.MAX_TEMPERATURE)
      */
-    private static boolean isValidTemperature(long[] temperature) {
-        if (temperature[0] != 0 && temperature.length == 2) {
-            return temperature[1] == 0 && temperature[0] <= MAX_TEMPERATURE;
-        } else
-            return temperature.length == 2 && temperature[1] <= MAX_TEMPERATURE; // dus temperature[0] == 0 -> array mag nog steeds maar 2 lang zijn en
+    public static boolean isValidTemperature(long[] temperature) {
+        return temperature != null
+                && temperature.length == 2
+                && (temperature[0] == 0 || temperature[1] == 0)
+                && temperature[0] <= AlchemicIngredient.MAX_TEMPERATURE
+                && temperature[1] <= AlchemicIngredient.MAX_TEMPERATURE;
     }
 
     /**
@@ -503,10 +508,10 @@ public class AlchemicIngredient {
     /* *********************************************************\
      * COPY METHODS:
      * When you have to make a new ingredient with practically
-     * everything the same
+     * everything the same except for a few values
     \* *********************************************************/
 
-    /** todo is dit ok?
+    /** TODO: dit is nog niet OK
      * Makes a new alchemical ingredient based on an existing alchemical ingredient but with a different amount, unit
      * and current state.
      * @param   amount
@@ -515,6 +520,16 @@ public class AlchemicIngredient {
      *          the new unit for the new alchemical ingredient
      * @param   currentState
      *          the new (current) state for the new alchemical ingredient
+     * @return  a new AlchemicIngredient object where all fields are the same as this object, but with different
+     *          amount, unit and state.
+     *          | result == new AlchemicIngredient(
+     *          |               amount,
+     *          |               unit,
+     *          |               getStandardTemperature(),
+     *          |               getTemperature(),
+     *          |               getName(),
+     *          |               getStandardState(),
+     *          |               currentState)
      */
     public AlchemicIngredient copyAllValsExcept(int amount, Unit unit, State currentState) {
         AlchemicIngredient newIngredient = new AlchemicIngredient(amount, unit, getStandardTemperature(),
@@ -525,12 +540,13 @@ public class AlchemicIngredient {
         return newIngredient;
     }
 
-    /** todo is dit ok?
+    /**
      * Makes a new alchemical ingredient based on an existing alchemical ingredient but with a different amount and unit.
      * @param   amount
      *          the new amount for the new alchemical ingredient
      * @param   unit
-     *          the new unit for the new alchemical ingredient$
+     *          the new unit for the new alchemical ingredient
+     * @return  TODO
      */
     public AlchemicIngredient copyAllValsExcept(int amount, Unit unit) {
         return copyAllValsExcept(amount, unit, getState());
