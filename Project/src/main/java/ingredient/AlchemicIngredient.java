@@ -42,7 +42,7 @@ public class AlchemicIngredient {
      * CONSTRUCTORS
      * *********************************************************/
     // FOR IN TRANSMOGIFIER: CURRENT STATE AND TEMPERATURE
-    /** todo controleren pls
+    /**
      * Initialize a new alchemical ingredient with given amount, unit, standard temperature, current temperature, name,
      * standard state and current state.
      *
@@ -272,7 +272,7 @@ public class AlchemicIngredient {
         long standardTemperature = asLong(this.getStandardTemperature());
         if (temperature < standardTemperature) {
             pre += "Cooled ";
-        } else if (temperature > standardTemperature) {  // Who's the silly goose who forgot that temperatures could be equal? INE =) ma kheb er nu aan gedacht en kgingt aanpassen =)
+        } else if (temperature > standardTemperature) {
             pre += "Heated ";
         }
         return pre;
@@ -423,7 +423,7 @@ public class AlchemicIngredient {
 
     /**
      * Return the (current) temperature of this alchemical ingredient.
-     * @retun  TODO
+     * @return  TODO
      */
     public long[] getTemperature() {
         long[] temp = new long[2];

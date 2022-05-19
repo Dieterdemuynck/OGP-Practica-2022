@@ -2,8 +2,6 @@ package main.java.ingredient.exception;
 
 import be.kuleuven.cs.som.annotate.*;
 
-
-//TODO: iemand die dit kan nakijken of dit goed genoeg is? Want ken nie zo veel van exceptions =)
 /**
  * A class for signaling illegal attempts to set the name of an ingredient type due to in valid characters.
  *
