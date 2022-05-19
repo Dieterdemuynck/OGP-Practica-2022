@@ -42,7 +42,7 @@ public class AlchemicIngredient {
     // FOR IN TRANSMOGIFIER: CURRENT STATE AND TEMPERATURE
     /** todo controleren pls
      * Initialize a new alchemical ingredient with given amount, unit, standard temperature, current temperature, name,
-     * standard type and current type.
+     * standard state and current state.
      *
      * @param   amount
      *          The amount of the new alchemical ingredient
@@ -93,8 +93,8 @@ public class AlchemicIngredient {
     // FOR IN TRANSMOGIFIER: CURRENT STATE
 
     /**
-     * Initialize a new alchemical ingredient with given amount, unit, standard temperature, name, standard type and
-     * current type.
+     * Initialize a new alchemical ingredient with given amount, unit, standard temperature, name, standard state and
+     * current state.
      *
      * @param   amount
      *          The amount of the new alchemical ingredient
@@ -110,7 +110,7 @@ public class AlchemicIngredient {
      *          The current state of the new alchemical ingredient
      *
      * @effect  This new alchemical ingredient is initialized with the given amount, unit, standard temperature,
-     *          name, standard type and current type.
+     *          name, standard state and current state.
      *          the new alchemical ingerdient has the standard temperature as temperature
      *          | this(amount, unit, standardTemperature, standardTemperature, name, standardState, currentState)
      */
@@ -123,7 +123,7 @@ public class AlchemicIngredient {
     // BASIC LONG CONSTRUCTOR
 
     /**
-     * Initialize a new alchemical ingredient with given amount, unit, standard temperature, name and standard type.
+     * Initialize a new alchemical ingredient with given amount, unit, standard temperature, name and standard state.
      *
      * @param   amount
      *          The amount of the new alchemical ingredient
@@ -137,7 +137,7 @@ public class AlchemicIngredient {
      *          The standard state of the new alchemical ingredient
      *
      * @effect  This new alchemical ingredient is initialized with the given amount, unit, standard temperature,
-     *          name and standard type.
+     *          name and standard state.
      *          the new alchemical ingerdient has the standard temperature as temperature and standard state as state
      *          | this(amount, unit, standardTemperature, standardTemperature, name, standardState, standardState)
      */
@@ -149,7 +149,7 @@ public class AlchemicIngredient {
     // LONG CONSTRUCTOR WITHOUT UNIT - DEFAULT UNIT = SPOON
 
     /**
-     * Initialize a new alchemical ingredient with given amount, standard temperature, name and standard type.
+     * Initialize a new alchemical ingredient with given amount, standard temperature, name and standard state.
      * @param   amount
      *          The amount of the new alchemical ingredient
      * @param   standardTemperature
@@ -160,7 +160,7 @@ public class AlchemicIngredient {
      *          The standard state of the new alchemical ingredient
      *
      * @effect  This new alchemical ingredient is initialized with the given amount, standard temperature, name and
-     *          standard type.
+     *          standard state.
      *          the new alchemical ingerdient has the standard temperature as temperature, standard state as state and
      *          Unit.Spoon as unit.
      *          | this(amount, Unit.Spoon, standardTemperature, name, standardState)
@@ -323,7 +323,7 @@ public class AlchemicIngredient {
      * Set the special name of the (mixed) alchemical ingredient.
      * @param   specialName
      *          the special name of this (mixed) alchemical ingredient.
-     * @throws  NonMixedSpecialNameException(this.ingredientType) [must]
+     * @throws  NonMixedSpecialNameException(this.ingredientType)
      *          The alchemical ingredient is not a mixed ingredient
      *          | !ingredientType.isMixedIngredient()
      */
