@@ -62,6 +62,17 @@ public class IngredientType {
         this.standardState = standardState;
     }
 
+    protected IngredientType( long[] standardTemperature, State standardState){
+        this.name = null;
+        if (!isValidStandardTemperature(standardTemperature)) {
+            this.standardTemperature = 20;
+        }
+        else {
+            this.standardTemperature = standardTemperature[1];
+        }
+        this.standardState = standardState;
+    }
+
 
     /* *********************************************************
      * NAME

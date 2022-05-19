@@ -5,6 +5,9 @@ import be.kuleuven.cs.som.annotate.Raw;
 import main.java.ingredient.exception.IllegalNameException;
 import main.java.ingredient.exception.NonMixedSpecialNameException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A class of alchemical ingredients
  * @author Dieter Demuynck, Hannes Ingelaere and Ine Malfait
@@ -209,6 +212,18 @@ public class AlchemicIngredient {
         this(amount, Unit.Spoon);
     }
 
+    private AlchemicIngredient(MixedIngredientType mixedIngredientType, int amount, Unit unit, long[] currentTemperature,
+                               State currentState) {
+        this.ingredientType = mixedIngredientType;
+        this.amount = amount;
+        if (! currentState.hasUnit(unit)) {
+            throw new IllegalArgumentException();
+        }
+        this.unit = unit;
+        setTemperature(currentTemperature);
+        this.state = currentState;
+    }
+
     /* *********************************************************
      * INGREDIENT TYPE
      * TOTAAL
@@ -364,7 +379,6 @@ public class AlchemicIngredient {
 
     /* *********************************************************
      * STATE
-     * ?
      * *********************************************************/
 
     /**
@@ -416,21 +430,25 @@ public class AlchemicIngredient {
         return unit != null;
     }
 
-    /* *********************************************************\
+    /* *********************************************************
      * TEMPERATURE
      * TOTAAL
-    \* *********************************************************/
+     * *********************************************************/
 
     /**
      * Return the (current) temperature of this alchemical ingredient.
      * @return  TODO
      */
     public long[] getTemperature() {
+        return asLongArray(this.temperature);
+    }
+
+    private long[] asLongArray(long temperature){
         long[] temp = new long[2];
-        if (this.temperature < 0) {
-            temp[0] = Math.abs(this.temperature);
+        if (temperature < 0) {
+            temp[0] = Math.abs(temperature);
         } else {
-            temp[1] = this.temperature;
+            temp[1] = temperature;
         }
         return temp;
     }
@@ -507,11 +525,11 @@ public class AlchemicIngredient {
     }
 
 
-    /* *********************************************************\
+    /* *********************************************************
      * COPY METHODS:
      * When you have to make a new ingredient with practically
      * everything the same except for a few values
-    \* *********************************************************/
+     * *********************************************************/
 
     /** TODO: dit is nog niet OK
      * Makes a new alchemical ingredient based on an existing alchemical ingredient but with a different amount, unit
@@ -554,5 +572,93 @@ public class AlchemicIngredient {
         return copyAllValsExcept(amount, unit, getState());
     }
 
+    /* *********************************************************
+     * MIX METHODES
+     * *********************************************************/
+
+    /**
+     * todo wat als iets al gemixt is? voor naam
+     * @param ingredient
+     * @return
+     */
+    public AlchemicIngredient mixWith(AlchemicIngredient ingredient){
+        List<String> name = new ArrayList<>();
+        name.add(this.getName());
+        name.add(ingredient.getName());
+
+        List<AlchemicIngredient> ingredients = new ArrayList<>();
+        ingredients.add(this);
+        ingredients.add(ingredient);
+
+        State state = this.standardTemperatureClosestToZeroTwenty(ingredients).getState();
+
+        int amount = (int) Math.floor(State.addAmountsInSpoons(ingredients));
+        long[] temperature = asLongArray((asLong(getTemperature()) +  asLong(ingredient.getTemperature()))/2);
+        MixedIngredientType mixedIngredientType = new MixedIngredientType(name, temperature, state);
+
+        return new AlchemicIngredient(mixedIngredientType, amount,Unit.Spoon, temperature, state);
+    }
+
+
+    /**
+     * todo wat als iets al gemixt is? voor naam
+     * @param ingredients
+     * @return
+     */
+    public AlchemicIngredient mixWith(List<AlchemicIngredient> ingredients){
+        List<String> name = new ArrayList<>();
+        name.add(this.getName());
+        long temperature = asLong(getTemperature());
+        int numberOfIngredients = 1;
+        for (AlchemicIngredient alchemicIngredient: ingredients){
+            name.add(alchemicIngredient.getName());
+            temperature += asLong(alchemicIngredient.getTemperature());
+            numberOfIngredients += 1;
+        }
+        long[] temperatureArray = asLongArray(temperature/numberOfIngredients);
+
+        State state = this.standardTemperatureClosestToZeroTwenty(ingredients).getState();
+
+        ingredients.add(this);
+        int amount = (int) Math.floor(State.addAmountsInSpoons(ingredients));
+
+        MixedIngredientType mixedIngredientType = new MixedIngredientType(name, temperatureArray, state);
+
+        return new AlchemicIngredient(mixedIngredientType, amount,Unit.Spoon, temperatureArray, state);
+    }
+
+    /**
+     *
+     * @param ingredient
+     * @return
+     */
+    private boolean standardTemperatureCloserToZeroTwenty(AlchemicIngredient ingredient) {
+        long[] tTemperature = getTemperature();
+        long[] iTemperature = ingredient.getTemperature();
+        long tDistance = tTemperature[0] + Math.abs(tTemperature[1]-20);
+        long iDistance = iTemperature[0] + Math.abs(iTemperature[1]-20);
+        return tDistance <= iDistance;
+    }
+
+    /**
+     *
+     * @param ingredients
+     * @return
+     */
+    private AlchemicIngredient standardTemperatureClosestToZeroTwenty(List<AlchemicIngredient> ingredients){
+        AlchemicIngredient closestIngredient = this;
+        int i = 0;
+        while (i < ingredients.size()) {
+            AlchemicIngredient ingredientToCheck = ingredients.get(i);
+            if (closestIngredient.standardTemperatureCloserToZeroTwenty(ingredientToCheck)){
+                i +=1;
+            }
+            else {
+                closestIngredient = ingredientToCheck;
+                i +=1;
+            }
+        }
+        return closestIngredient;
+    }
     // TODO: getName, getSpecialName, setSpecialName, etc.
 }
