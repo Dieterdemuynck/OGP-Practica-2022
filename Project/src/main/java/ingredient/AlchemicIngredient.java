@@ -422,13 +422,15 @@ public class AlchemicIngredient {
         if (!isValidTemperature(temperature)) {
             this.temperature = 20; //DEFAULT
         }
-        long temp = 0;
-        if (temperature[0] != 0) {
-            temp -= temperature[0];
-        } else {
-            temp = temperature[1];
+        else {
+            long temp = 0;
+            if (temperature[0] != 0) {
+                temp -= temperature[0];
+            } else {
+                temp = temperature[1];
+            }
+            this.temperature = temp;
         }
-        this.temperature = temp;
     }
 
     /**
