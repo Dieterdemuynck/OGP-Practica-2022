@@ -41,7 +41,7 @@ public class MixedIngredientType extends IngredientType{
     }
 
     public static boolean isValidSpecialName(String specialName){
-        return true; //TODO DIETER =)
+        return specialName.matches("([A-Z][a-z']+( [A-Z][a-z']+)+|[A-Z][a-z']{2,})");
     }
     @Override
     public boolean hasSpecialName(){

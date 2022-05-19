@@ -3,15 +3,37 @@ package main.java.ingredient;
 /**
  * mag alleen opgeroepen worden door AlchemicIngredient
  */
+/**
+ * A class of ingredient types, can only be summoned by alchemicIngredient
+ * @author Dieter Demuynck, Hannes Ingelaere and Ine Malfait
+ * @version 1.0
+ */
+
 public class IngredientType {
 
+    /**
+     * Variable registering the name of this ingredient type.
+     */
     private final String name;
+    /**
+     * Variable registering the standard temperature of this ingredient type.
+     */
     private final long standardTemperature;
+    /**
+     * Variable referencing the standard state of this ingredient type.
+     */
     private final State standardState;
 
     /* *********************************************************
      * CONSTRUCTORS
      * *********************************************************/
+
+    /**
+     *
+     * @param name
+     * @param standardTemperature
+     * @param standardState
+     */
     public IngredientType(String name, long[] standardTemperature, State standardState){
         if (!isValidName(name)){
             throw new IllegalNameException(name);
@@ -31,6 +53,11 @@ public class IngredientType {
      * NAME
      * DEFENSIEF
      * *********************************************************/
+
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
@@ -42,7 +69,7 @@ public class IngredientType {
      * @return      true if and only if name is a valid simple name, false otherwise.
      */
     public static boolean isValidName(String name){
-        return name.matches("([A-Z][a-z']+( [A-Z][a-z']+)+|[A-Z][a-z']{2,})"); //TODO Dieter =)
+        return name.matches("([A-Z][a-z']+( [A-Z][a-z']+)+|[A-Z][a-z']{2,})");
     }
 
     public boolean hasSpecialName(){
