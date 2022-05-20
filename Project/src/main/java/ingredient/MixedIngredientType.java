@@ -27,6 +27,10 @@ public class MixedIngredientType extends IngredientType{
         return "iets nieuws"; //TODO -> Dieter =)
     }
 
+    public List<String> getComponentNames(){
+        return componentNames;
+    }
+
 
     /* *********************************************************
      * SPECIAL NAME

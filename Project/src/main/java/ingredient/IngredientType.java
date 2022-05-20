@@ -3,6 +3,9 @@ package main.java.ingredient;
 import main.java.ingredient.exception.IllegalNameException;
 import main.java.ingredient.exception.NonMixedSpecialNameException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A class of ingredient types, can only be summoned by alchemicIngredient
  * @author Dieter Demuynck, Hannes Ingelaere and Ine Malfait
@@ -102,6 +105,12 @@ public class IngredientType {
      */
     public boolean hasSpecialName(){
         return false;
+    }
+
+    public List<String> getComponentNames(){
+        List<String> componentNames = new ArrayList<>();
+        componentNames.add(getName());
+        return componentNames;
     }
 
     /* *********************************************************
