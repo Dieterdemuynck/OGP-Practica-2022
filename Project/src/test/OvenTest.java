@@ -30,9 +30,8 @@ public class OvenTest {
         assertEquals(Device.DeviceType.Oven,oven.getDeviceType());
     }
 
-    @Test //KAN NOG NIE TESTEN
+    @Test
     public void testActivate_withoutLaboratory(){
-        // oven must heat water to 100 with a marge of 5%
         oven.setTemperature(new long[] {0,100});
         assertEquals(0,oven.getTemperature()[0]);
         assertEquals(100,oven.getTemperature()[1]);
