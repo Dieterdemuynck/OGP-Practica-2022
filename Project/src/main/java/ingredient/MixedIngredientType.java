@@ -33,26 +33,52 @@ public class MixedIngredientType extends IngredientType{
      */
     public MixedIngredientType(List<String> name, long[] standardTemperature,  State standardState) {
         super(standardTemperature, standardState);
+        setComponentNames(name);
     }
 
     /* *********************************************************
      * COMPONENTS NAME
      * *********************************************************/
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getName(){
         // Since this is a mixture, there must be at least 2 components
         StringBuilder simpleName = new StringBuilder(getComponentNames().get(0) + " mixed with " + getComponentNames().get(1));
 
-        for (int i = 2; i < getComponentNames().size(); i++) {
+        for (int i = 2; i < getComponentNames().size() -1 ; i++) {
             simpleName.append(", ").append(getComponentNames().get(i));
+        }
+        if (getComponentNames().size() >= 3) {
+            simpleName.append(" and ").append(getComponentNames().get(getComponentNames().size()-1));
         }
 
         return simpleName.toString();
     }
 
+    /**
+     *
+     * @return
+     */
     public List<String> getComponentNames(){
         return componentNames;
+    }
+
+    /**
+     *
+     * @param names
+     */
+    private void setComponentNames(List<String> names){
+        for (String name : names){
+
+            // This is trivial because all names come from existing alchemical ingredients and so are all valid.
+            if( isValidName(name)){
+                componentNames.add(name);
+            }
+        }
     }
 
 
@@ -60,6 +86,11 @@ public class MixedIngredientType extends IngredientType{
      * SPECIAL NAME
      * *********************************************************/
 
+    /**
+     *
+     * @param   specialName
+     *          The special name
+     */
     @Override
     public void setSpecialName(String specialName){
         if (! isValidSpecialName(specialName)) {
@@ -68,19 +99,37 @@ public class MixedIngredientType extends IngredientType{
         this.specialName = specialName;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getSpecialName(){
         return this.specialName;
     }
 
+    /**
+     *
+     * @param specialName
+     * @return
+     */
     public static boolean isValidSpecialName(String specialName){
         return specialName.matches("([A-Z][a-z']+( [A-Z][a-z']+)+|[A-Z][a-z']{2,})");
     }
+
+    /**
+     *
+     * @return
+     */
     @Override
     public boolean hasSpecialName(){
         return getSpecialName() != null;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public boolean isMixedIngredient() {
         return true;
