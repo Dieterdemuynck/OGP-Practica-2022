@@ -1,10 +1,7 @@
 package main.java.recipe;
 
-import main.java.ingredient.AlchemicIngredient;
-
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
