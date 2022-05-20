@@ -307,7 +307,7 @@ public class Laboratory {
      * @throws DeviceNotEmptyException
      * @throws DeviceNotPresentException
      */
-    private void addToDevice(Device.DeviceType deviceType, IngredientContainer container)
+    public void addToDevice(Device.DeviceType deviceType, IngredientContainer container)
             throws DeviceNotEmptyException, DeviceNotPresentException {
         getDevice(deviceType).insert(container);
     }
@@ -317,7 +317,7 @@ public class Laboratory {
      * @param deviceType
      * @throws DeviceNotPresentException
      */
-    private void activateDevice(Device.DeviceType deviceType)
+    public void activateDevice(Device.DeviceType deviceType)
             throws DeviceNotPresentException {
         getDevice(deviceType).activate();
     }
@@ -329,9 +329,9 @@ public class Laboratory {
      * @return
      * @throws DeviceNotPresentException
      */
-    private IngredientContainer retrieveFromDevice(Device.DeviceType deviceType)
+    public IngredientContainer retrieveFromDevice(Device.DeviceType deviceType)
             throws DeviceNotPresentException {
-        return getDevice(deviceType).retrieve(getDevice(deviceType).getLargestFittingContainerForContents());
+        return getDevice(deviceType).retrieve();
     }
 
     /**

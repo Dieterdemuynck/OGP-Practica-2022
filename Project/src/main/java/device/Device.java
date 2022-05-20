@@ -49,15 +49,8 @@ public abstract class Device {
      * ALCHEMIC INGREDIENT - RETRIEVE
      * ***************************/
 
-    // TODO: I think "storeContentsIn(Container)" is a better name.
-    // Should we return the container itself too? Do we really need to be able to chain methods?
-    public IngredientContainer retrieve(IngredientContainer container) {
-        //TODO volgens mij heeft dit geen input nodig, je moet gwn een container teruggeven waarin dit ingredient kan, denkik.
-        if (container.getContent() == null) { //TODO ook nagaan of in container kan? Dieter da's me quantities =)
-            container.insert(getIngredient());
-            setIngredient(null);
-        }
-        return container;
+    public IngredientContainer retrieve() {
+        return new IngredientContainer(getIngredient());
     }
 
     protected static long asLong(long[] temperature){
