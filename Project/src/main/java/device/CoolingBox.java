@@ -48,7 +48,7 @@ public class CoolingBox extends TemperatureDevice {
         if (getLaboratory() != null) {
             long[] tempIngredient = getIngredient().getTemperature();
             long longTempIngredient = asLong(tempIngredient);
-            if (longTempIngredient < getTemperatureAsLong()) {
+            if (longTempIngredient > getTemperatureAsLong()) {
                 getIngredient().cool(Math.max(0, longTempIngredient - getTemperatureAsLong()));
             }
         }
