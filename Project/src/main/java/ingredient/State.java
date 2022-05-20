@@ -72,7 +72,7 @@ public enum State {
      *          | values[0] == 1
      * @pre     the value for Unit.Storeroom must eventually result in 6300 times the value for Unit.Spoon
      *          | TODO: formal spec. (checker?)
-     * // TODO: @post
+     * @post    A new State with Units (of which there is at least a Spoon and a Storeroom) and it's values is created.
      *
      * @param   units   The units that belong to the State.
      * @param   values  The value of the unit at the same index in the units array compared to the one at the previous.

@@ -72,6 +72,10 @@ public class Kettle extends Device {
 
     /**
      * This method activates the kettle, mixing the ingredients contained in the kettle, resulting in a single ingredient.
+     * @pre     the Kettle may not be empty.
+     *          getAddedIngredients() != null.
+     * @post    The Kettle will contain a single ingredient, with the right attributes.
+     *          getAddedingredients().size() == 1
      */
     public void activate() {
         // A device may only be activated if it is in a laboratory

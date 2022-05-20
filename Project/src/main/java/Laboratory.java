@@ -12,16 +12,48 @@ import main.java.ingredient.exception.SpecialNameDoesNotExistException;
 
 import java.util.*;
 
+/**
+ * A class of laboratories
+ * @author Dieter Demuynck, Hannes Ingelaere and Ine Malfait
+ * @version 1.0
+ */
 public class Laboratory {
 
+    /**
+     * Variable registering the capacity of the storeroom of the laboratory.
+     */
     private int storeroomCapacity;
+
+    /**
+     * Variable referencing the alchemic ingredients stored in the storeroom.
+     */
     private Map<String, AlchemicIngredient> storage = new HashMap<>();
+
+    /**
+     * Variable referencing the devices contained in the laboratory.
+     */
     private Map<Device.DeviceType, Device> devices = new HashMap<>();  // Downside: allows null keys
+
+    /**
+     * Variable registering the special name with it's simple name.
+     */
     private Map<String, String> specialToSimple = new HashMap<>();
 
     /* *********************************************************
      * CONSTRUCTOR
      * *********************************************************/
+
+    /**
+     * initialize a laboratory with a certain storeroom capacity.
+     *
+     * @param   storeroomCapacity
+     *          The capacity of the storeroom.
+     *
+     * @pre     The capacity is valid.
+     *          | isValidCapacity(storeroomCapacity)
+     * @post    The capacity of the storeroom is the given capacity.
+     *          | new.storeroomCapacity == storeroomCapacity
+     */
     public Laboratory(int storeroomCapacity){
         setStoreroomCapacity(storeroomCapacity);
     }
@@ -30,10 +62,18 @@ public class Laboratory {
      * STOREROOM CAPACITY
      * *********************************************************/
 
+    /**
+     * returns the capacity of the storeroom.
+     * @return the capacity of the storeroom.
+     */
     public int getStoreroomCapacity() {
         return storeroomCapacity;
     }
 
+    /**
+     * sets the capacity of the storeroom to the given capacity.
+     * @param storeroomCapacity int of the capacity of the storeroom.
+     */
     public void setStoreroomCapacity(int storeroomCapacity) {
         if (storeroomCapacity < 0)
             throw new IllegalArgumentException(
@@ -47,11 +87,20 @@ public class Laboratory {
     /* *********************************************************
      * STORAGE
      * *********************************************************/
+
+    /**
+     * returns the contents of the storeroom
+     * @return the contents of the storeroom.
+     */
     public Map<String, AlchemicIngredient> getStorage() {
         // TODO: should we really allow this mutable field's getter to be public?
         return storage;
     }
 
+    /**
+     * sets the contents of the storeroom.
+     * @param storage the contents of the storeroom.
+     */
     public void setStorage(Map<String, AlchemicIngredient> storage) {
         // TODO: should we really allow a set method?
         this.storage = storage;
@@ -68,8 +117,12 @@ public class Laboratory {
     }
 
     /**
+     *Stores an alchemic ingredient in the storeroom
      *
-     * @pre     ingredient is not null
+     * @pre     ingredient is not null.
+     *          | ingredient != null
+     * @post    the ingredient is added to the storeroom.
+     *          | getStorage()[getStorage.size() -1] == ingredient
      * @param ingredient
      */
     private void store(AlchemicIngredient ingredient) {
@@ -179,29 +232,6 @@ public class Laboratory {
     private AlchemicIngredient getStoredIngredient(String name) {
         return getStorage().get(name);
     }
-
-
-
-    // TODO: either delete or reuse this binary search
-//    private int binarySearch(String target, int first, int last) {
-//        int mid = (first + last) / 2;
-//        if (first > last) {
-//            return first;
-//        }
-//        if (getStorage().size() == 0) {
-//            return 0;
-//        }
-//        if (target.equals(getStorage().get(mid).getName())) {
-//            return mid;
-//        } else {
-//            if (getStorage().get(mid).getName().compareTo(target) < 0) {
-//                return binarySearch(target, mid+1,last);
-//            }
-//            else{
-//                return binarySearch(target,first,mid-1);
-//            }
-//        }
-//    }
 
     /* *********************************************************
      * DEVICES
