@@ -672,7 +672,8 @@ public class AlchemicIngredient {
         Unit unit = quantity.getUnit();
 
         // Calculate the average temperature
-        long[] temperature = asLongArray((asLong(getTemperature()) +  asLong(ingredient.getTemperature()))/2);
+        long[] temperature = asLongArray( (long) Math.floor( (asLong(getTemperature())*State.toSpoons(this) +
+                asLong(ingredient.getTemperature())*State.toSpoons(ingredient))/amount) );
 
         // Create a new mixedIngredientType
         MixedIngredientType mixedIngredientType = new MixedIngredientType(names, temperature, state);
@@ -695,13 +696,12 @@ public class AlchemicIngredient {
         List<String> names = new ArrayList<>(this.getIngredientType().getComponentNames());
 
         // Initialize vars for finding average temperature
-        double temperatureSum = asLong(getTemperature())*State.toSpoons(getAmount(), getUnit());
+        double temperatureSum = asLong(getTemperature())*State.toSpoons(this);
 
         // Add all names to list, in order, and update temperature vars
         for (AlchemicIngredient alchemicIngredient: ingredients){
             names = mergeSort(names, alchemicIngredient.getIngredientType().getComponentNames());
-            temperatureSum += asLong(alchemicIngredient.getTemperature())*State.toSpoons(alchemicIngredient.getAmount(),
-                    alchemicIngredient.getUnit());
+            temperatureSum += asLong(alchemicIngredient.getTemperature())*State.toSpoons(alchemicIngredient);
         }
 
         // Find the state of the ingredient with its temperature closest to {0, 20}
@@ -719,6 +719,8 @@ public class AlchemicIngredient {
         // Find the average temperature based on values of the temperature vars and their amount. The temperature is
         // rounded down to long values
         long[] temperatureArray = asLongArray((long) Math.floor(temperatureSum/amount));
+        System.out.println(temperatureArray[0]);
+        System.out.println(temperatureArray[1]);
 
         // Create a new mixedIngredientType
         MixedIngredientType mixedIngredientType = new MixedIngredientType(names, temperatureArray, state);
