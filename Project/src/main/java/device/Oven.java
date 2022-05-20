@@ -1,5 +1,7 @@
 package main.java.device;
 
+import main.java.ingredient.AlchemicIngredient;
+
 import java.util.Random;
 
 /**
@@ -7,12 +9,7 @@ import java.util.Random;
  * @author Dieter Demuynck, Hannes Ingelaere and Ine Malfait
  * @version 1.0
  */
-public class Oven extends Device {  // why do they call it oven when you of in the cold food of out hot eat the food?
-
-    /**
-     * Variable registering the temperature of this oven
-     */
-    private long temperature;
+public class Oven extends TemperatureDevice {  // why do they call it oven when you of in the cold food of out hot eat the food?
 
     /* *********************************************************
      * DEVICE TYPE
@@ -25,7 +22,7 @@ public class Oven extends Device {  // why do they call it oven when you of in t
     }
 
     /* *********************************************************
-     * CONSTRUCTOR TODO
+     * CONSTRUCTOR
      * *********************************************************/
 
     /**
@@ -35,36 +32,7 @@ public class Oven extends Device {  // why do they call it oven when you of in t
      *          | new.getTemperature() == new long[]{0, 20};
      */
     public Oven(){
-        this.temperature = 20;
-    }
-
-    /* *********************************************************
-     * TEMPERATURE
-     * *********************************************************/
-
-    private long getTemperatureAsLong() {
-        return this.temperature;
-    }
-
-    /**
-     * Returns the temperature array that the Oven is set to.
-     *
-     * @return The long[] array representing the temperature the Oven is set to.
-     */
-
-    public long getTemperature() {
-        return temperature;
-    }
-
-    /**
-     * Sets the Oven's temperature to the given temperature array.
-     *
-     * @param temperature
-     */
-    public void setTemperature(long temperature) {
-        if (temperature > 0) {
-            this.temperature = temperature;
-        }
+        super();
     }
 
     /* *********************************************************
@@ -79,13 +47,22 @@ public class Oven extends Device {  // why do they call it oven when you of in t
         // A device may only be activated if it is in a laboratory
         if (getLaboratory() != null) {
             Random rand = new Random();
-            double deviation = rand.nextDouble(0.95, 1.05);
-            long tempTemperature = Math.round(getTemperature() * deviation);
-            // afgerond is da 158 ma das meer dan 5% afwijkend is da ok?
-            //todo Kvraag mij af als je dan lik 150°C neemt en die kiest als random waarde 1,05 -> dan heb je 157,5°C
-            long[] tempIngredient = getIngredient().getTemperature();
-            long longTempIngredient = asLong(tempIngredient);
-            getIngredient().heat(Math.abs(longTempIngredient - tempTemperature));
+            double deviation = rand.nextDouble(0, 0.05);
+            long deviationTemperature = (long) (getTemperatureAsLong() * deviation);  // Automatically rounds down
+
+            // At this point, we have the absolute value of the deviation
+
+            if (rand.nextBoolean()) {
+                // 50/50 chance at cooler/hotter than set temperature
+                deviationTemperature *= -1;
+            }
+
+            // Get the ingredient's temperature
+            long[] ingredientTemperatureArray = getIngredient().getTemperature();
+            long ingredientTemperature = ingredientTemperatureArray[0] * -1 + ingredientTemperatureArray[1];
+
+            // Heat the ingredient by the difference of it's temperature and the set temperature, plus the deviation
+            getIngredient().heat(Math.abs(this.getTemperatureAsLong() - ingredientTemperature + deviationTemperature));
         }
     }
 }
