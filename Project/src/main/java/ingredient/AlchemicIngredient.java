@@ -10,6 +10,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ *
+ * @invar   The name of an ingredient is always valid.
+ * @invar   An ingredient's state is not null
+ *          | getState() != null
  * A class of alchemical ingredients
  * @author Dieter Demuynck, Hannes Ingelaere and Ine Malfait
  * @version 1.0
