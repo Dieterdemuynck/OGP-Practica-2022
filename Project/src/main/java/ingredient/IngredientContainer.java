@@ -2,6 +2,7 @@ package main.java.ingredient;
 
 /**
  * A class of ingredient containers, involving capacity and content.
+ *
  * @author Dieter Demuynck, Hannes Ingelaere and Ine Malfait
  * @version 1.0
  */

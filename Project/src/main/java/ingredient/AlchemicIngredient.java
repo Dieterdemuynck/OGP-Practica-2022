@@ -10,11 +10,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- *
- * @invar   The name of an ingredient is always valid.
- * @invar   An ingredient's state is not null
- *          | getState() != null
  * A class of alchemical ingredients
+ *
+ * @invar   the name of an ingredient is always valid.
+ *
+ * @invar   an ingredient's state is not null
+ *          | getState() != null
+ * @invar   an ingredient's temperature is always valid
+ *          | isValidTemperature(getTemperature())
+ * @invar   an ingredient's unit is not null
+ *          | getUnit() != null
  * @author Dieter Demuynck, Hannes Ingelaere and Ine Malfait
  * @version 1.0
  */
