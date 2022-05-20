@@ -15,11 +15,7 @@ public class Recipe {
     /**
      * Variable registering the list of ingredients in the right order used in the recipe.
      */
-<<<<<<< HEAD:Project/src/main/java/Recipe.java
-    private final List<AlchemicIngredient> ingredientsList;
-=======
     private final List<AlchemicIngredientReference> ingredientsList;
->>>>>>> Project:Project/src/main/java/recipe/Recipe.java
 
     /**
      * Variable registering the list of operations done on the ingredients in the right order.
