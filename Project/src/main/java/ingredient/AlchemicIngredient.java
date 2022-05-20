@@ -597,6 +597,15 @@ public class AlchemicIngredient {
      * everything the same except for a few values
      * *********************************************************/
 
+    public AlchemicIngredient copyAllValsExcept(int amount, Unit unit, State currentState, long[] currentTemperature) {
+        AlchemicIngredient newIngredient = new AlchemicIngredient(amount, unit, getStandardTemperature(),
+                currentTemperature, getName(), getStandardState(), currentState);
+        if (hasSpecialName()){
+            newIngredient.setSpecialName(this.getSpecialName());
+        }
+        return newIngredient;
+    }
+
     /** TODO: dit is nog niet OK
      * Makes a new alchemical ingredient based on an existing alchemical ingredient but with a different amount, unit
      * and current state.
@@ -618,12 +627,7 @@ public class AlchemicIngredient {
      *          |               currentState)
      */
     public AlchemicIngredient copyAllValsExcept(int amount, Unit unit, State currentState) {
-        AlchemicIngredient newIngredient = new AlchemicIngredient(amount, unit, getStandardTemperature(),
-                getTemperature(), getName(), getStandardState(), currentState);
-        if (hasSpecialName()){
-            newIngredient.setSpecialName(this.getSpecialName());
-        }
-        return newIngredient;
+        return copyAllValsExcept(amount, unit, currentState, getTemperature());
     }
 
     /**
@@ -800,5 +804,11 @@ public class AlchemicIngredient {
             j +=1;
         }
         return mergedList;
+    }
+
+    public AlchemicIngredient inStandardValues() {
+        Quantity quantity = getState().convertTo(getAmount(), getUnit(), getStandardState());
+        return this.copyAllValsExcept(quantity.getAmount(), quantity.getUnit(),
+                getStandardState(), getStandardTemperature());
     }
 }
