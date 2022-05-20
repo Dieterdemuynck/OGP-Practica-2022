@@ -3,8 +3,11 @@ package test;
 import main.java.Laboratory;
 import main.java.device.Device;
 import main.java.device.Oven;
+import main.java.device.exception.DeviceNotEmptyException;
 import main.java.ingredient.AlchemicIngredient;
 import main.java.ingredient.IngredientContainer;
+import main.java.ingredient.State;
+import main.java.ingredient.Unit;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -57,4 +60,25 @@ public class OvenTest {
                     && container.getContent().getTemperature()[1] <=95);
     }
 
+    @Test
+    public void testActivate_withLaboratory_tooCold(){
+        // oven must heat water to 100 with a marge of 5%
+        oven.setTemperature(new long[] {100,0});
+        oven.setLaboratory(laboratory);
+        assertEquals(100, oven.getTemperature()[0]);
+        assertEquals(0, oven.getTemperature()[1]);
+        oven.insert(waterContainer);
+        oven.activate();
+        IngredientContainer container = oven.retrieve();
+        assertEquals(0,container.getContent().getTemperature()[0]);
+        assertEquals(20, container.getContent().getTemperature()[1]);
+    }
+
+    @Test (expected = DeviceNotEmptyException.class)
+    public void testInsert_illegalCase(){
+        oven.insert(waterContainer);
+        AlchemicIngredient chocolate = new AlchemicIngredient(1, Unit.Box, new long[] {0,15}, "Chocolate", State.Powder);
+        IngredientContainer chocolateContainer = new IngredientContainer(chocolate);
+        oven.insert(chocolateContainer);
+    }
 }

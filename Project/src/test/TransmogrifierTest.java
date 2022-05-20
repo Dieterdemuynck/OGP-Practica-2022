@@ -3,6 +3,7 @@ package test;
 import main.java.Laboratory;
 import main.java.device.Device;
 import main.java.device.Transmogrifier;
+import main.java.device.exception.DeviceNotEmptyException;
 import main.java.ingredient.AlchemicIngredient;
 import main.java.ingredient.IngredientContainer;
 import main.java.ingredient.State;
@@ -48,5 +49,13 @@ public class TransmogrifierTest {
         transmogrifier.activate();
         IngredientContainer container = transmogrifier.retrieve();
         assertEquals(State.Powder, container.getContent().getState());
+    }
+
+    @Test (expected = DeviceNotEmptyException.class)
+    public void testInsert_illegalCase(){
+        transmogrifier.insert(milkContainer);
+        AlchemicIngredient chocolate = new AlchemicIngredient(1, Unit.Box, new long[] {0,15}, "Chocolate", State.Powder);
+        IngredientContainer chocolateContainer = new IngredientContainer(chocolate);
+        transmogrifier.insert(chocolateContainer);
     }
 }

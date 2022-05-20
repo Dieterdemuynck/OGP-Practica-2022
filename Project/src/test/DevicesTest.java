@@ -2,6 +2,7 @@ package test;
 
 import main.java.Laboratory;
 import main.java.device.*;
+import main.java.device.exception.DeviceNotEmptyException;
 import main.java.ingredient.*;
 import org.junit.Before;
 import org.junit.Test;
