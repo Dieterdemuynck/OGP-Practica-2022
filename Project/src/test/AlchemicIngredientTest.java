@@ -5,14 +5,21 @@ import main.java.ingredient.exception.IllegalNameException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class AlchemicIngredientTest {
     AlchemicIngredient water;
+    AlchemicIngredient milk;
+    AlchemicIngredient chocolate;
 
     @Before
     public void setUpFixture() {
         water = new AlchemicIngredient(1);
+        milk = new AlchemicIngredient(1, Unit.Bottle, new long[] {0,4}, "Milk", State.Liquid);
+        chocolate = new AlchemicIngredient(1, Unit.Box, new long[] {0,15}, "Chocolate", State.Powder);
     }
 
     /* *********************************************************
@@ -1037,8 +1044,7 @@ public class AlchemicIngredientTest {
     }
 
     /* *********************************************************
-     * TEMPERATURE TESTS - for Coolbox en Oven
-     * todo moet getTemperature ook getest worden? Want das half getest in constructors en ook nu half met heat en cool... Geen idee hoe het grondiger zou kunnen
+     * TEMPERATURE TESTS - for CoolBox, Oven and TemperatureDevice
      * *********************************************************/
     @Test
     public void testHeat_temperatureAboveZero() {
@@ -1051,7 +1057,7 @@ public class AlchemicIngredientTest {
 
     @Test
     public void testHeat_temperatureBelowZero() {
-        //Hiervoor gaan we er vanuit dat de cool-methode werkt, de testen volgen hieronder.
+        //For this we assume that the cool method works, the tests follow below
         water.cool(30);
         assertEquals(10, water.getTemperature()[0]);
         assertEquals(0, water.getTemperature()[1]);
@@ -1079,7 +1085,7 @@ public class AlchemicIngredientTest {
 
     @Test //todo, dit mss nie nuttig...
     public void testCool_temperatureBelowZero() {
-        //Hiervoor gaan we er vanuit dat de cool-methode werkt om de temperatuur naar nul te krijgen.
+        //For this we assume that the cool method works to get the temperature below zero
         water.cool(20);
         assertEquals(0, water.getTemperature()[0]);
         assertEquals(0, water.getTemperature()[1]);
@@ -1095,8 +1101,102 @@ public class AlchemicIngredientTest {
         assertEquals(20, water.getTemperature()[1]);
     }
 
+    @Test
+    public void testIsValidTemperature() {
+        assertTrue(AlchemicIngredient.isValidTemperature(new long[] {0,20}));
+        assertFalse(AlchemicIngredient.isValidTemperature(new long[] {10001,0}));
+        assertFalse(AlchemicIngredient.isValidTemperature(new long[] {1,1}));
+    }
+
     /* *********************************************************
      * MIX WITH TESTS - for Kettle
      * *********************************************************/
+    @Test
+    public void testMixWith_twoIngredientsCase(){
+        AlchemicIngredient chocolateWithMilk = milk.mixWith(chocolate);
+        assertEquals("Chocolate mixed with Milk", chocolateWithMilk.getName());
+        assertEquals(State.Powder, chocolateWithMilk.getState());
+        assertEquals(Unit.Spoon, chocolateWithMilk.getUnit());
+        assertEquals(57, chocolateWithMilk.getAmount());
+        assertEquals(0, chocolateWithMilk.getTemperature()[0]);
+        assertEquals(12, chocolateWithMilk.getTemperature()[1]);
+    }
+
+    @Test
+    public void testMixWith_moreIngredientsCase_caseOfThree(){
+        List<AlchemicIngredient> ingredientList = new ArrayList<>();
+        ingredientList.add(milk);
+        ingredientList.add(water);
+        AlchemicIngredient chocolateWithMilkAndWater = chocolate.mixWith(ingredientList);
+        assertEquals("Chocolate mixed with Milk and Water", chocolateWithMilkAndWater.getName());
+        assertEquals(State.Liquid, chocolateWithMilkAndWater.getState());
+        assertEquals(Unit.Spoon, chocolateWithMilkAndWater.getUnit());
+        assertEquals(58, chocolateWithMilkAndWater.getAmount());
+        assertEquals(0, chocolateWithMilkAndWater.getTemperature()[0]);
+        assertEquals(12, chocolateWithMilkAndWater.getTemperature()[1]);
+    }
+
+    @Test
+    public void testMixWith_moreIngredientsCase_caseOfFour(){
+        AlchemicIngredient sugar = new AlchemicIngredient(2, Unit.Sachet, new long[] {0,18}, "Sugar",
+                State.Powder);
+        List<AlchemicIngredient> ingredientList = new ArrayList<>();
+        ingredientList.add(milk);
+        ingredientList.add(water);
+        ingredientList.add(sugar);
+        AlchemicIngredient chocolateWithMilkSugarAndWater = chocolate.mixWith(ingredientList);
+        assertEquals("Chocolate mixed with Milk, Sugar and Water", chocolateWithMilkSugarAndWater.getName());
+        assertEquals(State.Liquid, chocolateWithMilkSugarAndWater.getState());
+        assertEquals(Unit.Spoon, chocolateWithMilkSugarAndWater.getUnit());
+        assertEquals(72, chocolateWithMilkSugarAndWater.getAmount());
+        assertEquals(0, chocolateWithMilkSugarAndWater.getTemperature()[0]);
+        assertEquals(13, chocolateWithMilkSugarAndWater.getTemperature()[1]);
+    }
+
+
+    /* *********************************************************
+     * COPY ALL VAL(ue)S EXCEPT TESTS - for Transmogrifier
+     * *********************************************************/
+
+    @Test
+    public void testCopyAllValsExcept_shortVersion(){
+        AlchemicIngredient waterCopy = water.copyAllValsExcept(15,Unit.Bottle);
+        assertEquals(15,waterCopy.getAmount());
+        assertEquals(Unit.Bottle, waterCopy.getUnit());
+        assertEquals(water.getState(), waterCopy.getState());
+        assertEquals(water.getTemperature()[0], waterCopy.getTemperature()[0]);
+        assertEquals(water.getTemperature()[1], waterCopy.getTemperature()[1]);
+        assertEquals(water.getStandardState(), waterCopy.getStandardState());
+        assertEquals(water.getStandardTemperature()[0], waterCopy.getStandardTemperature()[0]);
+        assertEquals(water.getStandardTemperature()[1], waterCopy.getStandardTemperature()[1]);
+    }
+
+
+    @Test
+    public void testCopyAllValsExcept_withCurrentState(){
+        AlchemicIngredient waterCopy = water.copyAllValsExcept(15,Unit.Sachet, State.Powder);
+        assertEquals(15,waterCopy.getAmount());
+        assertEquals(Unit.Sachet, waterCopy.getUnit());
+        assertEquals(State.Powder, waterCopy.getState());
+        assertEquals(water.getTemperature()[0], waterCopy.getTemperature()[0]);
+        assertEquals(water.getTemperature()[1], waterCopy.getTemperature()[1]);
+        assertEquals(water.getStandardState(), waterCopy.getStandardState());
+        assertEquals(water.getStandardTemperature()[0], waterCopy.getStandardTemperature()[0]);
+        assertEquals(water.getStandardTemperature()[1], waterCopy.getStandardTemperature()[1]);
+    }
+
+    @Test
+    public void testCopyAllValsExcept_withCurrentStateAndCurrentTemperature(){
+        AlchemicIngredient waterCopy = water.copyAllValsExcept(15,Unit.Sachet, State.Powder, new long[] {0,5});
+        assertEquals(15,waterCopy.getAmount());
+        assertEquals(Unit.Sachet, waterCopy.getUnit());
+        assertEquals(State.Powder, waterCopy.getState());
+        assertEquals(0, waterCopy.getTemperature()[0]);
+        assertEquals(5, waterCopy.getTemperature()[1]);
+        assertEquals(water.getStandardState(), waterCopy.getStandardState());
+        assertEquals(water.getStandardTemperature()[0], waterCopy.getStandardTemperature()[0]);
+        assertEquals(water.getStandardTemperature()[1], waterCopy.getStandardTemperature()[1]);
+    }
+
 }
 
