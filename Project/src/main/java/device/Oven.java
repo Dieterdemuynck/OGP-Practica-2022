@@ -65,6 +65,9 @@ public class Oven extends TemperatureDevice {  // why do they call it oven when 
 
                 // Heat the ingredient by the difference of it's temperature and the set temperature, plus the deviation
                 getIngredient().heat(Math.abs(this.getTemperatureAsLong() - ingredientTemperature + deviationTemperature));
+                System.out.println(this.getIngredient().getTemperature()[0]);
+                System.out.println(this.getIngredient().getTemperature()[1]);
+
             }
         }
     }
