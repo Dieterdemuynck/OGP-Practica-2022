@@ -86,7 +86,7 @@ public class Kettle extends Device {
         }
         if (getLaboratory() != null && !getAddedIngredients().isEmpty()) {
             // Take out the last element inside the Kettle, and mix it with the rest.
-            // Then, set the output ingredient field tot he mix
+            // Then, set the output ingredient field to the mix
             setIngredient(
                     getAddedIngredients().remove(getAddedIngredients().size() - 1).mixWith(getAddedIngredients())
             );

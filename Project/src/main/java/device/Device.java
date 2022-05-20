@@ -26,9 +26,6 @@ public abstract class Device {
     }
 
     public void setIngredient(AlchemicIngredient ingredient) throws DeviceNotEmptyException {
-        if (!isEmptyDevice() && ingredient != null){
-            throw new DeviceNotEmptyException(this);
-        }
         this.ingredient = ingredient;
     }
     public boolean isEmptyDevice(){
@@ -41,6 +38,9 @@ public abstract class Device {
 
     public void insert(IngredientContainer ingredientContainer) throws DeviceNotEmptyException {
         if (ingredientContainer != null) {
+            if (!isEmptyDevice() && !ingredientContainer.isEmpty()){
+                throw new DeviceNotEmptyException(this);
+            }
             setIngredient(ingredientContainer.extract());
         }
     }
