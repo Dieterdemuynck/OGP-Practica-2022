@@ -16,10 +16,12 @@ public class DeviceNotEmptyException extends RuntimeException{
      * (which in its turn implements the interface Serializable)
      */
     private static final long serialVersionUID = 99L;
+
     /**
      * The alchemical ingredient that is already in the device
      */
     private final AlchemicIngredient ingredientIn;
+
     /**
      * The alchemical ingredient that illegally placed in the device
      */

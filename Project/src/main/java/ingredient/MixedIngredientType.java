@@ -5,15 +5,32 @@ import main.java.ingredient.exception.IllegalNameException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class specifically for ingredients that are the result of mixing multiple ingredients.
+ */
 public class MixedIngredientType extends IngredientType{
 
+    /**
+     * Variable referencing the ingredients this mixed ingredient is made of.
+     */
     private List<String> componentNames = new ArrayList<>();
+
+    /**
+     * Variable registering the mixed ingredient's special name, in case it has one.
+     */
     private String specialName = null;
 
     /* *********************************************************
      * CONSTRUCTORS
      * *********************************************************/
 
+    /**
+     * Initialize a new MixedIngredient with given list of ingredient names, standard temperature and standard state.
+     *
+     * @param name a List of names of the individual ingredients.
+     * @param standardTemperature The standard temperature of this mixed ingredient.
+     * @param standardState The standard state of this mixed ingredient.
+     */
     public MixedIngredientType(List<String > name, long[] standardTemperature,  State standardState) {
         super( standardTemperature, standardState);
     }
