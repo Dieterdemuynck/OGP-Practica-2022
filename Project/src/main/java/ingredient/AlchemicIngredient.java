@@ -695,18 +695,14 @@ public class AlchemicIngredient {
         List<String> names = new ArrayList<>(this.getIngredientType().getComponentNames());
 
         // Initialize vars for finding average temperature
-        long temperatureSum = asLong(getTemperature());
-        int numberOfIngredients = 1;
+        double temperatureSum = asLong(getTemperature())*State.toSpoons(getAmount(), getUnit());
 
         // Add all names to list, in order, and update temperature vars
         for (AlchemicIngredient alchemicIngredient: ingredients){
             names = mergeSort(names, alchemicIngredient.getIngredientType().getComponentNames());
-            temperatureSum += asLong(alchemicIngredient.getTemperature());
-            numberOfIngredients++;
+            temperatureSum += asLong(alchemicIngredient.getTemperature())*State.toSpoons(alchemicIngredient.getAmount(),
+                    alchemicIngredient.getUnit());
         }
-
-        // Find the average temperature based on values of the temperature vars
-        long[] temperatureArray = asLongArray(temperatureSum/numberOfIngredients);
 
         // Find the state of the ingredient with its temperature closest to {0, 20}
         // Note: while a bit unclear, this does include *this* ingredient
@@ -719,6 +715,10 @@ public class AlchemicIngredient {
         Quantity quantity = state.findLargestFit(state.addAmounts(ingredients), state.getSmallestUnit());
         int amount = quantity.getAmount();
         Unit unit = quantity.getUnit();
+
+        // Find the average temperature based on values of the temperature vars and their amount. The temperature is
+        // rounded down to long values
+        long[] temperatureArray = asLongArray((long) Math.floor(temperatureSum/amount));
 
         // Create a new mixedIngredientType
         MixedIngredientType mixedIngredientType = new MixedIngredientType(names, temperatureArray, state);
