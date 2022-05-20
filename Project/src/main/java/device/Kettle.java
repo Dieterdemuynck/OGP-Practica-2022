@@ -5,20 +5,21 @@ import main.java.ingredient.State;
 import main.java.ingredient.Unit;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Kettle extends Device {
 
     /**
      * Variable referencing the total added ingredients, contained in the kettle.
      */
-    private ArrayList<AlchemicIngredient> addedIngredients;
+    private List<AlchemicIngredient> addedIngredients;
 
 
     /**
      * Returns the ingredients contained in the kettle.
      * @return the ingredients contained in the kettle.
      */
-    public ArrayList<AlchemicIngredient> getAddedIngredients() {
+    public List<AlchemicIngredient> getAddedIngredients() {
         return addedIngredients;
     }
 
@@ -36,7 +37,10 @@ public class Kettle extends Device {
      * CONSTRUCTOR TODO
      * *********************************************************/
 
-
+    public Kettle() {
+        super();
+        this.addedIngredients = new ArrayList<>();
+    }
 
     /* *********************************************************
      * ADDED INGREDIENTS

@@ -206,11 +206,11 @@ public class Laboratory {
 
     /* *********************************************************
      * DEVICE METHODS
-     * TODO: Add method bodies + Additional arguments.
+     * TODO: Test + Specification
      * *********************************************************/
 
     /**
-     * QoL Device method, returns the device that is inside the laboratory
+     * [QoL Device method] returns the device that is inside the laboratory with the given device type
      * @param deviceType
      * @return
      * @throws DeviceNotPresentException
