@@ -47,23 +47,25 @@ public class Oven extends TemperatureDevice {  // why do they call it oven when 
     public void activate() {
         // A device may only be activated if it is in a laboratory
         if (getLaboratory() != null) {
-            Random rand = new Random();
-            double deviation = rand.nextDouble(0, 0.05);
-            long deviationTemperature = (long) (getTemperatureAsLong() * deviation);  // Automatically rounds down
+            if (asLong(getIngredient().getTemperature()) > getTemperatureAsLong()) {
+                Random rand = new Random();
+                double deviation = rand.nextDouble(0, 0.05);
+                long deviationTemperature = (long) (getTemperatureAsLong() * deviation);  // Automatically rounds down
 
-            // At this point, we have the absolute value of the deviation
+                // At this point, we have the absolute value of the deviation
 
-            if (rand.nextBoolean()) {
-                // 50/50 chance at cooler/hotter than set temperature
-                deviationTemperature *= -1;
+                if (rand.nextBoolean()) {
+                    // 50/50 chance at cooler/hotter than set temperature
+                    deviationTemperature *= -1;
+                }
+
+                // Get the ingredient's temperature
+                long[] ingredientTemperatureArray = getIngredient().getTemperature();
+                long ingredientTemperature = ingredientTemperatureArray[0] * -1 + ingredientTemperatureArray[1];
+
+                // Heat the ingredient by the difference of it's temperature and the set temperature, plus the deviation
+                getIngredient().heat(Math.abs(this.getTemperatureAsLong() - ingredientTemperature + deviationTemperature));
             }
-
-            // Get the ingredient's temperature
-            long[] ingredientTemperatureArray = getIngredient().getTemperature();
-            long ingredientTemperature = ingredientTemperatureArray[0] * -1 + ingredientTemperatureArray[1];
-
-            // Heat the ingredient by the difference of it's temperature and the set temperature, plus the deviation
-            getIngredient().heat(Math.abs(this.getTemperatureAsLong() - ingredientTemperature + deviationTemperature));
         }
     }
 }
