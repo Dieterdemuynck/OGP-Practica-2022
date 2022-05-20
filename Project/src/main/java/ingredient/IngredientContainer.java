@@ -129,4 +129,8 @@ public class IngredientContainer {
     private void empty() {
         setContent(null);
     }
+
+    public boolean isEmpty() {
+        return getContent() == null;
+    }
 }
