@@ -82,6 +82,7 @@ public class TemperatureDeviceTest {
         assertEquals(laboratory, oven.getLaboratory());
     }
 
+
     @Test
     public void testSetTemperature() {
         assertEquals(0, oven.getTemperature()[0]);
