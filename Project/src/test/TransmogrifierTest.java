@@ -13,6 +13,12 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * A JUnit (4) test class for testing the non-private methods of the Transmogrifier Class.
+ *
+ * @author Dieter Demuynck, Hannes Ingelaere and Ine Malfait
+ * @version 1.0
+ */
 public class TransmogrifierTest {
 
     Transmogrifier transmogrifier;

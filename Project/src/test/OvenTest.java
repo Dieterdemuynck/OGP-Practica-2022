@@ -14,6 +14,12 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * A JUnit (4) test class for testing the non-private methods of the Oven Class.
+ *
+ * @author Dieter Demuynck, Hannes Ingelaere and Ine Malfait
+ * @version 1.0
+ */
 public class OvenTest {
     Oven oven;
     AlchemicIngredient water;

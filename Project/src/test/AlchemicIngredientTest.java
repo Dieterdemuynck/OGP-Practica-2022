@@ -10,6 +10,12 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * A JUnit (4) test class for testing the non-private methods of the AlchemicIngredient Class.
+ *
+ * @author Dieter Demuynck, Hannes Ingelaere and Ine Malfait
+ * @version 1.0
+ */
 public class AlchemicIngredientTest {
     AlchemicIngredient water;
     AlchemicIngredient milk;
