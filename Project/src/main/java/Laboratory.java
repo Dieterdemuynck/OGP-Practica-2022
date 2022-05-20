@@ -212,9 +212,14 @@ public class Laboratory {
         // Calculate the difference between the two units
         Quantity quantity = bulk.getState().subtract(bulk.getAmount(), bulk.getUnit(), amount, unit);
 
-        // Store the rest of the ingredient back into the laboratory's storage
-        AlchemicIngredient newBulk = bulk.copyAllValsExcept(quantity.getAmount(), quantity.getUnit());
-        getStorage().put(newBulk.getName(), newBulk);
+        if (quantity.getAmount() == 0) {
+            // If there is no ingredient left, remove the ingredient entirely
+            getStorage().remove(bulk.getName());
+        } else {
+            // Store the rest of the ingredient back into the laboratory's storage
+            AlchemicIngredient newBulk = bulk.copyAllValsExcept(quantity.getAmount(), quantity.getUnit());
+            getStorage().put(newBulk.getName(), newBulk);
+        }
 
         // Return the retrieved ingredient, which is a copy of the previous ingredient with a lower quantity
         return bulk.copyAllValsExcept(amount, unit);
@@ -222,6 +227,7 @@ public class Laboratory {
 
     /**
      * TODO: specification (reference retrieveIngredient using @effect) OOK moet het ingredient niet ook uit het laboratory gehaald worden?
+     *  Yes, the ingredient is removed. Check retrieveIngredient. Remove this comment if seen.
      * @param name of the ingredient you want to retrieve
      * @param amount of a certain unit of the ingredient you want to retrieve
      * @param unit the unit of the ingredient you want to retrieve
@@ -279,7 +285,6 @@ public class Laboratory {
 
     /* *********************************************************
      * DEVICE METHODS
-     * TODO: Test + Specification
      * *********************************************************/
 
     /**
@@ -343,6 +348,25 @@ public class Laboratory {
         return retrieveFromDevice(deviceType);
     }
 
+    public void setTransmogrifierState(State state) {
+        ((Transmogrifier) getDevice(Device.DeviceType.Transmogrifier)).setState(state);
+    }
+
+    public void setOvenTemperature(long[] temperature) {
+        ((Oven) getDevice(Device.DeviceType.Oven)).setTemperature(temperature);
+    }
+
+    public void setCoolingBoxTemperature(long[] temperature) {
+        ((CoolingBox) getDevice(Device.DeviceType.CoolingBox)).setTemperature(temperature);
+    }
+
+    // Private because it adds raw ingredients with no container.
+    private void addIngredientsToKettle(List<AlchemicIngredient> ingredients) {
+        for (AlchemicIngredient ingredient : ingredients) {
+            addToDevice(Device.DeviceType.Kettle, new IngredientContainer(ingredient));
+        }
+    }
+
     /* *********************************************************
      * RECIPE
      * *********************************************************/
@@ -351,7 +375,7 @@ public class Laboratory {
      * NO SPECIFICATION REQUESTED
      * Don't waste time on this, thx
      */
-    public void execute(Recipe recipe, int factorIngredients){ // Todo: staat in commentaar, implementatie moet nog gebeuren maar daarvoor moet rest eerst af zijn =(
+    public void execute(Recipe recipe, int factorIngredients){
 
         // Creates a list for the ingredients made during the execution
         List<AlchemicIngredient> currentIngredients = new LinkedList<>();
@@ -409,7 +433,7 @@ public class Laboratory {
                         long[] temperature = new long[]{Math.min(0, temperatureLong), Math.max(0, temperatureLong)};
 
                         // Set the oven to the correct temperature
-                        ((Oven) getDevice(Device.DeviceType.Oven)).setTemperature(temperature);
+                        setOvenTemperature(temperature);
 
                         // Heat the ingredient in the device
                         last = useOnDevice(Device.DeviceType.Oven, new IngredientContainer(last)).extract();
@@ -420,7 +444,7 @@ public class Laboratory {
                         temperature = new long[]{Math.min(0, temperatureLong), Math.max(0, temperatureLong)};
 
                         // Set the cooling box to the correct temperature
-                        ((CoolingBox) getDevice(Device.DeviceType.CoolingBox)).setTemperature(temperature);
+                        setCoolingBoxTemperature(temperature);
 
                         // Cool the ingredient in the device
                         last = useOnDevice(Device.DeviceType.CoolingBox, new IngredientContainer(last)).extract();
@@ -449,7 +473,7 @@ public class Laboratory {
                         long[] temperature = new long[]{Math.min(0, temperatureLong), Math.max(0, temperatureLong)};
 
                         // Set the cooling box to the correct temperature
-                        ((CoolingBox) getDevice(Device.DeviceType.CoolingBox)).setTemperature(temperature);
+                        setCoolingBoxTemperature(temperature);
 
                         // Cool the ingredient in the device
                         last = useOnDevice(Device.DeviceType.CoolingBox, new IngredientContainer(last)).extract();
