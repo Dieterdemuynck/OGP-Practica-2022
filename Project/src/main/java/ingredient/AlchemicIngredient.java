@@ -642,7 +642,7 @@ public class AlchemicIngredient {
      * MIX METHODES
      * *********************************************************/
 
-    /**
+    /** TODO IS DIT NODIG?
      * Return a new (mixed) alchemical ingredient based on this alchemical ingredient and a given alchemical ingredient
      *
      * @param   ingredient

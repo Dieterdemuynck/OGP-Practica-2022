@@ -47,15 +47,6 @@ public class Kettle extends Device {
     /* *********************************************************
      * ADDED INGREDIENTS
      * *********************************************************/
-
-    /**
-     * Sets the ingredients contained in the kettle, to a given List of ingredients.
-     * @param addedIngredients ArrayList of the ingredients that will be contained in the kettle.
-     */
-    public void setAddedIngredients(ArrayList<AlchemicIngredient> addedIngredients) {
-        this.addedIngredients = addedIngredients;
-    }
-
     /**
      * TODO Spec
      * @param container
@@ -95,7 +86,7 @@ public class Kettle extends Device {
         }
         if (getLaboratory() != null && !getAddedIngredients().isEmpty()) {
             // Take out the last element inside the Kettle, and mix it with the rest.
-            // Then, set the output ingredient field to the mix.
+            // Then, set the output ingredient field tot he mix
             setIngredient(
                     getAddedIngredients().remove(getAddedIngredients().size() - 1).mixWith(getAddedIngredients())
             );
