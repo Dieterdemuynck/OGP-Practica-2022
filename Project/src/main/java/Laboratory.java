@@ -10,7 +10,10 @@ import main.java.ingredient.exception.IngredientNotPresentException;
 import main.java.ingredient.exception.NotEnoughIngredientException;
 import main.java.ingredient.exception.SpecialNameDoesNotExistException;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A class of laboratories
@@ -241,7 +244,8 @@ public class Laboratory {
         return devices;
     }
 
-    public void setDevices(Map<Device.DeviceType, Device> devices) {
+    // We do *not* want just any random class to *set* the devices -> private
+    private void setDevices(Map<Device.DeviceType, Device> devices) {
         // Do we even need this function?
         this.devices = devices;
     }

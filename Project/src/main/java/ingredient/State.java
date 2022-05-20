@@ -139,25 +139,25 @@ public enum State {
         return Arrays.asList(this.getUnits()).contains(unit);
     }
 
-    private int fromSpoons(double amountInSpoons) {
-        return (int) (amountInSpoons * getValueOf(Unit.Spoon));
-    }
-
     /* *********************************************************
      * QoL METHODS
      * LEVEL 2: PUBLIC
      * *********************************************************/
+
+    public int fromSpoons(double amountInSpoons) {
+        return (int) (amountInSpoons * getValueOf(Unit.Spoon));
+    }
 
     @Immutable
     public Unit getSmallestUnit() {
         return getUnitAt(0);
     }
 
-    public double inSpoons(int amount, Unit unit) {
+    public double toSpoons(int amount, Unit unit) {
         return (double) amount * getValueOf(unit) / (double) getValueOf(Unit.Spoon);
     }
 
-    public double inStorerooms(int amount, Unit unit) {
+    public double toStorerooms(int amount, Unit unit) {
         return (double) (amount * getValueOf(unit)) / (double) getValueOf(Unit.Storeroom);
     }
 
@@ -166,12 +166,12 @@ public enum State {
      * LEVEL 3: ALCHEMIC INGREDIENT (STATIC)
      * *********************************************************/
 
-    public static double inSpoons(AlchemicIngredient ingredient) {
-        return ingredient.getState().inSpoons(ingredient.getAmount(), ingredient.getUnit());
+    public static double toSpoons(AlchemicIngredient ingredient) {
+        return ingredient.getState().toSpoons(ingredient.getAmount(), ingredient.getUnit());
     }
 
-    public static double inStorerooms(AlchemicIngredient ingredient) {
-        return ingredient.getState().inStorerooms(ingredient.getAmount(), ingredient.getUnit());
+    public static double toStorerooms(AlchemicIngredient ingredient) {
+        return ingredient.getState().toStorerooms(ingredient.getAmount(), ingredient.getUnit());
     }
 
     /**
@@ -187,7 +187,7 @@ public enum State {
     public static double addAmountsInStorerooms(List<AlchemicIngredient> storedIngredients) {
         double amount = 0;
         for (AlchemicIngredient ingredient: storedIngredients) {
-            amount += State.inStorerooms(ingredient);
+            amount += State.toStorerooms(ingredient);
         }
         return amount;
     }
@@ -207,9 +207,13 @@ public enum State {
     public static double addAmountsInSpoons(List<AlchemicIngredient> storedIngredients) {
         double amount = 0;
         for (AlchemicIngredient ingredient: storedIngredients) {
-            amount += State.inSpoons(ingredient);
+            amount += State.toSpoons(ingredient);
         }
         return amount;
+    }
+
+    public int addAmounts(List<AlchemicIngredient> storedIngredients) {
+        return fromSpoons(addAmountsInSpoons(storedIngredients));
     }
 
     /* *********************************************************
@@ -229,8 +233,11 @@ public enum State {
 
     @Immutable
     public boolean hasContainer() {
-        // A bit of a nasty way to check for a container, but it works!
-        return findSmallestFittingContainer(0, getSmallestUnit()) != null;
+        for (Unit unit: getUnits()) {
+            if (unit.canBeContainer())
+                return true;
+        }
+        return false;
     }
 
     public boolean hasUnit(Unit unit) {
@@ -269,7 +276,7 @@ public enum State {
      * *********************************************************/
 
     public Quantity convertTo(int amount, Unit originUnit, State targetState) {
-        return targetState.findLargestFit(targetState.fromSpoons(this.inSpoons(amount, originUnit)), Unit.Spoon);
+        return targetState.findLargestFit(targetState.fromSpoons(this.toSpoons(amount, originUnit)), getSmallestUnit());
     }
 
     public static Quantity convertTo(AlchemicIngredient ingredient, State state) {
@@ -278,37 +285,55 @@ public enum State {
         );
     }
 
-    // TODO: if this is needed, uncomment. (I doubt it tho... delete it ig)
-//    /**
-//     * Returns the equivalent amount in the target Unit, given the amount in the origin Unit. This amount,
-//     * if it is a fraction, will be rounded down.
-//     *
-//     * @param amount        The amount of product, represented in the origin Unit.
-//     * @param originUnit    The Unit from which we want to convert
-//     * @param originState   The State of the origin Unit.
-//     * @param targetUnit    The Unit to which we want to convert
-//     * @param targetState   The State of the target Unit.
-//     * @return              The amount of product, represented in the target Unit
-//     */
-//    private static int convertBetweenDifferentStates(int amount, Unit originUnit, State originState,
-//                                           Unit targetUnit, State targetState) {
-//
-//        // Step 1: Update amount to its value in smallest
-//        amount *= originState.getValueOf(originUnit);
-//
-//        // Step 2: Move through origin table, from smallest to Spoon
-//        // This may result in a fraction
-//        double spoonAmount = (double) amount / originState.getValueOf(Unit.Spoon);
-//
-//        // Step 3: Move through the target table, from Spoon to smallest (and round)
-//        amount = (int) (spoonAmount * targetState.getValueOf(Unit.Spoon));
-//
-//        // Step 4: Move through target table, from smallest to targetUnit
-//        for (int i = 0; targetState.getUnitAt(i) != targetUnit; i++) {
-//            amount /= targetState.getValueAt(++i);
-//        }
-//        return 0;
-//    }
+    /**
+     * Returns the equivalent amount in the target Unit, given the amount in the origin Unit. This amount,
+     * if it is a fraction, will be rounded down.
+     *
+     * @param amount        The amount of product, represented in the origin Unit.
+     * @param originUnit    The Unit from which we want to convert
+     * @param originState   The State of the origin Unit.
+     * @param targetUnit    The Unit to which we want to convert
+     * @param targetState   The State of the target Unit.
+     * @return              The amount of product, represented in the target Unit
+     */
+    private static int convertBetweenDifferentStates(int amount, Unit originUnit, State originState,
+                                           Unit targetUnit, State targetState) {
+
+        // Step 1: Update amount to its value in smallest
+        amount *= originState.getValueOf(originUnit);
+
+        // Step 2: Convert from smallest to Spoon
+        // This may result in a fraction
+        double spoonAmount = originState.toSpoons(amount, originUnit);
+
+        // Step 3: Convert from Spoon to smallest in targetState (and round)
+        amount = targetState.fromSpoons(spoonAmount);
+
+        // Step 4: Convert back from smallest to targetUnit
+        return amount / targetState.getValueOf(targetUnit);
+    }
+
+    /**
+     * Returns the equivalent amount in the target Unit, given the amount in the origin Unit. This amount,
+     * if it is a fraction, will be rounded down.
+     *
+     * @param amount        The amount of product, represented in the origin Unit.
+     * @param originUnit    The Unit from which we want to convert
+     * @param originState   The State of the origin Unit.
+     * @param targetUnit    The Unit to which we want to convert
+     * @param targetState   The State of the target Unit.
+     * @return              The amount of product, represented in the target Unit
+     */
+    private static int convertBetweenSameState(int amount, Unit originUnit, State originState,
+                                           Unit targetUnit, State targetState) {
+
+        // Essentially a simpler version of the previous function, without step 2 and 3.
+        // Step 1: Update amount to its value in smallest
+        amount *= originState.getValueOf(originUnit);
+
+        // Step 2: Convert back from smallest to targetUnit
+        return amount /= targetState.getValueOf(targetUnit);
+    }
 
     /**
      * // TODO: check specification

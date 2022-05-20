@@ -60,18 +60,18 @@ public class IngredientType {
             this.standardTemperature = 20;
         }
         else {
-            this.standardTemperature = standardTemperature[1];
+            this.standardTemperature = standardTemperature[1] - standardTemperature[0];
         }
         this.standardState = standardState;
     }
 
-    protected IngredientType( long[] standardTemperature, State standardState){
+    protected IngredientType(long[] standardTemperature, State standardState){
         this.name = null;
         if (!isValidStandardTemperature(standardTemperature)) {
             this.standardTemperature = 20;
         }
         else {
-            this.standardTemperature = standardTemperature[1];
+            this.standardTemperature = standardTemperature[1] - standardTemperature[0];
         }
         this.standardState = standardState;
     }

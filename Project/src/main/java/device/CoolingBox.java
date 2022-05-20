@@ -26,6 +26,7 @@ public class CoolingBox extends TemperatureDevice {
     /**
      * Constructs a new CoolingBox device with its temperature set to {0, 20}.
      *
+     * // TODO: @effect from superclass instead of post?
      * @post    the CoolingBox will have its temperature set to {0, 20}
      *          | new.getTemperature() == new long[]{0, 20};
      */

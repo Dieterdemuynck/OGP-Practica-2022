@@ -45,6 +45,7 @@ public class AlchemicIngredient {
     /* *********************************************************
      * CONSTRUCTORS
      * *********************************************************/
+
     // FOR IN TRANSMOGIFIER: CURRENT STATE AND TEMPERATURE
     /**
      * Initialize a new alchemical ingredient with given amount, unit, standard temperature, current temperature, name,
@@ -453,6 +454,7 @@ public class AlchemicIngredient {
     public static boolean isValidState(State state){
         return state != null;
     }
+
     /* *********************************************************
      * AMOUNT & UNIT
      * NOMINAAL
@@ -541,13 +543,7 @@ public class AlchemicIngredient {
             this.temperature = 20; //DEFAULT
         }
         else {
-            long temp = 0;
-            if (temperature[0] != 0) {
-                temp -= temperature[0];
-            } else {
-                temp = temperature[1];
-            }
-            this.temperature = temp;
+            this.temperature = temperature[1] - temperature[0];
         }
     }
 
@@ -646,31 +642,43 @@ public class AlchemicIngredient {
      * MIX METHODES
      * *********************************************************/
 
-    /** TODO IS DIT UITGEBREID GENOEG?
+    /**
      * Return a new (mixed) alchemical ingredient based on this alchemical ingredient and a given alchemical ingredient
      *
      * @param   ingredient
      *          the alchemical ingredient which need to be mixed with this alchemical ingredient.
      */
-    public AlchemicIngredient mixWith(AlchemicIngredient ingredient){
+    public AlchemicIngredient mixWith(AlchemicIngredient ingredient) {
+
+        // Create a sorted list with the names of all the component ingredients
         List<String> names = mergeSort(this.getIngredientType().getComponentNames(),
                 ingredient.getIngredientType().getComponentNames());
 
+        // Create a new list with both ingredients
         List<AlchemicIngredient> ingredients = new ArrayList<>();
         ingredients.add(this);
         ingredients.add(ingredient);
 
+        // Find the state of the ingredient with temperature closest to {0, 20}
         State state = this.standardTemperatureClosestToZeroTwenty(ingredients).getState();
 
-        int amount = (int) Math.floor(State.addAmountsInSpoons(ingredients));
+        // Find the total amount in the largest fitting unit
+        Quantity quantity = state.findLargestFit(state.addAmounts(ingredients), state.getSmallestUnit());
+        int amount = quantity.getAmount();
+        Unit unit = quantity.getUnit();
+
+        // Calculate the average temperature
         long[] temperature = asLongArray((asLong(getTemperature()) +  asLong(ingredient.getTemperature()))/2);
+
+        // Create a new mixedIngredientType
         MixedIngredientType mixedIngredientType = new MixedIngredientType(names, temperature, state);
 
-        return new AlchemicIngredient(mixedIngredientType, amount,Unit.Spoon, temperature, state);
+        // Pass all the variable to make a new ingredient
+        return new AlchemicIngredient(mixedIngredientType, amount, unit, temperature, state);
     }
 
 
-    /** TODO IS DIT UITGEBREID GENOEG?
+    /**
      * Return a new (mixed) alchemical ingredient based on this alchemical ingredient and the given list of alchemical
      * ingredients
      *
@@ -678,25 +686,41 @@ public class AlchemicIngredient {
      *          the list of alchemical ingredients which need to be mixed with this alchemical ingredient.
      */
     public AlchemicIngredient mixWith(List<AlchemicIngredient> ingredients){
-        List<String> names = new ArrayList<>();
-        names.addAll(this.getIngredientType().getComponentNames());
-        long temperature = asLong(getTemperature());
+
+        // Create a new list with the names of the component ingredients
+        List<String> names = new ArrayList<>(this.getIngredientType().getComponentNames());
+
+        // Initialize vars for finding average temperature
+        long temperatureSum = asLong(getTemperature());
         int numberOfIngredients = 1;
+
+        // Add all names to list, in order, and update temperature vars
         for (AlchemicIngredient alchemicIngredient: ingredients){
             names = mergeSort(names, alchemicIngredient.getIngredientType().getComponentNames());
-            temperature += asLong(alchemicIngredient.getTemperature());
-            numberOfIngredients += 1;
+            temperatureSum += asLong(alchemicIngredient.getTemperature());
+            numberOfIngredients++;
         }
-        long[] temperatureArray = asLongArray(temperature/numberOfIngredients);
 
+        // Find the average temperature based on values of the temperature vars
+        long[] temperatureArray = asLongArray(temperatureSum/numberOfIngredients);
+
+        // Find the state of the ingredient with its temperature closest to {0, 20}
+        // Note: while a bit unclear, this does include *this* ingredient
         State state = this.standardTemperatureClosestToZeroTwenty(ingredients).getState();
 
+        // Add this ingredient to the list of ingredients
         ingredients.add(this);
-        int amount = (int) Math.floor(State.addAmountsInSpoons(ingredients));
 
+        // Calculate the new amount and unit
+        Quantity quantity = state.findLargestFit(state.addAmounts(ingredients), state.getSmallestUnit());
+        int amount = quantity.getAmount();
+        Unit unit = quantity.getUnit();
+
+        // Create a new mixedIngredientType
         MixedIngredientType mixedIngredientType = new MixedIngredientType(names, temperatureArray, state);
 
-        return new AlchemicIngredient(mixedIngredientType, amount,Unit.Spoon, temperatureArray, state);
+        // Pass all variables to create a new ingredient and return
+        return new AlchemicIngredient(mixedIngredientType, amount, unit, temperatureArray, state);
     }
 
     /**
@@ -758,7 +782,7 @@ public class AlchemicIngredient {
         int i = 0;
         int j = 0;
         while (i<n1 && j<n2){
-            if (list1.get(i).compareTo(list2.get(j))<=0){ //list1.get(i) is lxicographically less than list2.get(j)
+            if (list1.get(i).compareTo(list2.get(j))<=0){ //list1.get(i) is lexicographically less than list2.get(j)
                 mergedList.add(list1.get(i));
                 i +=1;
             }
