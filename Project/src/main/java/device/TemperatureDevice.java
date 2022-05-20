@@ -48,6 +48,7 @@ public abstract class TemperatureDevice extends Device {
 
     /**
      * Sets the temperature device's temperature to the given temperature array.
+     * if the temperature is invalid, it will be set to {0,20}
      *
      * @param temperature
      */

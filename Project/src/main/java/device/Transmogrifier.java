@@ -41,8 +41,9 @@ public class Transmogrifier extends Device {
      *
      * @post    The resultingState of the new Transmogrifier device is Liquid
      *          | new.getState() == State.Liquid
+     * @param liquid
      */
-    public Transmogrifier() {
+    public Transmogrifier(State liquid) {
         this.resultingState = State.Liquid;
     }
 
