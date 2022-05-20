@@ -108,7 +108,6 @@ public class Transmogrifier extends Device {
                         quantity.getAmount(), quantity.getUnit(), getState());
 
                 // Step 3: Remove the old ingredient and set the present ingredient to the new ingredient
-                setIngredient(null);
                 setIngredient(newIngredient);
             }
         }
