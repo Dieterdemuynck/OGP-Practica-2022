@@ -1,5 +1,7 @@
 package main.java.ingredient;
 
+import be.kuleuven.cs.som.annotate.Model;
+
 /**
  * A class of ingredient containers, involving capacity and content.
  *
@@ -33,15 +35,17 @@ public class IngredientContainer {
     }
 
     /**
-     * Initialize a new ingredient container with given alchemical ingredient
+     * Initialize a new ingredient container which fits a given alchemical ingredient if possible, and is as large as
+     * possible otherwise, and inserts the ingredient in the new container.
      *
      * @param   ingredient
      *          The content of the new ingredient container.
      * @pre     There is at least one container unit which can fit all the given ingredient.
      *          | ingredient.getState().hasContainer()
-     * @post    The ingredient is inserted in the ingredient container
-     *          | new.getContent() == ingredient
+     * @effect  The ingredient is inserted in the ingredient container
+     *          | insert(ingredient)
      */
+    @Model
     public IngredientContainer(AlchemicIngredient ingredient) {
         this(ingredient.getState().findSmallestFittingContainer(ingredient.getAmount(), ingredient.getUnit()));
         insert(ingredient);
@@ -102,6 +106,7 @@ public class IngredientContainer {
      *          | else new.getContents() == ingredient;
      * @param   ingredient  The alchemical ingredient to store inside the container
      */
+    @Model
     public void insert(AlchemicIngredient ingredient) {
         if (ingredient.getState().compareInSameState(1, getCapacity(), ingredient.getAmount(), ingredient.getUnit())
                 < 0) {

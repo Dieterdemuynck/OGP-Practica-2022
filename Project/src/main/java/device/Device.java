@@ -49,6 +49,14 @@ public abstract class Device {
      * ALCHEMIC INGREDIENT - RETRIEVE
      * ***************************/
 
+    /**
+     * Retrieves the ingredient from the device and puts it in the best fitting container. If the container is too
+     * small, the rest of the ingredient will be lost.
+     * @effect creates a new ingredient container with the present ingredient and lowers quantity if necessary,
+     *         null if it is empty.
+     *         | new IngredientContainer(getIngredient())
+     * @return
+     */
     public IngredientContainer retrieve() {
         if (getIngredient()==null){
             return null;
@@ -71,6 +79,10 @@ public abstract class Device {
      * DEVICE TYPE
      * *********************************************************/
 
+    /**
+     * An enum listing all possible types of devices. This is what Laboratory bases itself on for device types, as only
+     * 1 device may be present of each type.
+     */
     public enum DeviceType{
         CoolingBox, Oven, Kettle, Transmogrifier
     }
@@ -85,6 +97,11 @@ public abstract class Device {
      * LABORATORY
      * *********************************************************/
 
+    /**
+     * The laboratory in which this device is currently present. Null if it is not present in any laboratory.
+     * @return The laboratory in which this device is present
+     *         | result == this.laboratory
+     */
     @Basic
     public Laboratory getLaboratory() {
         return laboratory;
@@ -92,10 +109,9 @@ public abstract class Device {
 
     /**
      * The given laboratory will be the laboratory this device has been placed in.
-     * @param laboratory
+     * @param laboratory The laboratory in which we want to place the device.
      */
     public void setLaboratory(Laboratory laboratory) {
-        // TODO: Do we allow ingredients to move between laboratories through devices?
         this.laboratory = laboratory;
     }
 
