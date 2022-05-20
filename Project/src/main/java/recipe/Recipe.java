@@ -1,6 +1,4 @@
-package main.java;
-
-import main.java.ingredient.AlchemicIngredient;
+package main.java.recipe;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A class of laboratories
+ * A class of recipes
  * @author Dieter Demuynck, Hannes Ingelaere and Ine Malfait
  * @version 1.0
  */
@@ -17,12 +15,16 @@ public class Recipe {
     /**
      * Variable registering the list of ingredients in the right order used in the recipe.
      */
-    private List<AlchemicIngredient> ingredientsList = new LinkedList<>();
+<<<<<<< HEAD:Project/src/main/java/Recipe.java
+    private final List<AlchemicIngredient> ingredientsList;
+=======
+    private final List<AlchemicIngredientReference> ingredientsList;
+>>>>>>> Project:Project/src/main/java/recipe/Recipe.java
 
     /**
-     * Variable registering the list of operations used on the ingredients in the right order.
+     * Variable registering the list of operations done on the ingredients in the right order.
      */
-    private List<Operation> operationList = new LinkedList<>();
+    private final List<Operation> operationList;
 
     /* *********************************************************
      * CONSTRUCTOR
@@ -32,17 +34,21 @@ public class Recipe {
      * Constructs a new Recipe with the given ingredient list and operations list. Removes all null elements from
      * both lists.
      *
+     * @pre   The amount of add operations and ingredients is the same.
+     *
      * @param ingredients
      * @param operations
      */
-    public Recipe(List<AlchemicIngredient> ingredients, List<Operation> operations) {
+    public Recipe(List<AlchemicIngredientReference> ingredients, List<Operation> operations) {
         ingredients.removeAll(Collections.singleton(null));
         operations.removeAll(Collections.singleton(null));
         this.ingredientsList = ingredients;
+        if (operations.get(operations.size() - 1) != Operation.Mix)
+            operations.add(Operation.Mix);
         this.operationList = operations;
     }
 
-    public Recipe(AlchemicIngredient[] ingredients, Operation[] operations) {
+    public Recipe(AlchemicIngredientReference[] ingredients, Operation[] operations) {
         this(Arrays.asList(ingredients), Arrays.asList(operations));
     }
 
@@ -51,10 +57,10 @@ public class Recipe {
      * *********************************************************/
 
     /**
-     * Returns the list of ingredients.
-     * @return the list of ingredients
+     * Returns the list of alchemical ingredient references.
+     * @return the list of alchemical ingredient references
      */
-    public List<AlchemicIngredient> getIngredientsList() {
+    public List<AlchemicIngredientReference> getIngredientsList() {
         return ingredientsList;
     }
 
@@ -62,10 +68,6 @@ public class Recipe {
      * OPERATIONS LIST
      * *********************************************************/
 
-    /**
-     * returns the list of operations.
-     * @return the list of operations
-     */
     public List<Operation> getOperationsList() {
         return operationList;
     }

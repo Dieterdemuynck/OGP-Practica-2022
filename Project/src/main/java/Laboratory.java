@@ -1,7 +1,7 @@
 package main.java;
 
 import be.kuleuven.cs.som.annotate.Model;
-import main.java.device.Device;
+import main.java.device.*;
 import main.java.device.exception.DeviceNotEmptyException;
 import main.java.exception.DeviceNotPresentException;
 import main.java.ingredient.*;
@@ -9,6 +9,9 @@ import main.java.ingredient.exception.IncompatibleUnitException;
 import main.java.ingredient.exception.IngredientNotPresentException;
 import main.java.ingredient.exception.NotEnoughIngredientException;
 import main.java.ingredient.exception.SpecialNameDoesNotExistException;
+import main.java.recipe.AlchemicIngredientReference;
+import main.java.recipe.Operation;
+import main.java.recipe.Recipe;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -224,7 +227,7 @@ public class Laboratory {
      * @param unit the unit of the ingredient you want to retrieve
      * @return a new container, containing the given amount of the ingredient.
      */
-    public IngredientContainer retrieve(String name, int amount, Unit unit){
+    public IngredientContainer retrieveSimple(String name, int amount, Unit unit){
         // This might do double calculation for "find largest fit" but whatever, I guess?
         return new IngredientContainer(retrieveIngredient(name, amount, unit));
     }
@@ -239,7 +242,7 @@ public class Laboratory {
         if (specialToSimple.get(specialName) == null) {
             throw new SpecialNameDoesNotExistException(this, specialName);
         }
-        return retrieve(specialToSimple.get(specialName), amount, unit);
+        return retrieveSimple(specialToSimple.get(specialName), amount, unit);
     }
     
     private AlchemicIngredient getStoredIngredient(String name) {
@@ -344,56 +347,161 @@ public class Laboratory {
      * RECIPE
      * *********************************************************/
 
+    /**
+     * NO SPECIFICATION REQUESTED
+     * Don't waste time on this, thx
+     */
     public void execute(Recipe recipe, int factorIngredients){ // Todo: staat in commentaar, implementatie moet nog gebeuren maar daarvoor moet rest eerst af zijn =(
-        // IDEE: elke if-clause schrijven als een aparte functie, want je moet op einde ook nog eens mixen...
-        // Dimme here: even better idea: combine that idea with the use switch statements instead of 100 if-clauses.
 
-        List<AlchemicIngredient> ingredientsRecipe = new LinkedList<>();
-        List<AlchemicIngredient> ingredientList = recipe.getIngredientsList();
+        // Creates a list for the ingredients made during the execution
+        List<AlchemicIngredient> currentIngredients = new LinkedList<>();
+
+        // Store the ingredient references list and operations list for use during code
+        List<AlchemicIngredientReference> ingredientReferences = recipe.getIngredientsList();
         List<Operation> operationList = recipe.getOperationsList();
+
+        // Store an index for each list in the recipe
         int indexOperations = 0;
         int indexIngredients = 0;
-        while (indexIngredients < ingredientList.size() && indexOperations < operationList.size()){
-            Operation operation = operationList.get(indexOperations);
+        // As long as the operations have not yet ended
+        boolean canContinue = true;
+        while (canContinue && indexOperations < operationList.size()
+                           && indexIngredients < ingredientReferences.size()){
 
-            // TODO: use switch instead. Remember to add "break" to each end!
-            //  https://www.w3schools.com/java/java_switch.asp
-            if (operation == Operation.Add){
-                // Zoeken naar ingr = ingredientList.get(indexIngredients).getName()
-                // Controleren dat ingr.getCapacity() => ingredientList.get(indexIngredients).getCapacity() * factorIngredients
-                // Toevoegen aan ingredientsRecipe en verwijderen uit storage
-                // indexIngredients += 1
+            switch (operationList.get(indexOperations++)) {
+                case Add:
+                    // Save the ingredient request and raise indexIngredients
+                    AlchemicIngredientReference request = ingredientReferences.get(indexIngredients++);
 
-                // niet aanwezig -> break
+                    try {
+                        // We try to find the ingredient with the given name:
+                        try {
+                            // First, try the simple name
+                            currentIngredients.add(
+                                    retrieveSimple(
+                                            request.name(), request.amount() * factorIngredients, request.unit()).extract());
+
+                        } catch (IngredientNotPresentException e) {
+                            // There is no such ingredient -> try the special name
+                            currentIngredients.add(
+                                    retrieveSpecial(
+                                            request.name(), request.amount() * factorIngredients, request.unit()).extract());
+                        }
+                    } catch (NotEnoughIngredientException | IngredientNotPresentException e) {
+                        // Either one of the inner try-catch does not have enough of the given ingredient
+                        // or does not have any ingredient with the given name
+                        // => Quit.
+                        canContinue = false;
+                    }
+                    // When this line is reached, either we put the ingredient in the list or we halt the while loop
+                    // before the next iteration.
+                    break;
+
+                case Heat:
+                    try {
+                        // Get the last ingredient added.
+                        AlchemicIngredient last = currentIngredients.remove(currentIngredients.size() - 1);
+                        long correctTemperatureLong = (last.getTemperature()[1] - last.getTemperature()[0]) + 50;
+
+                        // -=-=-=-=-=-=-=-=-=-=-=- HEATING -=-=-=-=-=-=-=-=-=-=-=-
+                        // Find the temperature needed to be able to cool the ingredient if there's a deviation
+                        long temperatureLong = (long) Math.ceil(correctTemperatureLong * (1 / 0.95));  // Rounded up
+                        long[] temperature = new long[]{Math.min(0, temperatureLong), Math.max(0, temperatureLong)};
+
+                        // Set the oven to the correct temperature
+                        ((Oven) getDevice(Device.DeviceType.Oven)).setTemperature(temperature);
+
+                        // Heat the ingredient in the device
+                        last = useOnDevice(Device.DeviceType.Oven, new IngredientContainer(last)).extract();
+
+                        // -=-=-=-=-=-=-=-=-=-=-=- COOLING -=-=-=-=-=-=-=-=-=-=-=-
+                        // Find the temperature needed to bring it to the correct temperature
+                        temperatureLong = last.getTemperature()[1] - last.getTemperature()[0] - correctTemperatureLong;
+                        temperature = new long[]{Math.min(0, temperatureLong), Math.max(0, temperatureLong)};
+
+                        // Set the cooling box to the correct temperature
+                        ((CoolingBox) getDevice(Device.DeviceType.CoolingBox)).setTemperature(temperature);
+
+                        // Cool the ingredient in the device
+                        last = useOnDevice(Device.DeviceType.CoolingBox, new IngredientContainer(last)).extract();
+
+                        // -=-=-=-=-=-=-=-=-=-=-=- END -=-=-=-=-=-=-=-=-=-=-=-
+                        // Insert the ingredient back into the list
+                        currentIngredients.add(last);
+
+                    } catch (DeviceNotPresentException e) {
+                        // If at any point in time the device is not present, we stop.
+                        canContinue = false;
+                    } catch (DeviceNotEmptyException e) {
+                        // In case the device is present but not empty, notify the user.
+                        // (Included because I'm not sure how to handle this.)
+                        System.out.println("Device " + e.getDevice().getDeviceType().name()
+                                + " is not empty.");
+                        canContinue = false;
+                    }
+                    break;
+
+                case Cool:
+                    try {
+                        // Get the last ingredient added.
+                        AlchemicIngredient last = currentIngredients.remove(currentIngredients.size() - 1);
+                        long temperatureLong = (last.getTemperature()[1] - last.getTemperature()[0]) + 50;
+                        long[] temperature = new long[]{Math.min(0, temperatureLong), Math.max(0, temperatureLong)};
+
+                        // Set the cooling box to the correct temperature
+                        ((CoolingBox) getDevice(Device.DeviceType.CoolingBox)).setTemperature(temperature);
+
+                        // Cool the ingredient in the device
+                        last = useOnDevice(Device.DeviceType.CoolingBox, new IngredientContainer(last)).extract();
+
+                        // -=-=-=-=-=-=-=-=-=-=-=- END -=-=-=-=-=-=-=-=-=-=-=-
+                        // Insert the ingredient back into the list
+                        currentIngredients.add(last);
+
+                    } catch (DeviceNotPresentException e) {
+                        // If at any point in time the device is not present, we stop.
+                        canContinue = false;
+                    } catch (DeviceNotEmptyException e) {
+                        // In case the device is present but not empty, notify the user.
+                        // (Included because I'm not sure how to handle this.)
+                        System.out.println("Device " + e.getDevice().getDeviceType().name()
+                                + " is not empty.");
+                        canContinue = false;
+                    }
+                    break;
+                case Mix:
+                    try {
+                        // Add each ingredient that has been added to the list so far
+                        for (AlchemicIngredient ingredient : currentIngredients) {
+                            addToDevice(Device.DeviceType.Kettle, new IngredientContainer(ingredient));
+                        }
+
+                        // Activate the Kettle
+                        activateDevice(Device.DeviceType.Kettle);
+
+                        // Extract ingredient and add to list
+                        currentIngredients = new LinkedList<>();
+                        currentIngredients.add(retrieveFromDevice(Device.DeviceType.Kettle).extract());
+                    } catch (DeviceNotPresentException e) {
+                        // If at any point in time the device is not present, we stop.
+                        canContinue = false;
+                    } catch (DeviceNotEmptyException e) {
+                        // We tried to mix, but the output was already in use.
+                        // Notify the user that there is ingredient left in the Kettle (perhaps they'd still like
+                        // to extract the previous ingredient and use the ingredient currently present in the Kettle)
+                        System.out.println("Kettle's output source is not empty, halting execution");
+                        canContinue = false;
+                    }
             }
-            else if (operation == Operation.Heat){
-                // controleren ofdat er een oven en coolbox aanwezig is
-                // In oven ingr = ingredientsRecipe[-1] opwarmen met 50/0.95 (want ge moet 50 eenheden opwarmen)
-                // In coolbox ingr afkoelen tot die effectief 50 is opgewarmt
-                // ingredientsRecipe[-1] overschrijven met ingr
-
-                // oven en coolbox niet aanwezig -> break
-            }
-            else if (operation == Operation.Cool){
-                // controleren ofdat er een coolbox aanwezig is
-                // In coolbox ingr afkoelen met 50
-                // ingredientsRecipe[-1] overschrijven met ingr
-
-                // coolbox niet aanwezig -> break
-            }
-            else if (operation == Operation.Mix){ //kweet dat if hier nie echt nodig is ma dan ben je zeker...
-                // controleren ofdat een kettle aanwezig is
-                // In kettle alle ingredienten in ingredientsRecipe mixen
-                // ingredientsRecipe = null
-                // ingredientsRecipe[0] is ingr in kettle
-
-                // kettle niet aanwezig -> break
-            }
-            else {break; } // TODO: not needed, pls delete :)
-            indexOperations +=1;
+            // -=-=-=-=-=-=-=-=-=-=-=- END OF SWITCH -=-=-=-=-=-=-=-=-=-=-=-
         }
-        // mix nog eens alles volgens mixdinges
-        // voeg nieuwe ingredient toe aan storage
-        // store(ingredientsRecipe[0]);
+        // -=-=-=-=-=-=-=-=-=-=-=- END OF WHILE -=-=-=-=-=-=-=-=-=-=-=-
+        // Note: Mix being the last operation is taken care of in the Recipe constructor.
+        // Store all ingredients.
+        for (AlchemicIngredient ingredient: currentIngredients) {
+            store(new IngredientContainer(ingredient));
+        }
+        // "All's well that ends well."
+        //  - Maxwell
     }
 }
