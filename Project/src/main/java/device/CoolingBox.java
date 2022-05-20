@@ -59,7 +59,7 @@ public class CoolingBox extends Device {
 
     /**
      * Sets the CoolingBox's temperature to the given temperature array. If the given temperature is invalid, it will be set to [0,20]
-     *
+     * @pre the temperature is valid.
      * @param temperature
      */
     public void setTemperature(long[] temperature) {
