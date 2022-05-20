@@ -16,12 +16,12 @@ public class Recipe {
     /**
      * Variable registering the list of ingredients in the right order used in the recipe.
      */
-    private List<AlchemicIngredient> ingredientsList = new LinkedList<>();
+    private final List<AlchemicIngredient> ingredientsList;
 
     /**
      * Variable registering the list of operations used on the ingredients in the right order.
      */
-    private List<Operation> operationList = new LinkedList<>();
+    private final List<Operation> operationList;
 
     /* *********************************************************
      * CONSTRUCTOR
