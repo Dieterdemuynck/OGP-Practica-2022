@@ -8,6 +8,7 @@ import main.java.ingredient.*;
 import main.java.ingredient.exception.IncompatibleUnitException;
 import main.java.ingredient.exception.IngredientNotPresentException;
 import main.java.ingredient.exception.NotEnoughIngredientException;
+import main.java.ingredient.exception.SpecialNameDoesNotExistException;
 
 import java.util.*;
 
@@ -110,9 +111,21 @@ public class Laboratory {
      */
     @Model
     private AlchemicIngredient retrieveIngredient(String name, int amount, Unit unit) throws IngredientNotPresentException,
-            IncompatibleUnitException, NotEnoughIngredientException {
+            IncompatibleUnitException, NotEnoughIngredientException, IllegalArgumentException {
         // This is rather inefficient, as we create 2 new alchemicIngredients instead of just changing a value or 2
         // Better than nothing :)
+
+        // If the name is invalid (but not null) then we simply get an IngredientNotPresentException: no need to test
+        if (name == null) {
+            throw new IllegalArgumentException("name may not be null.");
+        }
+        if (unit == null) {
+            throw new IllegalArgumentException("unit may not be null.");
+        }
+        if (amount == 0) {
+            throw new IllegalArgumentException("amount must be greater than 0");
+        }
+
         AlchemicIngredient bulk = getStoredIngredient(name);
 
         // Possible exceptions:
@@ -148,6 +161,19 @@ public class Laboratory {
     public IngredientContainer retrieve(String name, int amount, Unit unit){
         // This might do double calculation for "find largest fit" but whatever, I guess?
         return new IngredientContainer(retrieveIngredient(name, amount, unit));
+    }
+
+    public IngredientContainer retrieveSpecial(String specialName, int amount, Unit unit)
+            throws IngredientNotPresentException, IncompatibleUnitException, NotEnoughIngredientException,
+            IllegalArgumentException {  // That's a lotta exceptions...
+
+        if (specialName == null) {
+            throw new IllegalArgumentException("specialName may not be null");
+        }
+        if (specialToSimple.get(specialName) == null) {
+            throw new SpecialNameDoesNotExistException(this, specialName);
+        }
+        return retrieve(specialToSimple.get(specialName), amount, unit);
     }
     
     private AlchemicIngredient getStoredIngredient(String name) {
@@ -206,11 +232,11 @@ public class Laboratory {
 
     /* *********************************************************
      * DEVICE METHODS
-     * TODO: Add method bodies + Additional arguments.
+     * TODO: Test + Specification
      * *********************************************************/
 
     /**
-     * QoL Device method, returns the device that is inside the laboratory
+     * [QoL Device method] returns the device that is inside the laboratory with the given device type
      * @param deviceType
      * @return
      * @throws DeviceNotPresentException

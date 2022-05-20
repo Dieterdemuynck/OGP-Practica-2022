@@ -41,16 +41,16 @@ public enum State {
             new int[] {1, 8, 5, 3, 7, 12, 5}
     );
 
-    /* *********************************************************\
+    /* *********************************************************
      * PROPERTIES
-    \* *********************************************************/
+     * *********************************************************/
 
     private final Unit[] units;
     private final int[] values;
 
-    /* *********************************************************\
+    /* *********************************************************
      * CONSTRUCTOR
-    \* *********************************************************/
+     * *********************************************************/
 
     /**
      * Creates a new State object with the respective Units and the values of the given units.
@@ -93,9 +93,9 @@ public enum State {
         this.values = values;
     }
 
-    /* *********************************************************\
+    /* *********************************************************
      * GETTERS
-    \* *********************************************************/
+     * *********************************************************/
 
     @Immutable
     @Basic
@@ -109,10 +109,10 @@ public enum State {
         return values;
     }
 
-    /* ******************************************************** *\
+    /* *********************************************************
      * QoL METHODS
      * LEVEL 1: PRIVATE
-    \* ******************************************************** */
+     * *********************************************************/
 
     private int getIndexOf(Unit unit) {
         return Arrays.asList(this.getUnits()).indexOf(unit);
@@ -143,10 +143,10 @@ public enum State {
         return (int) (amountInSpoons * getValueOf(Unit.Spoon));
     }
 
-    /* *********************************************************\
+    /* *********************************************************
      * QoL METHODS
      * LEVEL 2: PUBLIC
-    \* *********************************************************/
+     * *********************************************************/
 
     @Immutable
     public Unit getSmallestUnit() {
@@ -161,10 +161,10 @@ public enum State {
         return (double) (amount * getValueOf(unit)) / (double) getValueOf(Unit.Storeroom);
     }
 
-    /* *********************************************************\
+    /* *********************************************************
      * QoL METHODS
      * LEVEL 3: ALCHEMIC INGREDIENT (STATIC)
-    \* *********************************************************/
+     * *********************************************************/
 
     public static double inSpoons(AlchemicIngredient ingredient) {
         return ingredient.getState().inSpoons(ingredient.getAmount(), ingredient.getUnit());
@@ -264,9 +264,9 @@ public enum State {
         return (int) Math.signum(amount1 * getValueOf(unit1) - amount2 * getValueOf(unit2));
     }
 
-    /* *********************************************************\
+    /* *********************************************************
      * CONVERSION METHODS
-    \* *********************************************************/
+     * *********************************************************/
 
     public Quantity convertTo(int amount, Unit originUnit, State targetState) {
         return targetState.findLargestFit(targetState.fromSpoons(this.inSpoons(amount, originUnit)), Unit.Spoon);

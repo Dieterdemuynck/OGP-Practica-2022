@@ -6,6 +6,7 @@ import main.java.ingredient.exception.IllegalNameException;
 import main.java.ingredient.exception.NonMixedSpecialNameException;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -64,6 +65,8 @@ public class AlchemicIngredient {
      * @param   currentState
      *          The current state of the new alchemical ingredient
      *
+     * @pre     amount is a valid amount
+     *          | isValidAmount(amount)
      * @pre     unit is a valid unit
      *          | isValidUnit(unit)
      * @pre     standardState is a valid state
@@ -75,6 +78,8 @@ public class AlchemicIngredient {
      *          | IngredientType(name, standardTemperature, standardState)
      * @effect  The new alchemical ingredient has the given currentTemperature
      *          | setTemperature(currentTemperature)
+     * @post    The amount of this new alchemical ingredient is set to the given amount
+     *          | new.getAmount() == amount
      * @post    The unit of this new alchemical ingredient is set to the given unit
      *          | new.getUnit() == unit
      * @post    The state of this new alchemical ingredient is set to the given currentState
@@ -212,6 +217,41 @@ public class AlchemicIngredient {
         this(amount, Unit.Spoon);
     }
 
+    /**
+     * Initialize a new (mixed) alchemica ingredient with given mixed ingredient type, amount, unit, current temperature
+     * and current state.
+     *
+     * @param   mixedIngredientType
+     *          The mixed ingredient type of the new alchemical ingredient
+     * @param   amount
+     *          the amount of the new alchemical ingredient
+     * @param   unit
+     *          the unit of the new alchemical ingredient
+     * @param   currentTemperature
+     *          the current temperature of the new alchemical ingredient
+     * @param   currentState
+     *          the current state of the new alchemical ingredient
+     *
+     * @pre     mixedIngredientType is a valid ingredient type
+     *          | isValidIngredientType(mixedIngredientType)
+     * @pre     amount is a valid amount
+     *          | isValidAmount(amount)
+     * @pre     unit is a valid unit
+     *          | isValidUnit(unit)
+     * @pre     currentState is a valid state
+     *          | isValidState(standardState)
+     * @effect  The new alchemical ingredient has the given currentTemperature
+     *          | setTemperature(currentTemperature)
+     * @post    The ingredient type of this new alchemical ingredient is set to the given mixed ingredient type
+     *          | new.getIngredientType() == mixedIngredientType
+     * @post    The amount of this new alchemical ingredient is set to the given amount
+     *          | new.getAmount() == amount
+     * @post    The unit of this new alchemical ingredient is set to the given unit
+     *          | new.getUnit() == unit
+     * @post    The state of this new alchemical ingredient is set to the given currentState
+     *          | new.getState() == currentState
+     */
+    @Raw @Model
     private AlchemicIngredient(MixedIngredientType mixedIngredientType, int amount, Unit unit, long[] currentTemperature,
                                State currentState) {
         this.ingredientType = mixedIngredientType;
@@ -234,6 +274,18 @@ public class AlchemicIngredient {
      */
     public IngredientType getIngredientType() {
         return ingredientType;
+    }
+
+    /**
+     * Return whether the given ingredient type is a valid ingredient type for an alchemical ingredient.
+     *
+     * @param   ingredientType
+     *          The ingredient type to check.
+     * @return  True if and only if the given ingredient type is effective
+     *          | result == (ingredientType != null)
+     */
+    public boolean isValidIngredientType(IngredientType ingredientType){
+        return ingredientType != null;
     }
 
     /* ***************************
@@ -329,8 +381,10 @@ public class AlchemicIngredient {
     }
 
     /**
+     * Checks whether this alchemical ingredient has a special name
      *
-     * @return
+     * @return  True if and only if this alchemical ingredient has a special name
+     *          | result == (ingredientType.hasSpecialName())
      */
     public boolean hasSpecialName(){
         return ingredientType.hasSpecialName();
@@ -412,6 +466,18 @@ public class AlchemicIngredient {
     }
 
     /**
+     * Return whether the given amount is a valid amount for an alchemical ingredient.
+     *
+     * @param   amount
+     *          The amount to check.
+     * @return  True if and only if the given amount is greater or equal to zero
+     *          | result == (amount >= 0)
+     */
+    public static boolean isValidAmount(int amount){
+        return amount >= 0;
+    }
+
+    /**
      * Return the unit of this alchemical ingredient.
      */
     public Unit getUnit() {
@@ -437,12 +503,16 @@ public class AlchemicIngredient {
 
     /**
      * Return the (current) temperature of this alchemical ingredient.
-     * @return  TODO
      */
     public long[] getTemperature() {
         return asLongArray(this.temperature);
     }
 
+    /**
+     * Returns the long array version of the given temperature.
+     * @param   temperature
+     *          the long temperature that needs to be given as a long array
+     */
     private long[] asLongArray(long temperature){
         long[] temp = new long[2];
         if (temperature < 0) {
@@ -576,15 +646,15 @@ public class AlchemicIngredient {
      * MIX METHODES
      * *********************************************************/
 
-    /**
-     * todo wat als iets al gemixt is? voor naam
-     * @param ingredient
-     * @return
+    /** TODO IS DIT UITGEBREID GENOEG?
+     * Return a new (mixed) alchemical ingredient based on this alchemical ingredient and a given alchemical ingredient
+     *
+     * @param   ingredient
+     *          the alchemical ingredient which need to be mixed with this alchemical ingredient.
      */
     public AlchemicIngredient mixWith(AlchemicIngredient ingredient){
-        List<String> name = new ArrayList<>();
-        name.add(this.getName());
-        name.add(ingredient.getName());
+        List<String> names = mergeSort(this.getIngredientType().getComponentNames(),
+                ingredient.getIngredientType().getComponentNames());
 
         List<AlchemicIngredient> ingredients = new ArrayList<>();
         ingredients.add(this);
@@ -594,24 +664,26 @@ public class AlchemicIngredient {
 
         int amount = (int) Math.floor(State.addAmountsInSpoons(ingredients));
         long[] temperature = asLongArray((asLong(getTemperature()) +  asLong(ingredient.getTemperature()))/2);
-        MixedIngredientType mixedIngredientType = new MixedIngredientType(name, temperature, state);
+        MixedIngredientType mixedIngredientType = new MixedIngredientType(names, temperature, state);
 
         return new AlchemicIngredient(mixedIngredientType, amount,Unit.Spoon, temperature, state);
     }
 
 
-    /**
-     * todo wat als iets al gemixt is? voor naam
-     * @param ingredients
-     * @return
+    /** TODO IS DIT UITGEBREID GENOEG?
+     * Return a new (mixed) alchemical ingredient based on this alchemical ingredient and the given list of alchemical
+     * ingredients
+     *
+     * @param   ingredients
+     *          the list of alchemical ingredients which need to be mixed with this alchemical ingredient.
      */
     public AlchemicIngredient mixWith(List<AlchemicIngredient> ingredients){
-        List<String> name = new ArrayList<>();
-        name.add(this.getName());
+        List<String> names = new ArrayList<>();
+        names.addAll(this.getIngredientType().getComponentNames());
         long temperature = asLong(getTemperature());
         int numberOfIngredients = 1;
         for (AlchemicIngredient alchemicIngredient: ingredients){
-            name.add(alchemicIngredient.getName());
+            names = mergeSort(names, alchemicIngredient.getIngredientType().getComponentNames());
             temperature += asLong(alchemicIngredient.getTemperature());
             numberOfIngredients += 1;
         }
@@ -622,15 +694,22 @@ public class AlchemicIngredient {
         ingredients.add(this);
         int amount = (int) Math.floor(State.addAmountsInSpoons(ingredients));
 
-        MixedIngredientType mixedIngredientType = new MixedIngredientType(name, temperatureArray, state);
+        MixedIngredientType mixedIngredientType = new MixedIngredientType(names, temperatureArray, state);
 
         return new AlchemicIngredient(mixedIngredientType, amount,Unit.Spoon, temperatureArray, state);
     }
 
     /**
-     *
-     * @param ingredient
-     * @return
+     * Checks if this alchemical ingredient temperature is closer to the temperature {0,20} than the temperature of the
+     * given alchemical ingredient
+     * @param   ingredient
+     *          the given alchemical ingredient
+     * @return  True if and only if this temperature is closer to {0,20} than the temperature of the given alchemical
+     *          ingredient, otherwise false.
+     *          | result == (
+     *          |           (this.getTemperature()[0] + Math.abs(this.getTemperature()[1]-20)) <=
+     *          |           (ingredient.getTemperature()[0] + Math.abs(ingredient.getTemperature()[1]-20))
+     *          |           )
      */
     private boolean standardTemperatureCloserToZeroTwenty(AlchemicIngredient ingredient) {
         long[] tTemperature = getTemperature();
@@ -641,9 +720,10 @@ public class AlchemicIngredient {
     }
 
     /**
-     *
-     * @param ingredients
-     * @return
+     * Return the alchemical ingredient whose temperature is closest to the temperature {0,20}, the alchemical
+     * ingredients to compare are this alchemical ingredient and the given ingredients
+     * @param   ingredients
+     *          the list of alchemical ingredients to compare
      */
     private AlchemicIngredient standardTemperatureClosestToZeroTwenty(List<AlchemicIngredient> ingredients){
         AlchemicIngredient closestIngredient = this;
@@ -661,4 +741,40 @@ public class AlchemicIngredient {
         return closestIngredient;
     }
     // TODO: getName, getSpecialName, setSpecialName, etc.
+
+
+    /**
+     * Returns a sorted merged list from two given sorted list.
+     * @param   list1
+     *          the first sorted list
+     * @param   list2
+     *          the second sorted list
+     */
+    private List<String> mergeSort(List<String> list1, List<String> list2){
+        List<String> mergedList = new LinkedList<>();
+        int n1 = list1.size();
+        int n2 = list2.size();
+        list1.add("");
+        int i = 0;
+        int j = 0;
+        while (i<n1 && j<n2){
+            if (list1.get(i).compareTo(list2.get(j))<=0){ //list1.get(i) is lxicographically less than list2.get(j)
+                mergedList.add(list1.get(i));
+                i +=1;
+            }
+            else {
+                mergedList.add(list2.get(j));
+                j += 1;
+            }
+        }
+        while (i<n1){
+            mergedList.add(list1.get(i));
+            i +=1;
+        }
+        while (j<n2){
+            mergedList.add(list2.get(j));
+            j +=1;
+        }
+        return mergedList;
+    }
 }
