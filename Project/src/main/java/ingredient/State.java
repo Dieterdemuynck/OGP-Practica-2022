@@ -153,7 +153,7 @@ public enum State {
         return getUnitAt(0);
     }
 
-    public static double toSpoons(int amount, Unit unit) {
+    public double toSpoons(int amount, Unit unit) {
         return (double) amount * getValueOf(unit) / (double) getValueOf(Unit.Spoon);
     }
 
