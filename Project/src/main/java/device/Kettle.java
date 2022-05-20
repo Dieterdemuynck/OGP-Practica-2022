@@ -37,7 +37,7 @@ public class Kettle extends Device {
     }
 
     /* *********************************************************
-     * CONSTRUCTOR TODO
+     * CONSTRUCTOR
      * *********************************************************/
 
     public Kettle() {
@@ -47,10 +47,7 @@ public class Kettle extends Device {
     /* *********************************************************
      * ADDED INGREDIENTS
      * *********************************************************/
-    /**
-     * TODO Spec
-     * @param container
-     */
+
     @Override
     public void insert(IngredientContainer container) {
         if (container != null && !container.isEmpty()) {
@@ -77,7 +74,7 @@ public class Kettle extends Device {
 
     /**
      * Activates the kettle and mixes all ingredients inside
-     * TODO: pre & post
+     *
      */
     public void activate() {
         // A device may only be activated if it is in a laboratory

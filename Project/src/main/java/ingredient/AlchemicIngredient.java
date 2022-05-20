@@ -385,8 +385,7 @@ public class AlchemicIngredient {
      *          | else result.equals("Heated")
      */
     private String getPreName() { // to simplify expansion
-        // TODO: could be saved as a field and changed when the respective property has changed [OPTIONAL]
-        // If we decide not to do this, change to regular comment and remove the optional tag ^
+        // could be saved as a field and changed when the respective property has changed
         String pre = "";
         long temperature = asLong(this.getTemperature());
         long standardTemperature = asLong(this.getStandardTemperature());
@@ -732,7 +731,7 @@ public class AlchemicIngredient {
      * MIX METHODES
      * *********************************************************/
 
-    /** TODO IS DIT NODIG?
+    /**
      * Return a new (mixed) alchemical ingredient based on this alchemical ingredient and a given alchemical ingredient
      *
      * @param   ingredient
@@ -854,8 +853,6 @@ public class AlchemicIngredient {
         }
         return closestIngredient;
     }
-    // TODO: getName, getSpecialName, setSpecialName, etc.
-
 
     /**
      * Returns a sorted merged list from two given sorted list.

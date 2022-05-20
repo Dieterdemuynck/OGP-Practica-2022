@@ -71,7 +71,6 @@ public enum State {
      * @pre     the first value must be 1
      *          | values[0] == 1
      * @pre     the value for Unit.Storeroom must eventually result in 6300 times the value for Unit.Spoon
-     *          | TODO: formal spec. (checker?)
      * @post    A new State with Units (of which there is at least a Spoon and a Storeroom) and it's values is created.
      *
      * @param   units   The units that belong to the State.
@@ -123,7 +122,7 @@ public enum State {
     }
 
     @Immutable
-    private int unitCount() {  // TODO: no arguments, and returns a value that doesn't change. @Immutable?
+    private int unitCount() {
         return this.getUnits().length;
     }
 
@@ -337,7 +336,6 @@ public enum State {
     }
 
     /**
-     * // TODO: check specification
      * Finds the largest unit which will still hold the given amount as an integer, given its current unit and the
      * required state. Will return a Quantity object holding both the resulting amount and Unit.
      *
@@ -353,9 +351,8 @@ public enum State {
      * @param   amount        The amount of ingredient we try to find a fitting Unit for.
      * @param   previousUnit  The original unit the amount is in.
      * @return  The largest Unit which fits the given amount, along with the respective amount in that Unit.
-     *          | result == TODO: formal specification (how even?)
      */
-    public Quantity findLargestFit(int amount, Unit previousUnit) {  // TODO: if not used outside class: private
+    public Quantity findLargestFit(int amount, Unit previousUnit) {
 
         // We assume previousUnit is in fact in the array:
         assert this.contains(previousUnit);
@@ -370,11 +367,8 @@ public enum State {
     }
 
     /**
-     * // TODO: Check specification
      * Finds the smallest container Unit which can hold a given amount of a given Unit in this State. If none is
      * found, returns the largest container of this State. If this State has no container units, returns null.
-     *
-     * // TODO: pre conditions etc.
      *
      * @param   amount        The amount of ingredient we try to find a fitting container for.
      * @param   containedUnit The unit of the amount that will be contained.

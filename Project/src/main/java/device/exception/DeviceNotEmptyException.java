@@ -4,7 +4,6 @@ import be.kuleuven.cs.som.annotate.*;
 import main.java.device.Device;
 import main.java.ingredient.AlchemicIngredient;
 
-// TODO: SPECIFICATION (made adjustments, no longer holds ingredients, only device
 /**
  * A class for signaling illegal attempts to place an alchemical ingredient in a device that is not empty.
  *

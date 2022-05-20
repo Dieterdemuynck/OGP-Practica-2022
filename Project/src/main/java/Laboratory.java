@@ -84,8 +84,6 @@ public class Laboratory {
         if (storeroomCapacity < 0)
             throw new IllegalArgumentException(
                     "laboratory storeroom capacity (" + storeroomCapacity + ") must be non negative.");
-        // TODO: what if current ingredient storage exceeds newly set capacity?
-        //  Should we make storeroom capacity final?
         this.storeroomCapacity = storeroomCapacity;
     }
 
@@ -98,18 +96,8 @@ public class Laboratory {
      * returns the contents of the storeroom
      * @return the contents of the storeroom.
      */
-    public Map<String, AlchemicIngredient> getStorage() {
-        // TODO: should we really allow this mutable field's getter to be public?
+    private Map<String, AlchemicIngredient> getStorage() {
         return storage;
-    }
-
-    /**
-     * sets the contents of the storeroom.
-     * @param storage the contents of the storeroom.
-     */
-    public void setStorage(Map<String, AlchemicIngredient> storage) {
-        // TODO: should we really allow a set method?
-        this.storage = storage;
     }
 
     /**
@@ -226,8 +214,6 @@ public class Laboratory {
     }
 
     /**
-     * TODO: specification (reference retrieveIngredient using @effect) OOK moet het ingredient niet ook uit het laboratory gehaald worden?
-     *  Yes, the ingredient is removed. Check retrieveIngredient. Remove this comment if seen.
      * @param name of the ingredient you want to retrieve
      * @param amount of a certain unit of the ingredient you want to retrieve
      * @param unit the unit of the ingredient you want to retrieve
