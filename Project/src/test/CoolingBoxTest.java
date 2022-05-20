@@ -43,6 +43,7 @@ public class CoolingBoxTest {
         assertEquals(20,container.getContent().getTemperature()[1]);
     }
 
+
     @Test
     public void testActivate_withLaboratory(){
         // oven must heat water to 100 with a marge of 5%
