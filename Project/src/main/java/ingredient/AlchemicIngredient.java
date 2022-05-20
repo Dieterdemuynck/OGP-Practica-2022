@@ -719,8 +719,6 @@ public class AlchemicIngredient {
         // Find the average temperature based on values of the temperature vars and their amount. The temperature is
         // rounded down to long values
         long[] temperatureArray = asLongArray((long) Math.floor(temperatureSum/amount));
-        System.out.println(temperatureArray[0]);
-        System.out.println(temperatureArray[1]);
 
         // Create a new mixedIngredientType
         MixedIngredientType mixedIngredientType = new MixedIngredientType(names, temperatureArray, state);
