@@ -276,7 +276,8 @@ public enum State {
      * *********************************************************/
 
     public Quantity convertTo(int amount, Unit originUnit, State targetState) {
-        return targetState.findLargestFit(targetState.fromSpoons(this.toSpoons(amount, originUnit)), getSmallestUnit());
+        return targetState.findLargestFit(
+                targetState.fromSpoons(this.toSpoons(amount, originUnit)), targetState.getSmallestUnit());
     }
 
     public static Quantity convertTo(AlchemicIngredient ingredient, State state) {
