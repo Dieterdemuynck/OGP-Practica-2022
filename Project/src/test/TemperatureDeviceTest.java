@@ -17,18 +17,12 @@ import static org.junit.Assert.*;
  * @author Dieter Demuynck, Hannes Ingelaere and Ine Malfait
  * @version 1.0
  */
-public class DevicesTest {
+public class TemperatureDeviceTest {
     // OVEN:
     private static Oven oven;
 
     // COOLING BOX:
     private static CoolingBox coolingBox;
-
-    // KETTLE:
-    private static Kettle kettle;
-
-    // TRANSMOGRIFIER
-    private static Transmogrifier transmogrifier;
 
     // ALCHEMICAL INGREDIENT
     private static AlchemicIngredient water, sugar;
@@ -43,8 +37,6 @@ public class DevicesTest {
     public void setUpFixture() {
         oven = new Oven();
         coolingBox = new CoolingBox();
-        kettle = new Kettle();
-        transmogrifier = new Transmogrifier(State.Liquid);
         water = new AlchemicIngredient(1);
         sugar= new AlchemicIngredient(2, Unit.Sachet, new long[] {0,18}, "Sugar", State.Powder);
         waterContainer = new IngredientContainer(water);
@@ -69,19 +61,6 @@ public class DevicesTest {
     }
 
     @Test
-    public void testConstructorTransmogrifier() {
-        Transmogrifier transmogrifier1 = new Transmogrifier(State.Liquid);
-        assertEquals(Device.DeviceType.Transmogrifier, transmogrifier1.getDeviceType());
-        assertEquals(State.Liquid, transmogrifier1.getState());
-    }
-
-    @Test
-    public void testConstructorKettle() {
-        Kettle kettle1 = new Kettle();
-        assertEquals(Device.DeviceType.Kettle, kettle1.getDeviceType());
-    }
-
-    @Test
     public void testInsert(){
         assertTrue(oven.isEmptyDevice());
         oven.insert(waterContainer);
@@ -101,6 +80,15 @@ public class DevicesTest {
         assertNull(oven.getLaboratory());
         oven.setLaboratory(laboratory);
         assertEquals(laboratory, oven.getLaboratory());
+    }
+
+    @Test
+    public void testSetTemperature() {
+        assertEquals(0, oven.getTemperature()[0]);
+        assertEquals(20, oven.getTemperature()[1]);
+        oven.setTemperature(new long[]{0, 100});
+        assertEquals(0, oven.getTemperature()[0]);
+        assertEquals(100, oven.getTemperature()[1]);
     }
 
 }
