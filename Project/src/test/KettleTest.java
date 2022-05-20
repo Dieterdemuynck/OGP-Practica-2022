@@ -11,8 +11,7 @@ import main.java.ingredient.Unit;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class KettleTest {
 
@@ -45,17 +44,12 @@ public class KettleTest {
         kettle.insert(chocolateContainer);
         kettle.activate();
         IngredientContainer container = kettle.retrieve();
-        AlchemicIngredient chocolateWithMilk = container.getContent();
-        assertEquals("Chocolate mixed with Milk", chocolateWithMilk.getName());
-        assertEquals(State.Powder, chocolateWithMilk.getState());
-        assertEquals(Unit.Spoon, chocolateWithMilk.getUnit());
-        assertEquals(57, chocolateWithMilk.getAmount());
-        assertEquals(0, chocolateWithMilk.getTemperature()[0]);
-        assertEquals(12, chocolateWithMilk.getTemperature()[1]);
+        assertNull(container);
     }
 
     @Test
     public void testActivate_withLaboratory(){
+        kettle.setLaboratory(laboratory);
         kettle.insert(milkContainer);
         kettle.insert(chocolateContainer);
         kettle.activate();

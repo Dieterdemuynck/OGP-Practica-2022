@@ -50,7 +50,12 @@ public abstract class Device {
      * ***************************/
 
     public IngredientContainer retrieve() {
-        return new IngredientContainer(getIngredient());
+        if (getIngredient()==null){
+            return null;
+        }
+        else {
+            return new IngredientContainer(getIngredient());
+        }
     }
 
     protected static long asLong(long[] temperature){
