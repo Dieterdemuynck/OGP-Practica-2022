@@ -7,10 +7,14 @@ public class RecipeBook {
 
     List<Recipe> recipeBook = new LinkedList<>();
 
+    /**
+     *
+     * @param recipe
+     */
     public void addRecipe(Recipe recipe){
-        // mag een recept 2x in een boek zitten?
+        // Since a recipe is allowed to be in two books at once, I assume the same recipe can also be stored on
+        // separate pages in one book.
         recipeBook.add(recipe);
-        // die unidirectionele link, is da goe genoeg? Of wa moet er daar bij?
     }
 
     public void removeRecipe(Recipe recipe){

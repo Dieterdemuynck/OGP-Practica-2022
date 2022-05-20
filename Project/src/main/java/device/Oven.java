@@ -28,6 +28,7 @@ public class Oven extends TemperatureDevice {  // why do they call it oven when 
     /**
      * Constructs a new Oven device with its temperature set to {0, 20}.
      *
+     * // TODO: @effect from superclass instead of post?
      * @post    the Oven will have its temperature set to {0, 20}
      *          | new.getTemperature() == new long[]{0, 20};
      */

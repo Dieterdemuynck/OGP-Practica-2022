@@ -1,8 +1,10 @@
 package main.java.device.exception;
 
 import be.kuleuven.cs.som.annotate.*;
+import main.java.device.Device;
 import main.java.ingredient.AlchemicIngredient;
 
+// TODO: SPECIFICATION (made adjustments, no longer holds ingredients, only device
 /**
  * A class for signaling illegal attempts to place an alchemical ingredient in a device that is not empty.
  *
@@ -20,12 +22,7 @@ public class DeviceNotEmptyException extends RuntimeException{
     /**
      * The alchemical ingredient that is already in the device
      */
-    private final AlchemicIngredient ingredientIn;
-
-    /**
-     * The alchemical ingredient that illegally placed in the device
-     */
-    private final AlchemicIngredient ingredientNew;
+    private final Device device;
 
     /* *********************************************************
      * CONSTRUCTOR
@@ -35,18 +32,15 @@ public class DeviceNotEmptyException extends RuntimeException{
      * Initialize this new device not empty exception involving the alchemical ingredient in the device and the new
      * alchemical ingredient.
      *
-     * @param   ingredientIn
+     * @param   device
      *          The alchemical ingredient in the device involved in the new device not empty exception.
-     * @param   ingredientNew
-     *          The new alchemical ingredient involved in the new device not empty exception.
      * @post    The ingredientIn and ingredientNew involved in the new device not empty exception are respectively set
      *          to the given alchemical ingredients.
      *          | new.getIngredientIn() == ingredientIn
      *          | new.getIngredientNew() == ingredientNew
      */
-    public DeviceNotEmptyException(AlchemicIngredient ingredientIn, AlchemicIngredient ingredientNew) {
-        this.ingredientIn = ingredientIn;
-        this.ingredientNew = ingredientNew;
+    public DeviceNotEmptyException(Device device) {
+        this.device = device;
     }
 
     /* *********************************************************
@@ -57,22 +51,8 @@ public class DeviceNotEmptyException extends RuntimeException{
      */
     @Basic
     @Immutable
-    public AlchemicIngredient getIngredientIn(){
-        return this.ingredientIn;
+    public Device getDevice(){
+        return this.device;
     }
-
-    /* *********************************************************
-     * INGREDIENT NEW
-     * *********************************************************/
-    /**
-     * Return the new alchemical ingredient involved in this device not empty exception.
-     */
-    @Basic
-    @Immutable
-    public AlchemicIngredient getIngredientNew(){
-        return this.ingredientNew;
-    }
-
-
 
 }

@@ -1094,5 +1094,9 @@ public class AlchemicIngredientTest {
         assertEquals(0, water.getTemperature()[0]);
         assertEquals(20, water.getTemperature()[1]);
     }
+
+    /* *********************************************************
+     * MIX WITH TESTS - for Kettle
+     * *********************************************************/
 }
 

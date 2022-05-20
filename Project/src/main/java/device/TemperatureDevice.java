@@ -53,17 +53,11 @@ public abstract class TemperatureDevice extends Device {
      * @param temperature
      */
     public void setTemperature(long[] temperature) {
-        if (AlchemicIngredient.isValidTemperature(temperature)) {
+        if (!AlchemicIngredient.isValidTemperature(temperature)) {
             this.temperature = 20; //DEFAULT
         }
         else {
-            long temp = 0;
-            if (temperature[0] != 0) {
-                temp -= temperature[0];
-            } else {
-                temp = temperature[1];
-            }
-            this.temperature = temp;
+            this.temperature = temperature[1] - temperature[0];
         }
     }
 }

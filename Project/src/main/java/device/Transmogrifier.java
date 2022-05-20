@@ -66,7 +66,8 @@ public class Transmogrifier extends Device {
      * @post    The resultingState will be set to the given state if it is not null
      *          | if (state != null) new.getState() == state;
      *
-     * @param state The State to which we want to set the Transmogrifier, to convert the State of an ingredient.
+     * @param   state
+     *          The State to which we want to set the Transmogrifier, to convert the State of an ingredient.
      */
     public void setState(State state) {
         if (state != null)

@@ -10,7 +10,10 @@ import main.java.ingredient.exception.IngredientNotPresentException;
 import main.java.ingredient.exception.NotEnoughIngredientException;
 import main.java.ingredient.exception.SpecialNameDoesNotExistException;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A class of laboratories
@@ -113,11 +116,15 @@ public class Laboratory {
      * @param container
      */
     public void store(IngredientContainer container) {
+        if (container == null) {
+            throw new IllegalArgumentException("Container may not be null element");
+        }
+
         store(container.getContent());
     }
 
     /**
-     *Stores an alchemic ingredient in the storeroom
+     * Stores an alchemic ingredient in the storeroom
      *
      * @pre     ingredient is not null.
      *          | ingredient != null
@@ -127,13 +134,19 @@ public class Laboratory {
      */
     private void store(AlchemicIngredient ingredient) {
         if (getStorage().get(ingredient.getName()) == null) {
-            getStorage().put(ingredient.getName(), ingredient);
-            if (ingredient.hasSpecialName()) {
-                specialToSimple.put(ingredient.getSpecialName(), ingredient.getName());
-            }
+            // The ingredient can simply be stored inside the list.
+            getStorage().put(ingredient.getName(), ingredient.inStandardValues());
         }
         else {
-            // TODO: Mix
+            // The ingredient first needs to be mixed with the other ingredient already present.
+            getStorage().put(ingredient.getName(),
+                    getStorage().get(ingredient.getName()).mixWith(ingredient).inStandardValues());
+        }
+
+        // If the ingredient has a special name, update the specialToSimple list, so we can search for this
+        // ingredient using the special name.
+        if (ingredient.hasSpecialName()) {
+            specialToSimple.put(ingredient.getSpecialName(), ingredient.getName());
         }
     }
 
@@ -241,7 +254,8 @@ public class Laboratory {
         return devices;
     }
 
-    public void setDevices(Map<Device.DeviceType, Device> devices) {
+    // We do *not* want just any random class to *set* the devices -> private
+    private void setDevices(Map<Device.DeviceType, Device> devices) {
         // Do we even need this function?
         this.devices = devices;
     }

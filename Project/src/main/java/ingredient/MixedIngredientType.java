@@ -13,7 +13,7 @@ public class MixedIngredientType extends IngredientType{
     /**
      * Variable referencing the ingredients this mixed ingredient is made of.
      */
-    private List<String> componentNames = new ArrayList<>();
+    private final List<String> componentNames = new ArrayList<>();
 
     /**
      * Variable registering the mixed ingredient's special name, in case it has one.
@@ -31,8 +31,8 @@ public class MixedIngredientType extends IngredientType{
      * @param standardTemperature The standard temperature of this mixed ingredient.
      * @param standardState The standard state of this mixed ingredient.
      */
-    public MixedIngredientType(List<String > name, long[] standardTemperature,  State standardState) {
-        super( standardTemperature, standardState);
+    public MixedIngredientType(List<String> name, long[] standardTemperature,  State standardState) {
+        super(standardTemperature, standardState);
     }
 
     /* *********************************************************
@@ -41,7 +41,14 @@ public class MixedIngredientType extends IngredientType{
 
     @Override
     public String getName(){
-        return "iets nieuws"; //TODO -> Dieter =)
+        // Since this is a mixture, there must be at least 2 components
+        StringBuilder simpleName = new StringBuilder(getComponentNames().get(0) + " mixed with " + getComponentNames().get(1));
+
+        for (int i = 2; i < getComponentNames().size(); i++) {
+            simpleName.append(", ").append(getComponentNames().get(i));
+        }
+
+        return simpleName.toString();
     }
 
     public List<String> getComponentNames(){
@@ -71,7 +78,7 @@ public class MixedIngredientType extends IngredientType{
     }
     @Override
     public boolean hasSpecialName(){
-        return specialName != null;
+        return getSpecialName() != null;
     }
 
     @Override

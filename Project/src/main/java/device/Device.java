@@ -27,7 +27,7 @@ public abstract class Device {
 
     public void setIngredient(AlchemicIngredient ingredient) throws DeviceNotEmptyException {
         if (!isEmptyDevice() && ingredient != null){
-            throw new DeviceNotEmptyException(this.ingredient, ingredient);
+            throw new DeviceNotEmptyException(this);
         }
         this.ingredient = ingredient;
     }
@@ -40,10 +40,9 @@ public abstract class Device {
      * ***************************/
 
     public void insert(IngredientContainer ingredientContainer) throws DeviceNotEmptyException {
-        setIngredient(ingredientContainer.extract());
-        /* There's nothing referencing the container, so there's nothing to "terminate". All we can do is empty its
-         * contents
-         */
+        if (ingredientContainer != null) {
+            setIngredient(ingredientContainer.extract());
+        }
     }
 
     /* ***************************
