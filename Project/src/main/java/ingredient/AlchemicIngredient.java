@@ -223,7 +223,7 @@ public class AlchemicIngredient {
     }
 
     /**
-     * Initialize a new (mixed) alchemica ingredient with given mixed ingredient type, amount, unit, current temperature
+     * Initialize a new (mixed) alchemical ingredient with given mixed ingredient type, amount, unit, current temperature
      * and current state.
      *
      * @param   mixedIngredientType
@@ -264,6 +264,49 @@ public class AlchemicIngredient {
         if (! currentState.hasUnit(unit)) {
             throw new IllegalArgumentException();
         }
+        this.unit = unit;
+        setTemperature(currentTemperature);
+        this.state = currentState;
+    }
+
+    /**
+     * Initialize a new alchemical ingredient with given ingredient type, amount, unit, current temperature
+     * and current state.
+     *
+     * @param   type
+     *          The ingredient type of the new alchemical ingredient
+     * @param   amount
+     *          the amount of the new alchemical ingredient
+     * @param   unit
+     *          the unit of the new alchemical ingredient
+     * @param   currentTemperature
+     *          the current temperature of the new alchemical ingredient
+     * @param   currentState
+     *          the current state of the new alchemical ingredient
+     *
+     * @pre     type is a valid ingredient type
+     *          | isValidIngredientType(type)
+     * @pre     amount is a valid amount
+     *          | isValidAmount(amount)
+     * @pre     unit is a valid unit
+     *          | isValidUnit(unit)
+     * @pre     currentState is a valid state
+     *          | isValidState(standardState)
+     * @effect  The new alchemical ingredient has the given currentTemperature
+     *          | setTemperature(currentTemperature)
+     * @post    The ingredient type of this new alchemical ingredient is set to the given ingredient type
+     *          | new.getIngredientType() == type
+     * @post    The amount of this new alchemical ingredient is set to the given amount
+     *          | new.getAmount() == amount
+     * @post    The unit of this new alchemical ingredient is set to the given unit
+     *          | new.getUnit() == unit
+     * @post    The state of this new alchemical ingredient is set to the given currentState
+     *          | new.getState() == currentState
+     */
+    @Raw @Model
+    private AlchemicIngredient(IngredientType type, int amount, Unit unit, long[] currentTemperature, State currentState) {
+        this.ingredientType = type;
+        this.amount = amount;
         this.unit = unit;
         setTemperature(currentTemperature);
         this.state = currentState;
@@ -601,18 +644,45 @@ public class AlchemicIngredient {
      * everything the same except for a few values
      * *********************************************************/
 
+    /**
+     * Makes a new alchemical ingredient nearly identical this alchemical ingredient, with different amount, unit,
+     * current state and current temperature.
+     *
+     * @effect  creates a new alchemical ingredient with the same type but given amount, unit, state and temperature
+     *          | AlchemicalIngredient(getIngredientType(), amount, unit, currentTemperature, currentState)
+     * @param   amount
+     *          the new amount for the new alchemical ingredient
+     * @param   unit
+     *          the new unit for the new alchemical ingredient
+     * @param   currentState
+     *          the new (current) state for the new alchemical ingredient
+     * @param   currentTemperature
+     *          the new (current) temperature for the new alchemical ingredient
+     * @returna new AlchemicIngredient object where all fields are the same as this object, but with different
+     *          amount, unit, current temperature and current state.
+     *          | result == new AlchemicIngredient(
+     *          |               getIngredientType(),
+     *          |               amount,
+     *          |               unit,
+     *          |               currentTemperature,
+     *          |               currentState)
+     */
+    @Model
     public AlchemicIngredient copyAllValsExcept(int amount, Unit unit, State currentState, long[] currentTemperature) {
-        AlchemicIngredient newIngredient = new AlchemicIngredient(amount, unit, getStandardTemperature(),
-                currentTemperature, getName(), getStandardState(), currentState);
+        AlchemicIngredient newIngredient = new AlchemicIngredient(getIngredientType(), amount, unit, currentTemperature,
+                currentState);
         if (hasSpecialName()){
             newIngredient.setSpecialName(this.getSpecialName());
         }
         return newIngredient;
     }
 
-    /** TODO: dit is nog niet OK
-     * Makes a new alchemical ingredient based on an existing alchemical ingredient but with a different amount, unit
+    /**
+     * Makes a new alchemical ingredient nearly identical this alchemical ingredient, with different amount, unit
      * and current state.
+     *
+     * @effect  creates a copy, but with the same state and temperature.
+     *          | copyAllValsExcept(amount, unit, currenState, getTemperature())
      * @param   amount
      *          the new amount for the new alchemical ingredient
      * @param   unit
@@ -620,14 +690,12 @@ public class AlchemicIngredient {
      * @param   currentState
      *          the new (current) state for the new alchemical ingredient
      * @return  a new AlchemicIngredient object where all fields are the same as this object, but with different
-     *          amount, unit and state.
+     *          amount, unit and current state.
      *          | result == new AlchemicIngredient(
+     *          |               getIngredientType(),
      *          |               amount,
      *          |               unit,
-     *          |               getStandardTemperature(),
      *          |               getTemperature(),
-     *          |               getName(),
-     *          |               getStandardState(),
      *          |               currentState)
      */
     public AlchemicIngredient copyAllValsExcept(int amount, Unit unit, State currentState) {
@@ -635,15 +703,24 @@ public class AlchemicIngredient {
     }
 
     /**
-     * Makes a new alchemical ingredient based on an existing alchemical ingredient but with a different amount and unit.
+     * Makes a new alchemical ingredient nearly identical this alchemical ingredient, with different amount and unit.
+     *
+     * @effect  creates a copy, but with the same state and temperature.
+     *          | copyAllValsExcept(amount, unit, getState(), getTemperature())
      * @param   amount
      *          the new amount for the new alchemical ingredient
      * @param   unit
      *          the new unit for the new alchemical ingredient
      * @return  AlchemicIngredient with the same state, but with a different amount and unit.
+     *          | result == new AlchemicIngredient(
+     *          |               getIngredientType(),
+     *          |               amount,
+     *          |               unit,
+     *          |               getTemperature(),
+     *          |               getState())
      */
     public AlchemicIngredient copyAllValsExcept(int amount, Unit unit) {
-        return copyAllValsExcept(amount, unit, getState());
+        return copyAllValsExcept(amount, unit, getState(), getTemperature());
     }
 
     /* *********************************************************

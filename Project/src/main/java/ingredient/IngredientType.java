@@ -159,12 +159,18 @@ public class IngredientType {
      * @param   standardTemperature
      *          the standard temperature to check
      * @return  True if and only if the coolness is 0 and the hotness is above 0 and below the MAX_TEMPERATURE
-     *          | result == (standardTemperature[0] == 0 and standardTemperature[1] != 0
-     *                 and standardTemperature[1] <= AlchemicIngredient.MAX_TEMPERATURE)
+     *          | result == (temperature != null
+     *          |               && temperature.length == 2
+     *          |               && temperature[0] == 0
+     *          |               && temperature[1] != 0
+     *          |               && temperature[1] <= AlchemicIngredient.MAX_TEMPERATURE)
      */
     private static boolean isValidStandardTemperature(long[] standardTemperature) {
-        return standardTemperature[0] == 0 && standardTemperature[1] != 0
-                && standardTemperature[1] <= AlchemicIngredient.MAX_TEMPERATURE && standardTemperature.length == 2;
+        return standardTemperature != null
+                && standardTemperature.length == 2
+                && standardTemperature[0] == 0
+                && standardTemperature[1] != 0
+                && standardTemperature[1] <= AlchemicIngredient.MAX_TEMPERATURE;
     }
 
     /* *********************************************************
