@@ -566,7 +566,7 @@ public class AlchemicIngredient {
      *          the new amount for the new alchemical ingredient
      * @param   unit
      *          the new unit for the new alchemical ingredient
-     * @return  TODO
+     * @return  AlchemicIngredient with the same state, but with a different amount and unit.
      */
     public AlchemicIngredient copyAllValsExcept(int amount, Unit unit) {
         return copyAllValsExcept(amount, unit, getState());

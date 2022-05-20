@@ -139,11 +139,11 @@ public class Laboratory {
     }
 
     /**
-     * TODO: specification (reference retrieveIngredient using @effect)
-     * @param name
-     * @param amount
-     * @param unit
-     * @return
+     * TODO: specification (reference retrieveIngredient using @effect) OOK moet het ingredient niet ook uit het laboratory gehaald worden?
+     * @param name of the ingredient you want to retrieve
+     * @param amount of a certain unit of the ingredient you want to retrieve
+     * @param unit the unit of the ingredient you want to retrieve
+     * @return a new container, containing the given amount of the ingredient.
      */
     public IngredientContainer retrieve(String name, int amount, Unit unit){
         // This might do double calculation for "find largest fit" but whatever, I guess?

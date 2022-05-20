@@ -93,6 +93,10 @@ public abstract class Device {
         return laboratory;
     }
 
+    /**
+     * The given laboratory will be the laboratory this device has been placed in.
+     * @param laboratory
+     */
     public void setLaboratory(Laboratory laboratory) {
         // TODO: Do we allow ingredients to move between laboratories through devices?
         this.laboratory = laboratory;
