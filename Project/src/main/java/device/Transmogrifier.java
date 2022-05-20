@@ -107,7 +107,8 @@ public class Transmogrifier extends Device {
                 AlchemicIngredient newIngredient = getIngredient().copyAllValsExcept(
                         quantity.getAmount(), quantity.getUnit(), getState());
 
-                // Step 3: Set the present ingredient to the new ingredient
+                // Step 3: Remove the old ingredient and set the present ingredient to the new ingredient
+                setIngredient(null);
                 setIngredient(newIngredient);
             }
         }
